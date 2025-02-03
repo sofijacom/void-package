@@ -1,0 +1,72 @@
+name: Build and Release Void Linux Packages
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    strategy:
+      max-parallel: 1
+      matrix:
+        arch: [x86_64, x86_64-musl]
+    runs-on: ubuntu-latest
+    env:
+      XBPS_ALLOW_RESTRICTED: "yes"
+      XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+      XBPS_TARGET_ARCH: ${{ matrix.arch }}
+      REPO_OWNER: "${{ github.repository_owner }}"
+      REPO_NAME: "${{ github.event.repository.name }}"
+
+    steps:
+      - name: checkout ${{ env.REPO_NAME }}
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: ${{ env.REPO_NAME }}
+
+      - name: checkout void-packages
+        uses: actions/checkout@v4
+        with:
+          repository: void-linux/void-packages
+          ref: master
+          path: void-packages
+
+      - name: copy
+        run: |
+          cp -rv ${{ env.REPO_NAME }}/srcpkgs/* void-packages/srcpkgs
+
+      - name: prepare xbps-static
+        run: |
+          mkdir -p /opt/xbps
+          url --fail -sL http://repo-default.voidlinux.org/static/xbps-static-latest.x86_64-musl.tar.xz \
+          | tar -xJf - -C /opt/xbps
+
+      - name: set path
+        run: |
+          echo "/opt/xbps/usr/bin/" >> ${GITHUB_PATH}
+
+      - name: setup binary bootstrap
+        working-directory: void-packages
+        run: |
+          ./xbps-src -m masterdir-${{ matrix.arch }} -A ${{ matrix.arch }} binary-bootstrap
+
+      # -------------------- Packages to build --------------------
+
+      - name: build rebos
+        working-directory: void-packages
+        run: |
+          ./xbps-src pkg -j$(nproc) -m masterdir-${{ matrix.arch }} rebos
+
+      # -----------------------------------------------------------
+
+      - name: release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            void-packages/hostdir/binpkgs/*.xbps
+            void-packages/hostdir/binpkgs/*.sha256sum
+            void-packages/hostdir/binpkgs/*.sha512sum
+            void-packages/hostdir/binpkgs/*.sig2
+            void-packages/hostdir/binpkgs/*repodata

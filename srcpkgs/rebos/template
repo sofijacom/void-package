@@ -1,0 +1,19 @@
+# Template file for 'rebos'
+pkgname=rebos
+version=3.5.2
+revision=1
+build_style=cargo
+short_desc="Rebos is a tool that aims at mimicking what NixOS does (repeatability), for any Linux distribution."
+maintainer=" <@>"
+license="GPL-3.0-or-later"
+homepage="https://gitlab.com/Oglo12/rebos/"
+changelog="N/A"
+distfiles="https://gitlab.com/Oglo12/rebos/-/archive/v${version}/rebos-v${version}.tar.gz"
+checksum=fb5bd9c9d11712187bc0a4fcd8b438228d73951f920f08d35f23cb52dd051696 # 3.5.2
+# checksum=26648b6971b513d6baacbd58d89464b4a0a592346d72e9dbd0210b925022d8b7 # 3.5.1
+# checksum=5b2afa927897c7bc10e8e8b3a2b2ce2542a81520558aff249a7a2783c0e1d4d7 # 3.5.0
+
+post_install() {
+  vdoc README.md
+  vlicense LICENSE
+}

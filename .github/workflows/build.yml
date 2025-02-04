@@ -21,7 +21,7 @@ jobs:
       max-parallel: 1
       matrix:
         arch: [x86_64, x86_64-musl]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       XBPS_ALLOW_RESTRICTED: "yes"
       # XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}

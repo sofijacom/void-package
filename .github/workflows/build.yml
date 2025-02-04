@@ -22,13 +22,12 @@ jobs:
     permissions:
       contents: write
     strategy:
-      max-parallel: 1
       matrix:
         arch: [x86_64, x86_64-musl]
     runs-on: ubuntu-22.04
     env:
       XBPS_ALLOW_RESTRICTED: "yes"
-      # XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+      XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
       XBPS_TARGET_ARCH: ${{ matrix.arch }}
       REPO_OWNER: "${{ github.repository_owner }}"
       REPO_NAME: "${{ github.event.repository.name }}"
@@ -50,7 +49,6 @@ jobs:
         with:
           repository: void-linux/void-packages
           ref: master
-          # path: void-packages
 
       - name: Merge this repository
         working-directory: ${{ github.workspace }}
@@ -99,13 +97,11 @@ jobs:
           xbps-rindex --clean ${PWD}
           xbps-rindex --remove-obsoletes ${PWD}
 
-      # - name: sign
-      #   working-directory: ${{ github.workspace }}/hostdir/binpkgs
-      #   run: |
-      #     echo "${{ secrets.PRIV_KEY }}" > private.pem
-      #     xbps-rindex --privkey private.pem --sign --signedby "${{ env.REPO_NAME }}-github-actions" ${PWD}
-      #     xbps-rindex --privkey private.pem --sign-pkg *.xbps
-      #     rm privkey.pem
+      - name: sign
+        working-directory: ${{ github.workspace }}/hostdir/binpkgs
+        run: |
+          xbps-rindex --sign --signedby "${{ env.REPO_NAME }}-github-actions" --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") ${PWD}
+          xbps-rindex --sign-pkg --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") ${PWD}/*.xbps
 
       - name: checksum
         working-directory: ${{ github.workspace }}/hostdir/binpkgs

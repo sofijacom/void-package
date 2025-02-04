@@ -7,6 +7,7 @@
 .directory
 *.key
 *.pem
+*.pub
 
 # Exclude all binaries
 *.bin

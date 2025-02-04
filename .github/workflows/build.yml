@@ -15,8 +15,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# TODO: fix so this workflow can use ubuntu-24.04... https://github.com/actions/runner-images/issues/10636
+
 jobs:
   build:
+    permissions:
+      contents: write
     strategy:
       max-parallel: 1
       matrix:
@@ -131,4 +135,7 @@ jobs:
             ${{ github.workspace }}/hostdir/binpkgs/*.xbps
             ${{ github.workspace }}/hostdir/binpkgs/*.sha256sum
             ${{ github.workspace }}/hostdir/binpkgs/*.sha512sum
+            ${{ github.workspace }}/hostdir/binpkgs/*.sig2
             ${{ github.workspace }}/hostdir/binpkgs/*repodata
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

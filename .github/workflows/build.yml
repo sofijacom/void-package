@@ -127,7 +127,9 @@ jobs:
           printf "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
 
       - name: release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ env.SHORT_SHA }}
           tag_name: ${{ env.TAG }}
@@ -137,5 +139,3 @@ jobs:
             ${{ github.workspace }}/hostdir/binpkgs/*.sha512sum
             ${{ github.workspace }}/hostdir/binpkgs/*.sig2
             ${{ github.workspace }}/hostdir/binpkgs/*repodata
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

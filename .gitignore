@@ -5,6 +5,8 @@
 *.retry
 *.*~
 .directory
+*.key
+*.pem
 
 # Exclude all binaries
 *.bin

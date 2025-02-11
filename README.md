@@ -24,8 +24,8 @@ xbps-install -S
 > ```
 
 # Available packages
-| package | source |
-|:--------|:-------|
-| brave-browser (stable) | https://www.brave.com/ |
-| pexip-infinity-connect | https://www.pexip.com/ |
-| rebos   | https://gitlab.com/Oglo12/rebos |
+| package | source | automatic update |
+|:--------|:-------|:-----------------|
+| brave-browser (stable) | https://www.brave.com/ | :white_check_mark: |
+| pexip-infinity-connect | https://www.pexip.com/ | :x: |
+| rebos   | https://gitlab.com/Oglo12/rebos | :white_check_mark: |

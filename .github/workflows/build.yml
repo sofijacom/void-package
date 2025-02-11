@@ -25,6 +25,7 @@ jobs:
       matrix:
         arch: [x86_64, x86_64-musl]
     runs-on: ubuntu-22.04
+    if: ${{ github.ref == 'refs/heads/main' }}
     env:
       XBPS_ALLOW_RESTRICTED: "yes"
       XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}

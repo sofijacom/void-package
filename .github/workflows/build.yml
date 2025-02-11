@@ -100,9 +100,11 @@ jobs:
 
       - name: sign
         working-directory: ${{ github.workspace }}/hostdir/binpkgs
+        env:
+          KEY: ${{ secrets.PRIV_KEY }}
         run: |
-          xbps-rindex --sign --signedby "${{ env.REPO_NAME }}-github-actions" --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") ${PWD}
-          xbps-rindex --sign-pkg --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") ${PWD}/*.xbps
+          xbps-rindex --sign --signedby "${{ env.REPO_NAME }}-github-actions" --privkey <(printf '%s' "$KEY") $PWD
+          xbps-rindex --sign-pkg --privkey <(printf '%s' "$KEY") $PWD/*.xbps
 
       - name: checksum
         working-directory: ${{ github.workspace }}/hostdir/binpkgs

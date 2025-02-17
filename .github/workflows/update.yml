@@ -20,7 +20,7 @@ jobs:
     - run: sudo apt update -y && sudo apt install -y jq
     - run: bash ./srcpkgs/rebos/update-rebos.sh
     - run: bash ./srcpkgs/brave-browser/update-brave.sh
-    # - run: bash ./srcpkgs/zen-browser/update-zen.sh
+    - run: bash ./srcpkgs/zen-browser/update-zen.sh
     - name: Commit updates
       run: |
         git config --global user.name "github-actions[bot]"

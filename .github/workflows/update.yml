@@ -13,6 +13,10 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+        token: ${{ secrets.PULL_PUSH }}
     - run: sudo apt update -y && sudo apt install -y jq
     - run: bash ./srcpkgs/rebos/update-rebos.sh
     - run: bash ./srcpkgs/brave-browser/update-brave.sh
@@ -25,7 +29,5 @@ jobs:
     - name: Push updates
       uses: ad-m/github-push-action@master
       with:
-        persist-credentials: false
-        fetch-depth: 0
         github_token: ${{ secrets.PULL_PUSH }}
         branch: ${{ github.ref }}

@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.75.178
+version=1.75.175
 revision=1
 archs="x86_64"
 hostmakedepends="binutils tar xz"
@@ -29,9 +29,9 @@ do_install() {
   ln -s /opt/brave.com/brave/brave-browser ${DESTDIR}/usr/bin/brave-browser-stable
 
   # Install the icons
-  for size in 16 24 32 48 64 128 256; do
-    mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
-    vinstall opt/brave.com/brave/product_logo_${size}.png 0644 usr/share/icons/hicolor/${res}x${res}/apps brave-browser.png
+  for size in 16x16 24x24 32x32 48x48 64x64 128x128 256x256; do
+    mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}/apps
+    vinstall opt/brave.com/brave/product_logo_${size%x*}.png 0644 usr/share/icons/hicolor/${size}/apps brave-browser.png
   done
 }
 

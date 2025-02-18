@@ -17,9 +17,10 @@ jobs:
         persist-credentials: false
         fetch-depth: 0
         token: ${{ secrets.PULL_PUSH }}
-    - run: sudo apt update -y && sudo apt install -y jq
-    - run: bash ./srcpkgs/rebos/update-rebos.sh
+    - run: sudo apt update -y && sudo apt install -y jq git curl
     - run: bash ./srcpkgs/brave-browser/update-brave.sh
+    - run: bash ./srcpkgs/openshift-oc/update-oc.sh
+    - run: bash ./srcpkgs/rebos/update-rebos.sh
     - run: bash ./srcpkgs/zen-browser/update-zen.sh
     - name: Commit updates
       run: |

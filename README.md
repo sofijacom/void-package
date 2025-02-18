@@ -27,6 +27,7 @@ xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/          | :white_check_mark: |
+| openshift-oc (oc cli)  | https://github.com/openshift/oc | :white_check_mark: |
 | pexip-infinity-connect | https://www.pexip.com/          | :x: |
 | rebos                  | https://gitlab.com/Oglo12/rebos | :white_check_mark: |
 | zen-browser (stable)   | https://www.zen-browser.app/    | :white_check_mark: |

@@ -2,6 +2,7 @@
 pkgname=rebos
 version=3.5.2
 revision=1
+archs="x86_64*"
 build_style=cargo
 short_desc="Rebos is a tool that aims at mimicking what NixOS does (repeatability), for any Linux distribution."
 maintainer="Rickard <@>"

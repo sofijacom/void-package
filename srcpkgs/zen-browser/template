@@ -1,6 +1,6 @@
 # Template file for 'zen-browser'
 pkgname=zen-browser
-version=build
+version=1.7.6b
 revision=1
 archs="x86_64"
 hostmakedepends="binutils tar xz curl"

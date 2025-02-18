@@ -4,7 +4,7 @@ printf "Checking latest version\n"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
-LATEST_VERSION=$(gh release list --repo zen-browser/desktop --json name,isLatest --jq '.[] | select(.isLatest)|.name' | awk '{ print $2 }')
+LATEST_VERSION=$(gh release list --repo zen-browser/desktop --json name,isLatest --jq '.[] | select(.isLatest)|.name' | grep -oE '[0-9]\.([0-9\.]+[a-z]*)+' )
 export VERSION=${LATEST_VERSION#"v"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 

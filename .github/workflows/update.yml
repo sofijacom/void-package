@@ -1,4 +1,5 @@
 name: update
+run-name: "Automated update of ${{ github.ref_name }} by @${{ github.actor }}"
 
 on:
   schedule:
@@ -22,12 +23,23 @@ jobs:
     - run: bash ./srcpkgs/openshift-oc/update-oc.sh
     - run: bash ./srcpkgs/rebos/update-rebos.sh
     - run: bash ./srcpkgs/zen-browser/update-zen.sh
+    - name: Check for updates
+      id: check-updates
+      run: |
+        if [[ -n "$(git diff --exit-code)" ]]; then
+          echo "has_updates=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "No new updates"
+          echo "has_updates=false" >> "$GITHUB_OUTPUT"
+        fi
     - name: Commit updates
+      if: ${{ steps.check-updates.outputs.has_updates == 'true' }}
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git commit -am "Automated update"
+        git commit --all --message "Automated update"
     - name: Push updates
+      if: ${{ steps.check-updates.outputs.has_updates == 'true' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.PULL_PUSH }}

@@ -52,7 +52,7 @@ jobs:
           repository: void-linux/void-packages
           ref: master
 
-      - name: Merge this repository
+      - name: Merge this repository into void-linux/void-packages
         env:
           GH_TOKEN: ${{ github.token }}
         working-directory: ${{ github.workspace }}
@@ -68,6 +68,8 @@ jobs:
           fi
 
       - name: Identify changes to build
+        env:
+          GH_TOKEN: ${{ github.token }}
         working-directory: ${{ github.workspace }}
         run: |
           latest_name=$(gh release view --json tagName --jq '.tagName' --repo grvn/void-packages || echo "Initial Commit")

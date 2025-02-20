@@ -1,6 +1,6 @@
 # Void Linux Software Repository
 
-This repo contains packages not found in any of the [mirrors](https://xmirror.voidlinux.org/).
+This repo contains packages that I want but have not found in any of the [mirrors](https://xmirror.voidlinux.org/).
 
 > *__NOTE__*: Should you really use random binaries of the internet???
 
@@ -26,8 +26,9 @@ xbps-install -S
 # Available packages
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
-| brave-browser (stable) | https://www.brave.com/          | :white_check_mark: |
-| openshift-oc (oc cli)  | https://github.com/openshift/oc | :white_check_mark: |
-| pexip-infinity-connect | https://www.pexip.com/          | :x: |
-| rebos                  | https://gitlab.com/Oglo12/rebos | :white_check_mark: |
-| zen-browser (stable)   | https://www.zen-browser.app/    | :white_check_mark: |
+| brave-browser (stable) | https://www.brave.com/            | :white_check_mark: |
+| ly (TUI dm)            | https://github.com/fairyglade/ly  | :x: |
+| openshift-oc (oc cli)  | https://github.com/openshift/oc   | :white_check_mark: |
+| pexip-infinity-connect | https://www.pexip.com/            | :x: |
+| rebos                  | https://gitlab.com/Oglo12/rebos   | :white_check_mark: |
+| zen-browser (stable)   | https://www.zen-browser.app/      | :white_check_mark: |

@@ -22,6 +22,7 @@ jobs:
     - run: bash ./srcpkgs/brave-browser/update-brave.sh
     # - run: bash ./srcpkgs/ly/update-ly.sh
     - run: bash ./srcpkgs/openshift-oc/update-oc.sh
+    - run: bash ./srcpkgs/pet/update-pet.sh
     - run: bash ./srcpkgs/rebos/update-rebos.sh
     - run: bash ./srcpkgs/zen-browser/update-zen.sh
     - name: Check for updates

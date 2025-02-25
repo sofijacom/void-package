@@ -1,0 +1,13 @@
+# Template file for 'river-bedload'
+pkgname=river-bedload
+version=0.1.1
+revision=1
+build_style=zig-build
+makedepends="wayland wayland-devel wayland-protocols pkg-config"
+short_desc="Display information about river in json in the STDOUT."
+maintainer="Rickard <@>"
+license="GPL-3.0-only"
+homepage="https://git.sr.ht/~novakane/river-bedload"
+distfiles="https://git.sr.ht/~novakane/river-bedload/archive/v${version}.tar.gz"
+checksum=632cafcfa871e0789ff581a0aa104cff8286b3da082365c33dfd80cb25f82d54
+nopie=yes

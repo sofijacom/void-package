@@ -1,9 +1,9 @@
 # Template file for 'openchift-oc'
 
 # Update these on each version bump.
-version=4.17.0
-_git_commit=bc58b3a
-timestamp=202409111134
+version=v4.18.0
+_git_commit=a50d4c0
+timestamp=202502040032
 
 pkgname=openshift-oc
 revision=1
@@ -18,7 +18,7 @@ license="Apache-2.0"
 homepage="http://www.openshift.org"
 changelog="https://github.com/openshift/oc/tags"
 distfiles="https://${go_import_path}/archive/refs/tags/openshift-clients-${version}-${timestamp}.tar.gz"
-checksum=4ae833fa64b2f37ffd2668889535e4117b100994e0d2586bdb43a82a2c7dd23d
+checksum=3c06e9b7674b56f6d12ca54d07eb165ccb61ae0eb8b4e0ab2cc98d460a716c7b
 nocross=yes
 
 go_ldflags="-X github.com/openshift/oc/pkg/version.commitFromGit=${_git_commit} -X github.com/openshift/oc/pkg/version.versionFromGit=v${version}"

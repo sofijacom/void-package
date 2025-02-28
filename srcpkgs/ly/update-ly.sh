@@ -13,8 +13,8 @@ printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CU
 
 # No preprepped checksum files, need to download the binary and calculate it myself
 gh release download -R fairyglade/ly --archive=tar.gz --output "ly.tar.gz"
-export SHA256=$(sha256sum ./ly.tar.xz | cut -d ' ' -f1 )
-rm ./ly.tar.xz
+export SHA256=$(sha256sum ./ly.tar.gz | cut -d ' ' -f1 )
+rm ./ly.tar.gz
 [[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
 
 envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template

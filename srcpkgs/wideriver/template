@@ -17,5 +17,5 @@ checksum=4c956d0572bcad1e8b76751734616fd60f04f53f450e5e8a835c45810347a43a
 post_install() {
   vdoc README.md
   vman man/wideriver.1
-	vlicense LICENSE
+  vlicense LICENSE
 }

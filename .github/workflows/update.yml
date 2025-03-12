@@ -24,7 +24,7 @@ jobs:
     - run: bash ./srcpkgs/openshift-oc/update-oc.sh
     - run: bash ./srcpkgs/pet/update-pet.sh
     - run: bash ./srcpkgs/rebos/update-rebos.sh
-    - run: bash ./srcpkgs/rebos/update-river-status.sh
+    - run: bash ./srcpkgs/river-status/update-river-status.sh
     # - run: bash ./srcpkgs/river-bedload/update-river-bedload.sh
     - run: bash ./srcpkgs/zen-browser/update-zen.sh
     - run: bash ./srcpkgs/wideriver/update-wideriver.sh

@@ -9,7 +9,7 @@ maintainer="Rickard <@>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/grvn/river-status"
 changelog="https://raw.githubusercontent.com/grvn/river-status/refs/heads/main/CHANGELOG"
-distfiles="https://github.com/grvn/river-status/archive/refs/tags/v${version}.tar.gz"
+distfiles="https://github.com/grvn/river-status/releases/download/v${version}/river-status-v${version}.tgz"
 checksum=20a589591f7d243c17267d1af3629982dbc18e95e2cea4ca0ffb915b7f6fed7b
 
 post_install() {

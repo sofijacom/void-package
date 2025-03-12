@@ -34,6 +34,5 @@ xbps-install -S
 | rebos                  | https://gitlab.com/Oglo12/rebos                   | :white_check_mark: |
 | river-bedload          | https://git.sr.ht/~novakane/river-bedload         | :x: |
 | river-status           | https://github.com/grvn/river-status              | :white_check_mark: |
-| river-tag-overlay      | https://git.sr.ht/~leon_plickat/river-tag-overlay | :x: |
 | wideriver              | https://github.com/alex-courtis/wideriver         | :white_check_mark: |
 | zen-browser (stable)   | https://www.zen-browser.app/                      | :white_check_mark: |

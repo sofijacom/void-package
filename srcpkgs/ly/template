@@ -1,6 +1,6 @@
 # Template file for 'ly'
 pkgname=ly
-version=1.0.2
+version=1.0.3
 revision=1
 archs="i686 x86_64"
 build_style=zig-build
@@ -15,18 +15,8 @@ maintainer="Rickard <@>"
 license="WTFPL-2.0"
 homepage="https://github.com/fairyglade/ly"
 changelog="https://github.com/fairyglade/ly/releases/"
-#distfiles="https://github.com/fairyglade/ly/archive/refs/tags/v${version}.tar.gz"
-#checksum=09a278b8aa32d672177d771abe2b14abd57847ecea06c0214c7d18fd0ada903b
-nostrip=yes
-
-# TODO: Fix this as soon as a version is released from the branch
-# I have to clone branch instead of getting tagged release because 
-# the tagged version does not support zig 0.13.x, the support for
-# it came in 2 commits after the release of 1.0.2
-
-do_fetch() {
-  git clone --single-branch --branch v1.0.x https://github.com/fairyglade/ly.git "$wrksrc"
-}
+distfiles="https://github.com/fairyglade/ly/archive/refs/tags/v${version}.tar.gz"
+checksum=269cc070905bd3a064b458dacb25787e409dad5930f2fbb98640f8e4f57b0bf6
 
 do_install() {
   vbin zig-out/usr/bin/ly

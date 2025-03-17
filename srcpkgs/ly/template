@@ -29,8 +29,8 @@ do_install() {
   vinstall res/pam.d/ly 0644 /etc/pam.d
   vmkdir /etc/sv/ly
   for FILE in res/ly-runit-service/*; do
-		vinstall ${FILE} 0755 etc/sv/ly
-	done
+    vinstall ${FILE} 0755 etc/sv/ly
+  done
 }
 
 post_install() {

@@ -97,26 +97,23 @@ jobs:
 
       # -----------------------------------------------------------
 
-      - name: Cleanup
-        working-directory: ${{ github.workspace }}/hostdir/binpkgs
-        run: |
-          xbps-rindex --clean ${PWD}
-          xbps-rindex --remove-obsoletes ${PWD}
-
-      - name: sign
+      - name: Clean & sign
         working-directory: ${{ github.workspace }}/hostdir/binpkgs
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
+          xbps-rindex --remove-obsoletes ${PWD}
           printf "%s\n" "${PRIVKEY}" > key.pem
           xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
           xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
           rm -f key.pem
+          xbps-rindex --clean ${PWD}
 
       - name: checksum
         working-directory: ${{ github.workspace }}/hostdir/binpkgs
         run: |
+          rm -rf *.sha256sum *.sha512sum
           for file in *.xbps; do
             sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
             sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"

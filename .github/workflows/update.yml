@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-version:
+  update-versions:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
     env:
@@ -19,15 +19,15 @@ jobs:
         fetch-depth: 0
         token: ${{ secrets.PULL_PUSH }}
     - run: sudo apt update -y && sudo apt install -y jq git curl
-    - run: bash ./srcpkgs/brave-browser/update-brave.sh
-    - run: bash ./srcpkgs/ly/update-ly.sh
-    - run: bash ./srcpkgs/openshift-oc/update-oc.sh
-    - run: bash ./srcpkgs/pet/update-pet.sh
-    - run: bash ./srcpkgs/rebos/update-rebos.sh
-    - run: bash ./srcpkgs/river-status/update-river-status.sh
-    # - run: bash ./srcpkgs/river-bedload/update-river-bedload.sh
-    - run: bash ./srcpkgs/zen-browser/update-zen.sh
-    - run: bash ./srcpkgs/wideriver/update-wideriver.sh
+    - run: bash ./srcpkgs/brave-browser/update.sh
+    - run: bash ./srcpkgs/ly/update.sh
+    - run: bash ./srcpkgs/openshift-oc/update.sh
+    - run: bash ./srcpkgs/pet/update.sh
+    - run: bash ./srcpkgs/rebos/update.sh
+    - run: bash ./srcpkgs/river-status/update.sh
+    # - run: bash ./srcpkgs/river-bedload/update.sh
+    - run: bash ./srcpkgs/zen-browser/update.sh
+    - run: bash ./srcpkgs/wideriver/update.sh
     - name: Check for updates
       id: check-updates
       run: |

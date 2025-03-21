@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.76.74
+version=1.76.80
 revision=1
 archs="x86_64"
 hostmakedepends="binutils tar xz"
@@ -11,7 +11,7 @@ license="Mozilla Public License Version 2.0"
 homepage="https://www.brave.com/"
 changelog="https://www.brave.com/latest/"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb"
-checksum=b467f7b63672ce0ca88c392015bfd252f6717559d8165c7a6cf4cb785b93b512
+checksum=e58b6c4e8ca013b942229ef9d1af70052a3f3acc65f7b6df2fdc9d88f9b19a60
 
 do_extract() {
   ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/brave-browser_${version}_amd64.deb

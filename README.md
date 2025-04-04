@@ -27,6 +27,7 @@ xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :white_check_mark: |
+| destilled-fonts        | <opinionized list of fonts I want>                | :x: |
 | ly (TUI dm)            | https://github.com/fairyglade/ly                  | :white_check_mark: |
 | openshift-oc (oc cli)  | https://github.com/openshift/oc                   | :white_check_mark: |
 | pet                    | https://github.com/knqyf263/pet                   | :white_check_mark: |

@@ -1,6 +1,6 @@
 # Template file for 'zen-browser'
 pkgname=zen-browser
-version=1.11.1b
+version=1.11.2b
 revision=1
 archs="x86_64"
 hostmakedepends="binutils tar xz curl"
@@ -11,7 +11,7 @@ license="MPL-2.0"
 homepage="https://www.zen-browser.app/"
 changelog="https://github.com/zen-browser/desktop/releases"
 distfiles="https://github.com/zen-browser/desktop/releases/download/${version}/zen.linux-x86_64.tar.xz"
-checksum=de187d126db82d18babd60b911c4a3638e1ff37e1a931649ac96907960b1f7e5
+checksum=c2c6f548cad98d0166c625b65d0d8b7ff020f6cee394e1571407b7b227c7b970
 
 do_install() {
   vmkdir usr/lib/zen-browser

@@ -2,7 +2,7 @@
 pkgname=zen-browser
 version=${VERSION}
 revision=1
-archs="x86_64"
+archs="~*-musl" # using sources from .deb seems to not be compatable with musl
 hostmakedepends="binutils tar xz curl"
 # depends=""
 short_desc="Experience tranquillity while browsing the web without people tracking you!"

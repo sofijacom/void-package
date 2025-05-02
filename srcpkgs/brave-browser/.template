@@ -2,7 +2,7 @@
 pkgname=brave-browser
 version=${VERSION}
 revision=1
-archs="x86_64"
+archs="~*-musl" # using sources from .deb seems to not be compatable with musl
 hostmakedepends="binutils tar xz"
 # depends="desktop-file-utils hicolor-icon-theme"
 short_desc="Fast, private and secure web browser with ad blocker"

@@ -1,6 +1,6 @@
 # Template file for 'zen-browser'
 pkgname=zen-browser
-version=1.12.6b
+version=1.12.7b
 revision=1
 archs="~*-musl" # using sources from .deb seems to not be compatable with musl
 hostmakedepends="binutils tar xz curl"
@@ -11,7 +11,7 @@ license="MPL-2.0"
 homepage="https://www.zen-browser.app/"
 changelog="https://github.com/zen-browser/desktop/releases"
 distfiles="https://github.com/zen-browser/desktop/releases/download/${version}/zen.linux-x86_64.tar.xz"
-checksum=0bf8d6a6ae95962860508f0c32ec29de0d2d67820ae5f8de4fdd7329eed60698
+checksum=d7f25e56a0c7a27c1e121c5470bb43cc9dbafb45a4c6a762f835ddfc5972bed2
 
 do_install() {
   vmkdir usr/lib/zen-browser

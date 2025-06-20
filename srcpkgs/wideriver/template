@@ -1,10 +1,10 @@
 # Template file for 'wideriver'
 pkgname=wideriver
-version=1.2.0
+version=1.2.1
 revision=1
 archs="x86_64*"
-hostmakedepends="pkg-config wayland-devel"
-makedepends="wayland-devel"
+hostmakedepends="pkg-config"
+makedependencies="wayland-devel"
 short_desc="Tiling window manager for the river wayland compositor"
 maintainer="Rickard <@>"
 license="GPL-3.0-or-later"
@@ -12,10 +12,10 @@ build_style="gnu-makefile"
 homepage="https://github.com/alex-courtis/wideriver"
 changelog="https://github.com/alex-courtis/wideriver/releases"
 distfiles="https://github.com/alex-courtis/wideriver/archive/refs/tags/${version}.tar.gz"
-checksum=4c956d0572bcad1e8b76751734616fd60f04f53f450e5e8a835c45810347a43a
+checksum=cc8efaff440ee34e41ec63665aa02b2000fa160f31f2fa041a948bd446dfb620
 
 post_install() {
   vdoc README.md
   vman man/wideriver.1
-  vlicense LICENSE
+	vlicense LICENSE
 }

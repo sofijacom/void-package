@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.79.126
+version=1.80.113
 revision=1
 archs="~*-musl" # using sources from .deb seems to not be compatable with musl
 hostmakedepends="binutils tar xz"
@@ -11,7 +11,7 @@ license="Mozilla Public License Version 2.0"
 homepage="https://www.brave.com/"
 changelog="https://www.brave.com/latest/"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser_${version}_amd64.deb"
-checksum=7fc542487d17d32787dd4ea599c90ce723a71ee1063fc94d3f042dd8da760719
+checksum=c6cf41cb06f96568ff38834fd47115c4031686cd814c957253e741388fb0e9ff
 
 do_extract() {
   ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/brave-browser_${version}_amd64.deb

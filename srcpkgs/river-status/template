@@ -1,6 +1,6 @@
 # Template file for 'river-status'
 pkgname=river-status
-version=0.2.2
+version=0.2.3
 revision=1
 archs="x86_64*"
 build_style=cargo
@@ -10,7 +10,7 @@ license="GPL-3.0-or-later"
 homepage="https://github.com/grvn/river-status"
 changelog="https://raw.githubusercontent.com/grvn/river-status/refs/heads/main/CHANGELOG"
 distfiles="https://github.com/grvn/river-status/releases/download/v${version}/river-status-v${version}.tgz"
-checksum=3b40163b985294ad8170baf10d4c67b5f276366c23ca2deb0bb57cae7f6172ec
+checksum=a45df074b846729f54bf73d004bdc03d9b6da25202f8ea252c37e810edc373df
 
 post_install() {
   vdoc README.md

@@ -2,9 +2,8 @@
 pkgname=zen-browser
 version=${VERSION}
 revision=1
-archs="~*-musl" # using sources from .deb seems to not be compatable with musl
+archs="x86_64"
 hostmakedepends="binutils tar xz curl"
-# depends=""
 short_desc="Experience tranquillity while browsing the web without people tracking you!"
 maintainer="Rickard <@>"
 license="MPL-2.0"
@@ -14,19 +13,29 @@ distfiles="https://github.com/zen-browser/desktop/releases/download/${version}/z
 checksum=${SHA256}
 
 do_install() {
-  vmkdir usr/lib/zen-browser
-  vcopy "*" "usr/lib/zen-browser"
+  install -dm755 "${DESTDIR}/opt/${pkgname}" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/share/applications" "${DESTDIR}/usr/share/pixmaps"
 
-  vmkdir usr/bin/
-  ln -s /usr/lib/zen-browser/zen ${DESTDIR}/usr/bin/
+  vinstall "${FILESDIR}/zen.desktop" 0644 usr/share/applications
 
-  vinstall "${FILESDIR}/zen.desktop" 0644 "usr/share/applications/"
+  vcopy * "opt/${pkgname}"
 
-  # Install the icons
-  for size in 16x16 32x32 48x48 64x64 128x128; do
-    mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}/apps
-    vinstall browser/chrome/icons/default/default${size%x*}.png 0644 usr/share/icons/hicolor/${size}/apps zen-browser.png
+  ln -sf "/opt/${pkgname}/zen" "${DESTDIR}/usr/bin/zen"
+
+  # install policies files
+  install -dm755 "${DESTDIR}/opt/${pkgname}/distribution"
+  vinstall ${FILESDIR}/policies.json 644 "opt/${pkgname}/distribution/"
+
+# Follow https://wiki.freepascal.org/Debian_package_structure#usr/share/pixmaps_directory and https://wiki.freepascal.org/Debian_package_structure#usr/share/hicolor_directory
+  vinstall browser/chrome/icons/default/default48.png 0644 usr/share/pixmaps zen-browser.png
+  for size in 16 32 48 64 128; do
+    install -d ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
+    vinstall browser/chrome/icons/default/default${size}.png 0644 usr/share/icons/hicolor/${size}x${size}/apps zen-browser.png
   done
+
+  # using system dictionary
+  ln -Ts /usr/share/hunspell "${DESTDIR}/opt/${pkgname}/dictionaries"
+  ln -Ts /usr/share/hyphen "${DESTDIR}/opt/${pkgname}/hyphenation"
+  ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/opt/${pkgname}/libnssckbi.so"
 }
 
 post_install() {

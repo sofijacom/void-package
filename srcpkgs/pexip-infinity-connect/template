@@ -22,7 +22,7 @@ distfiles="https://www.pexip.com/hubfs/dev-assets/infinity-connect-download-file
 checksum=b1a4568035b43f67eb7ffe08ed927ea49be7537cd7a16dbf39179426fcfb5ab5
 
 do_install() {
-  vinstall pexip-infinity-connect.desktop 0644 usr/share/applications
+  vinstall pexip-infinity-connect.desktop 0644 usr/share/applications/
 
   vmkdir usr/lib/pexip-infinity-connect_linux-x64 0755
   vcopy "*" "/usr/lib/pexip-infinity-connect_linux-x64/"

@@ -15,7 +15,7 @@ checksum=${SHA256}
 do_install() {
   install -dm755 "${DESTDIR}/opt/${pkgname}" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/share/applications" "${DESTDIR}/usr/share/pixmaps"
 
-  vinstall "${FILESDIR}/zen.desktop" 0644 usr/share/applications
+  vinstall "${FILESDIR}/zen.desktop" 0644 usr/share/applications/
 
   vcopy * "opt/${pkgname}"
 

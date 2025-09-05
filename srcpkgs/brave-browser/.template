@@ -19,8 +19,8 @@ do_extract() {
 do_install() {
   install -dm755 "${DESTDIR}/opt/brave.com/brave" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/share/applications" "${DESTDIR}/usr/share/icons/hicolor" "${DESTDIR}/usr/share/licenses/brave-browser" "${DESTDIR}/usr/share/pixmaps"
 
-  vinstall "${FILESDIR}/brave-browser.desktop" 644 usr/share/applications
-  vinstall "${FILESDIR}/com.brave.Browser.desktop" 644 usr/share/applications
+  vinstall "${FILESDIR}/brave-browser.desktop" 644 usr/share/applications/
+  vinstall "${FILESDIR}/com.brave.Browser.desktop" 644 usr/share/applications/
 
   vcopy * opt/brave.com/brave
 

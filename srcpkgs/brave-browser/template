@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.82.161
+version=1.82.166
 revision=1
 archs="x86_64"
 makedepends="unzip"
@@ -10,7 +10,7 @@ license="Mozilla Public License Version 2.0"
 homepage="https://www.brave.com/"
 changelog="https://www.brave.com/latest/"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-browser-${version}-linux-amd64.zip"
-checksum=a02330548a5e1a55bdfd27b7ccb21beecde89e3dd9ac44c3152f8985fdfe08bd
+checksum=f92d7fd16ef3e1e685f1d27a689a27972356da813bfde108d671f2f3e2592f03
 
 do_extract() {
   unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/brave-browser-${version}-linux-amd64.zip" -x "cron/*" -d ${wrksrc}
@@ -29,6 +29,7 @@ do_install() {
 
   chmod 4755 "${DESTDIR}/opt/brave.com/brave/chrome-sandbox"
 
+# Follow https://wiki.freepascal.org/Debian_package_structure#usr/share/pixmaps_directory and https://wiki.freepascal.org/Debian_package_structure#usr/share/hicolor_directory
   vinstall product_logo_48.png 644 usr/share/pixmaps brave-browser.png
   for size in 16 24 32 48 64 128 256; do
     install -d ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps

@@ -17,38 +17,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Build packages
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - { arch: x86_64,       libc: glibc }
-          # - { arch: x86_64-musl,  libc: musl  }
+  prep:
+    name: Find what needs to be built
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250901R1
-      options: --platform linux/amd64 --privileged
-      volumes:
-        - /dev:/dev
-      env:
-        ARCH: '${{ matrix.config.arch }}'
-        XBPS_ALLOW_RESTRICTED: "yes"
-        XBPS_TARGET_ARCH: ${{ matrix.arch }}
-        REPO_OWNER: "${{ github.repository_owner }}"
-        REPO_NAME: "${{ github.event.repository.name }}"
-    if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
-      - name: Prep container
-        run: |
-          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
-          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git
-          useradd -G xbuilder -M builder
-
-      - name: checkout void-packages
+      - name: Checkout void-packages
         uses: actions/checkout@v4
         with:
           repository: void-linux/void-packages
@@ -82,10 +56,70 @@ jobs:
           git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
           | cut -d/ -f 2 | uniq | xargs ./xbps-src sort-dependencies | tee /tmp/templates
 
-      - name: setup binary bootstrap
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+    needs:
+      - prep
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { arch: x86_64,       libc: glibc }
+          # - { arch: x86_64-musl,  libc: musl  }
+    container:
+      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250901R1
+      options: --platform linux/amd64 --privileged
+      volumes:
+        - /dev:/dev
+      env:
+        ARCH: '${{ matrix.config.arch }}'
+        XBPS_ALLOW_RESTRICTED: "yes"
+        XBPS_TARGET_ARCH: ${{ matrix.arch }}
+        REPO_OWNER: "${{ github.repository_owner }}"
+        REPO_NAME: "${{ github.event.repository.name }}"
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      - name: Prep container
+        run: |
+          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
+          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git
+          useradd -G xbuilder -M builder -s $(which bash)
+
+      - name: Checkout void-packages
+        uses: actions/checkout@v4
+        with:
+          path: void-packages
+          repository: void-linux/void-packages
+
+      - name: Setup void-packages
+        run: |
+          chown -R builder:builder void-packages
+
+          cd void-packages
+          echo XBPS_BUILD_ENVIRONMENT=void-packages-ci >> etc/conf
+          echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
+          echo XBPS_CHROOT_CMD=uchroot >> etc/conf
+
+          yes | sudo -Eu builder ./xbps-src -m masterdir-${{ matrix.config.arch }} -A ${{ matrix.config.arch }} binary-bootstrap
+
+      - name: Merge this repository into void-linux/void-packages
+        env:
+          GH_TOKEN: ${{ github.token }}
         working-directory: ${{ github.workspace }}
         run: |
-          xbps-src -m masterdir-${{ matrix.arch }} -A ${{ matrix.arch }} binary-bootstrap
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add -f grvn https://github.com/grvn/void-packages.git
+          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change grvn/main
+          mkdir -p hostdir/binpkgs
+          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo grvn/void-packages || true
+          if [[ $ARCH == x86_64 ]]; then
+            rm --force hostdir/binpkgs/*x86_64-musl*
+          fi
 
       # -------------------- Packages to build --------------------
 

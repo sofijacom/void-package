@@ -75,7 +75,7 @@ jobs:
           chown -R builder:builder .
 
           git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
-          | cut -d/ -f 2 | uniq | xargs sudo -Eu builder xbps-src sort-dependencies | tee /tmp/templates
+          | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
 
       - name: Setup void-packages
         run: |
@@ -89,45 +89,46 @@ jobs:
       # -------------------- Packages to build --------------------
 
       - name: build pkgs
-        working-directory: ${{ github.workspace }}
         run: |
           pkgs=$(cat /tmp/templates)
           for pkg in ${pkgs}; do
-            xbps-src pkg -j$(nproc) -m masterdir-${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
+            ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
 
       # -----------------------------------------------------------
 
-      # - name: Clean & sign
-      #   working-directory: ${{ github.workspace }}/hostdir/binpkgs
-      #   env:
-      #     PRIVKEY: ${{ secrets.PRIV_KEY }}
-      #     XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
-      #   run: |
-      #     xbps-rindex --remove-obsoletes ${PWD}
-      #     printf "%s\n" "${PRIVKEY}" > key.pem
-      #     xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
-      #     xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
-      #     rm -f key.pem
-      #     xbps-rindex --clean ${PWD}
+      - name: Clean & sign
+        working-directory: ./hostdir/binpkgs
+        env:
+          PRIVKEY: ${{ secrets.PRIV_KEY }}
+          XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+        run: |
+          ls -la
+          xbps-rindex --remove-obsoletes ${PWD}
+          pwd
+          # printf "%s\n" "${PRIVKEY}" > key.pem
+          # xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
+          # xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
+          # rm -f key.pem
+          # xbps-rindex --clean ${PWD}
 
-      # - name: checksum
-      #   working-directory: ${{ github.workspace }}/hostdir/binpkgs
-      #   run: |
-      #     rm -rf *.sha256sum *.sha512sum
-      #     for file in *.xbps; do
-      #       sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
-      #       sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
-      #     done
+      - name: checksum
+        working-directory: ./hostdir/binpkgs
+        run: |
+          ls -la
+          rm -rf *.sha256sum *.sha512sum
+          for file in *.xbps; do
+            sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
+            sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
+          done
 
       # - name: Upload Artifact
       #   uses: actions/upload-artifact@v4
       #   with:
       #     name: ${{ matrix.arch }}-repodata
-      #     path: ${{ github.workspace }}/hostdir/binpkgs
+      #     path: ./hostdir/binpkgs
 
       # - name: short sha
-      #   working-directory: ${{ github.workspace }}
       #   run: |
       #     printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
 
@@ -139,8 +140,8 @@ jobs:
       #     name: ${{ env.SHORT_SHA }}
       #     tag_name: ${{ env.TAG }}
       #     files: |
-      #       ${{ github.workspace }}/hostdir/binpkgs/*.xbps
-      #       ${{ github.workspace }}/hostdir/binpkgs/*.sha256sum
-      #       ${{ github.workspace }}/hostdir/binpkgs/*.sha512sum
-      #       ${{ github.workspace }}/hostdir/binpkgs/*.sig2
-      #       ${{ github.workspace }}/hostdir/binpkgs/*repodata
+      #       ./hostdir/binpkgs/*.xbps
+      #       ./hostdir/binpkgs/*.sha256sum
+      #       ./hostdir/binpkgs/*.sha512sum
+      #       ./hostdir/binpkgs/*.sig2
+      #       ./hostdir/binpkgs/*repodata

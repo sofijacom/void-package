@@ -57,10 +57,9 @@ jobs:
       - name: Merge this repository into void-linux/void-packages
         env:
           GH_TOKEN: ${{ github.token }}
-        # working-directory: /__w/void-packages/void-packages
         run: |
-          ls -la
-          pwd
+          which gh
+
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "*"
@@ -75,7 +74,6 @@ jobs:
       - name: Identify changes to build
         env:
           GH_TOKEN: ${{ github.token }}
-        working-directory: ${{ github.workspace }}
         run: |
           latest_name=$(gh release view --json tagName --jq '.tagName' --repo grvn/void-packages || echo "Initial Commit")
           latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 grvn/main)
@@ -87,9 +85,10 @@ jobs:
 
       - name: Setup void-packages
         run: |
-          chown -R builder:builder void-packages
+          chown -R builder:builder .
 
-          cd void-packages
+          ls -la
+          pwd
           echo XBPS_BUILD_ENVIRONMENT=void-packages-ci >> etc/conf
           echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
           echo XBPS_CHROOT_CMD=uchroot >> etc/conf

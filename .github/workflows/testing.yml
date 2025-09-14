@@ -43,8 +43,10 @@ jobs:
           xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git
           useradd -G xbuilder -M builder -s $(which bash)
 
-      - name: install gh
-        uses: actions4gh/setup-gh@v1
+      - name: Setup Github CLI
+        uses: actions4gh/setup-gh@v1.0.2
+        with:
+          token: ''
 
       - name: Checkout void-packages
         uses: actions/checkout@v4

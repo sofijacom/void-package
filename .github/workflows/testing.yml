@@ -77,6 +77,7 @@ jobs:
 
           git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
           | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
+          cat /tmp/templates
 
       - name: Setup void-packages
         run: |
@@ -93,6 +94,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: |
           pkgs=$(cat /tmp/templates)
+          echo "pkgs: ${pkgs}"
           for pkg in ${pkgs}; do
             xbps-src pkg -j$(nproc) -m masterdir-${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done

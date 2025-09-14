@@ -16,21 +16,21 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# TODO: fix so this workflow can use ubuntu-24.04... https://github.com/actions/runner-images/issues/10636
-
 jobs:
   build:
     permissions:
       contents: write
     strategy:
       matrix:
-        arch: [x86_64] # arch: [x86_64, x86_64-musl] # temporarly remove musl to be able to search where my logic fails for packages that only glibc should build
+        config:
+          - { arch: x86_64,       libc: glibc }
+          # - { arch: x86_64-musl,  libc: musl  } # temporarly remove musl to be able to search where my logic fails for packages that only glibc should build
     runs-on: ubuntu-22.04
     if: ${{ github.ref == 'refs/heads/main' }}
     env:
-      ARCH: ${{ matrix.arch }}
+      ARCH: ${{ matrix.config.arch }}
       XBPS_ALLOW_RESTRICTED: "yes"
-      XBPS_TARGET_ARCH: ${{ matrix.arch }}
+      XBPS_TARGET_ARCH: ${{ matrix.config.arch }}
       REPO_OWNER: "${{ github.repository_owner }}"
       REPO_NAME: "${{ github.event.repository.name }}"
       PATH: "/opt/xbps/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -83,7 +83,7 @@ jobs:
       - name: setup binary bootstrap
         working-directory: ${{ github.workspace }}
         run: |
-          ./xbps-src -m masterdir-${{ matrix.arch }} -A ${{ matrix.arch }} binary-bootstrap
+          ./xbps-src -m masterdir-${{ matrix.config.arch }} -A ${{ matrix.config.arch }} binary-bootstrap
 
       # -------------------- Packages to build --------------------
 
@@ -122,7 +122,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.arch }}-repodata
+          name: ${{ matrix.config.arch }}-repodata
           path: ${{ github.workspace }}/hostdir/binpkgs
 
       - name: short sha

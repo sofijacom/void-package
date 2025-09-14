@@ -40,13 +40,8 @@ jobs:
       - name: Prep container
         run: |
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
-          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git
+          xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git github-cli
           useradd -G xbuilder -M builder -s $(which bash)
-
-      - name: Setup Github CLI
-        uses: actions4gh/setup-gh@v1.0.2
-        with:
-          token: ''
 
       - name: Checkout void-packages
         uses: actions/checkout@v4
@@ -58,8 +53,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          which gh
-
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "*"

@@ -103,45 +103,42 @@ jobs:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
-          ls -la
           xbps-rindex --remove-obsoletes ${PWD}
-          pwd
-          # printf "%s\n" "${PRIVKEY}" > key.pem
-          # xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
-          # xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
-          # rm -f key.pem
-          # xbps-rindex --clean ${PWD}
+          printf "%s\n" "${PRIVKEY}" > key.pem
+          xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
+          xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
+          rm -f key.pem
+          xbps-rindex --clean ${PWD}
 
       - name: checksum
         working-directory: ./hostdir/binpkgs
         run: |
-          ls -la
           rm -rf *.sha256sum *.sha512sum
           for file in *.xbps; do
             sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
             sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
           done
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ matrix.arch }}-repodata
-      #     path: ./hostdir/binpkgs
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.arch }}-repodata
+          path: ./hostdir/binpkgs
 
-      # - name: short sha
-      #   run: |
-      #     printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
+      - name: short sha
+        run: |
+          printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
 
-      # - name: release
-      #   uses: softprops/action-gh-release@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     name: ${{ env.SHORT_SHA }}
-      #     tag_name: ${{ env.TAG }}
-      #     files: |
-      #       ./hostdir/binpkgs/*.xbps
-      #       ./hostdir/binpkgs/*.sha256sum
-      #       ./hostdir/binpkgs/*.sha512sum
-      #       ./hostdir/binpkgs/*.sig2
-      #       ./hostdir/binpkgs/*repodata
+      - name: release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.SHORT_SHA }}
+          tag_name: ${{ env.TAG }}
+          files: |
+            ./hostdir/binpkgs/*.xbps
+            ./hostdir/binpkgs/*.sha256sum
+            ./hostdir/binpkgs/*.sha512sum
+            ./hostdir/binpkgs/*.sig2
+            ./hostdir/binpkgs/*repodata

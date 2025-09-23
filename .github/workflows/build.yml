@@ -67,6 +67,7 @@ jobs:
           if [ "$ARCH" = x86_64 ]; then
             rm --force hostdir/binpkgs/*x86_64-musl*
           fi
+          rm --force hostdir/binpkgs/*.xbps.sig2
 
       - name: Identify changes to build
         env:
@@ -110,7 +111,6 @@ jobs:
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
           sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
-          ls ${PWD}
           printf "%s\n" "${PRIVKEY}" > key.pem
           sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
           sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps

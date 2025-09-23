@@ -16,11 +16,13 @@ printf "repository=https://github.com/grvn/void-packages/releases/latest/downloa
 xbps-install -S
 ```
 
+> *__WARNING__*: The key `9e:4d:55:e4:c2:98:1f:13:0c:ac:97:5b:68:66:9d:42.plist` may have been compromised and I will not continue using it.
+
 > *__NOTE__*: First time running `xbps-install -S` you will be asked if you wish to import the repository key.
-> For glibc x86_64 it will be [9e:4d:55:e4:c2:98:1f:13:0c:ac:97:5b:68:66:9d:42.plist](./repo-keys/x86_64/9e:4d:55:e4:c2:98:1f:13:0c:ac:97:5b:68:66:9d:42.plist).
+> For glibc x86_64 it will be [ee:04:bb:97:bf:cd:bb:73:6e:97:85:e6:a2:29:0a:b1.plist](./repo-keys/x86_64/ee:04:bb:97:bf:cd:bb:73:6e:97:85:e6:a2:29:0a:b1.plist).
 > If you wish to script it
 > ```shell
-> cp ./repo-keys/x86_64/9e:4d:55:e4:c2:98:1f:13:0c:ac:97:5b:68:66:9d:42.plist /var/db/xbps/keys/9e:4d:55:e4:c2:98:1f:13:0c:ac:97:5b:68:66:9d:42.plist
+> cp ./repo-keys/x86_64/ee:04:bb:97:bf:cd:bb:73:6e:97:85:e6:a2:29:0a:b1.plist /var/db/xbps/keys/ee:04:bb:97:bf:cd:bb:73:6e:97:85:e6:a2:29:0a:b1.plist
 > ```
 
 # Available packages

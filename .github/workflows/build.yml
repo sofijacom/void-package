@@ -73,8 +73,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # latest_name=$(gh release view --json tagName --jq '.tagName' --repo grvn/void-packages || echo "Initial Commit")
-          latest_name="Initial Commit"
+          latest_name=$(gh release view --json tagName --jq '.tagName' --repo grvn/void-packages || echo "Initial Commit")
           latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 grvn/main)
           echo "Latest Tag Name: ${latest_name}"
           echo "Latest Tag SHA: ${latest_sha}"

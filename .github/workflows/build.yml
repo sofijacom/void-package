@@ -97,7 +97,7 @@ jobs:
         run: |
           pkgs=$(cat /tmp/templates)
           for pkg in ${pkgs}; do
-            ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
+            sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
 
       # -----------------------------------------------------------
@@ -108,12 +108,12 @@ jobs:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
-          xbps-rindex --remove-obsoletes ${PWD}
+          sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
           printf "%s\n" "${PRIVKEY}" > key.pem
-          xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
-          xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
-          rm -f key.pem
-          xbps-rindex --clean ${PWD}
+          sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" ${PWD}
+          sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg ${PWD}/*.xbps
+          sudo -Eu builder rm -f key.pem
+          sudo -Eu builder xbps-rindex --clean ${PWD}
 
       - name: checksum
         working-directory: ./hostdir/binpkgs

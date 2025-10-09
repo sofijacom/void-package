@@ -9,7 +9,7 @@ on:
 jobs:
   update-versions:
     runs-on: ubuntu-latest
-    if: ${{ github == 'refs/heads/main' }}
+    if: ${{ github == '/heads/main' }}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:

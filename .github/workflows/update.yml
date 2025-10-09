@@ -10,8 +10,8 @@ jobs:
   update-versions:
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' }}
-    env:
-      GH_TOKEN: ${{ github.token }}
+   # env:
+   #   GH_TOKEN: ${{ github.token }}
     steps:
     - uses: actions/checkout@v4
       with:

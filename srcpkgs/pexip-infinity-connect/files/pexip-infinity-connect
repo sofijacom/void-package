@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/lib/pexip-infinity-connect_linux-x64/pexip-infinity-connect $@

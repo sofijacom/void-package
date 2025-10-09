@@ -20,15 +20,15 @@ jobs:
         token: ${{ secrets.PULL_PUSH }}
     - run: sudo apt update -y && sudo apt install -y jq git curl
     - run: bash ./srcpkgs/brave-browser/update.sh
-    # - run: bash ./srcpkgs/ly/update.sh
-    # - run: bash ./srcpkgs/obsidian/update.sh
-    # - run: bash ./srcpkgs/openshift-oc/update.sh
-    # - run: bash ./srcpkgs/pet/update.sh
-    # - run: bash ./srcpkgs/rebos/update.sh
-    # - run: bash ./srcpkgs/river-status/update.sh
+    - run: bash ./srcpkgs/ly/update.sh
+    - run: bash ./srcpkgs/obsidian/update.sh
+    - run: bash ./srcpkgs/openshift-oc/update.sh
+    - run: bash ./srcpkgs/pet/update.sh
+    - run: bash ./srcpkgs/rebos/update.sh
+    - run: bash ./srcpkgs/river-status/update.sh
     # - run: bash ./srcpkgs/river-bedload/update.sh
-    # - run: bash ./srcpkgs/vesktop/update.sh
-    # - run: bash ./srcpkgs/wideriver/update.sh
+    - run: bash ./srcpkgs/vesktop/update.sh
+    - run: bash ./srcpkgs/wideriver/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
     - name: Check for updates
       id: check-updates

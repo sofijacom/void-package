@@ -9,7 +9,7 @@ maintainer="Rickard <@>"
 license="custom:Commercial"
 homepage="https://github.com/obsidianmd/obsidian-releases"
 distfiles="https://github.com/obsidianmd/obsidian-releases/releases/download/v${version}/obsidian-${version}.tar.gz"
-checksum=ba364e8efb8578d4e4229ff507395b7539f4c79c35324ea64883d245f490be6f
+checksum=bd2f0f0b3f1da4c16f2421751debb69be423f61976666c4d33403007a09b53cf
 
 do_install() {
   install -dm755 "${DESTDIR}/opt/${pkgname}" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/share/applications" "${DESTDIR}/usr/share/pixmaps"

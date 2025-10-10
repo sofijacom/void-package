@@ -12,8 +12,8 @@ This repo contains packages that I want but have not found in any of the [mirror
 
 # How to use
 ```shell
-printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" > /etc/xbps.d/sofijacom-void-repository.conf
-xbps-install -S
+printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
+sudo xbps-install -S
 ```
 
 

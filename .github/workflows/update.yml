@@ -30,6 +30,7 @@ jobs:
     - run: bash ./srcpkgs/vesktop/update.sh
     - run: bash ./srcpkgs/wideriver/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
+    - run: bash ./srcpkgs/yandex-browser/update.sh
     - name: Check for updates
       id: check-updates
       run: |

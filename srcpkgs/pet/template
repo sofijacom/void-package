@@ -10,7 +10,7 @@ maintainer="Rickard <@>"
 license="MIT"
 homepage="https://github.com/knqyf263/pet"
 changelog="https://github.com/knqyf263/pet/releases"
-distfiles="https://github.com/knqyf263/pet/archive/refs/tags/v${version}.tar.gz"
+distfiles="https://${go_import_path}/archive/refs/tags/v${version}.tar.gz"
 checksum=b829628445b8a7039f0211fd74decee41ee5eb1c28417a4c8d8fca99de59091f
 
 post_install() {

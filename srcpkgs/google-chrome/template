@@ -33,11 +33,8 @@ do_install() {
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/google-chrome.png
 	done
 
-	# Remove unused icons
-	rm ${DESTDIR}/opt/google/chrome/*.xpm
-
 	# Remove the Debian/Ubuntu crontab
-	rm -rf ${DESTDIR}/etc
+	rm -rf ${DESTDIR}/etc/cron.daily
 	rm -rf ${DESTDIR}/opt/google/chrome/cron
 
 	vlicense "${FILESDIR}"/google-chrome-eula.md

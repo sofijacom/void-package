@@ -12,6 +12,7 @@ sudo xbps-install -S
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :white_check_mark: |
 | destilled-fonts        | <opinionized list of fonts I want>                | :x: |
+| google-chrome (stable) | https://www.google.com/chrome/                    | :white_check_mark: |
 | ly (TUI dm)            | https://github.com/fairyglade/ly                  | :white_check_mark: |
 | obsidian.md            | https://obsidian.md/                              | :white_check_mark: |
 | openshift-oc (oc cli)  | https://github.com/openshift/oc                   | :white_check_mark: |

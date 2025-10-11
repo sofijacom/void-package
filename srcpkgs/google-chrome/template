@@ -1,5 +1,5 @@
 # Template file for 'google-chrome'
-pkgname=google-chrome
+pkgname=google-chrome-stable
 version=141.0.7390.76
 revision=1
 _channel=stable
@@ -13,7 +13,7 @@ homepage="https://www.google.com/chrome"
 
 # _baseUrl="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-${_channel}/google-chrome-${_channel}_${version}-1_amd64.deb"
 _baseUrl="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_141.0.7390.76-1_amd64.deb"
-_filename="google-chrome-${_channel}_${version}-1_amd64.deb"
+_filename="google-chrome-stable-${_channel}_${version}-1_amd64.deb"
 _googleUrl="${_baseUrl}/${_filename}"
 _licenseUrl="https://policies.google.com/terms"
 

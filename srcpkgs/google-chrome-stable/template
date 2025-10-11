@@ -5,14 +5,11 @@ revision=1
 _channel=stable
 archs="x86_64"
 hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"
-depends="gtk+3 alsa-lib libcups xssstate libXtst liberation-fonts-ttf xdg-utils"
+depends="gtk+3"
 short_desc="The popular web browser by Google (Stable Channel)"
 maintainer="Sofiya <sofiya@google-chrome.ru>"
 license="custom:chrome"
 homepage="https://www.google.com/chrome"
-## nostrip=yes
-# restricted=yes
-repository=/host/binpkgs
 
 _baseUrl="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-${_channel}/google-chrome-${_channel}_${version}-1_amd64.deb"
 _filename="google-chrome-${_channel}_${version}-1_amd64.deb"
@@ -21,6 +18,10 @@ _licenseUrl="https://policies.google.com/terms"
 
 distfiles="$_googleUrl"
 checksum=612bc3748d538dd567f0480a529538716a451210731c4d30e04abbc5905e05c7
+
+#repository=nonfree
+restricted=yes
+nostrip=yes
 
 do_extract() {
 	mkdir -p ${DESTDIR}
@@ -35,13 +36,13 @@ do_install() {
 		# Create the google-chrome xdg directory
 		mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
 
-		# Copy the yandex browser icon
+		# Copy the google chrome icon
 		mv ${DESTDIR}/opt/google/chrome/product_logo_${size}.png \
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/google-chrome.png
 	done
 
 	# Remove the Debian Cron job, duplicate product logos and menu directory
-	rm -rf ${DESTDIR}/etc/cron.daily
+	rm -rf ${DESTDIR}/etc
 	rm -rf ${DESTDIR}/opt/google/chrome/cron
 }
 

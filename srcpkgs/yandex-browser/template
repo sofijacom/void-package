@@ -39,10 +39,6 @@ do_install() {
 		mv ${DESTDIR}/opt/yandex/browser/product_logo_${size}.png \
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
 	done
-
-	# Remove the Debian/Ubuntu crontab
-	rm -rf ${DESTDIR}/etc
-	rm -rf ${DESTDIR}/opt/yandex/browser/cron
 }
 
 post_install() {

@@ -10,9 +10,9 @@ short_desc="The popular web browser by Google (Stable Channel)"
 maintainer="Sofiya <sofiya@google-chrome.ru>"
 license="custom:chrome"
 homepage="https://www.google.com/chrome"
-nostrip=yes
+## nostrip=yes
 restricted=yes
-repository=nonfree
+## repository=nonfree
 
 _baseUrl="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-${_channel}/google-chrome-${_channel}_${version}-1_amd64.deb"
 _filename="google-chrome-${_channel}_${version}-1_amd64.deb"

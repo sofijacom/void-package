@@ -22,6 +22,7 @@ sudo xbps-install -S
 | river-bedload          | https://git.sr.ht/~novakane/river-bedload         | :x: |
 | river-status           | https://github.com/grvn/river-status              | :white_check_mark: |
 | vesktop                | https://vesktop.vencord.dev/                      | :white_check_mark: |
+| waterfox-browser       | https://www.waterfox.net/                         | :x: |
 | wideriver              | https://github.com/alex-courtis/wideriver         | :white_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |
 | zen-browser (stable)   | https://www.zen-browser.app/                      | :white_check_mark: |

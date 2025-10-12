@@ -31,6 +31,7 @@ jobs:
     # - run: bash ./srcpkgs/river-bedload/update.sh
     # - run: bash ./srcpkgs/shikane/update.sh
     - run: bash ./srcpkgs/vesktop/update.sh
+    - run: bash ./srcpkgs/waterfox/update.sh
     - run: bash ./srcpkgs/wideriver/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
     - name: Check for updates

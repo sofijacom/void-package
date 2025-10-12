@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Call Google's version history API to get stable linux desktop releases
 # that are still being served (endtime=none). Look for the 'version' in
 # the JSON response.

@@ -16,6 +16,7 @@ sudo xbps-install -S
 | ly (TUI dm)            | https://github.com/fairyglade/ly                  | :white_check_mark: |
 | obsidian.md            | https://obsidian.md/                              | :white_check_mark: |
 | openshift-oc (oc cli)  | https://github.com/openshift/oc                   | :white_check_mark: |
+| palemoon               | https://www.palemoon.org/                         | :x: |
 | pet                    | https://github.com/knqyf263/pet                   | :white_check_mark: |
 | pexip-infinity-connect | https://www.pexip.com/                            | :x: |
 | rebos                  | https://gitlab.com/Oglo12/rebos                   | :white_check_mark: |

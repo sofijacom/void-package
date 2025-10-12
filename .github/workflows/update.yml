@@ -1,10 +1,10 @@
 name: update
 run-name: "Automated update of ${{ github.ref_name }} by @${{ github.actor }}"
 
-on:
-  schedule:
-    - cron: '0 4 * * *'
-  workflow_dispatch:
+#on:
+#  schedule:
+#    - cron: '0 4 * * *'
+#  workflow_dispatch:
 
 jobs:
   update-versions:

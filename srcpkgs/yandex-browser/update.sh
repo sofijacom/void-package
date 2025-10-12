@@ -4,7 +4,7 @@ printf "Checking latest version\n"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
-LATEST_VERSION=$(curl -Ls -o /dev/null -w '%{url_effective}' https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/)
+LATEST_VERSION=$(curl -Ls -o /dev/null -w '%{url_effective}' https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/yandex-browser-stable_25.8.1.890-1_amd64.deb)
 export VERSION=${LATEST_VERSION#"v"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 

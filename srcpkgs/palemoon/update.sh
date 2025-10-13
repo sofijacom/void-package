@@ -4,7 +4,7 @@ printf "Checking latest version\n"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
-LATEST_VERSION=$(curl -Ss --request GET "https://repo.palemoon.org/MoonchildProductions/Pale-Moon/archive/" | jq -r '.[0] | .name')
+LATEST_VERSION=$(curl -Ss --request GET "https://repo.palemoon.org/MoonchildProductions/Pale-Moon/" | jq -r '.[0] | .name')
 #LATEST_VERSION=$(gh release list --repo RealityRipple/Pale-Moon --exclude-drafts --exclude-pre-releases --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 export VERSION=${LATEST_VERSION#"v"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

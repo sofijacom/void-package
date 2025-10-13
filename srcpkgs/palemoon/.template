@@ -8,7 +8,7 @@ maintainer="Sofiya <Sofiya@void.org>"
 license="MPL-2.0"
 homepage="https://www.palemoon.org/"
 changelog="https://www.palemoon.org/releasenotes.shtml"
-distfiles="https://repo.palemoon.org/MoonchildProductions/Pale-Moon/archive/Pale-Moon-${version}_Release.tar.gz"
+distfiles="https://rm-eu.palemoon.org/release/palemoon-${version}.linux-x86_64-gtk3.tar.xz"
 checksum=${SHA256}
 nopie=yes
 

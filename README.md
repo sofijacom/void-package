@@ -17,10 +17,8 @@ sudo xbps-install -S
 | obsidian.md            | https://obsidian.md/                              | :white_check_mark: |
 | openshift-oc (oc cli)  | https://github.com/openshift/oc                   | :white_check_mark: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
-| pet                    | https://github.com/knqyf263/pet                   | :white_check_mark: |
 | pexip-infinity-connect | https://www.pexip.com/                            | :x: |
 | rebos                  | https://gitlab.com/Oglo12/rebos                   | :white_check_mark: |
-| river-bedload          | https://git.sr.ht/~novakane/river-bedload         | :x: |
 | river-status           | https://github.com/grvn/river-status              | :white_check_mark: |
 | vesktop                | https://vesktop.vencord.dev/                      | :white_check_mark: |
 | waterfox-browser       | https://www.waterfox.net/                         | :white_check_mark: |

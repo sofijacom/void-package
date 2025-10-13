@@ -1,6 +1,6 @@
 # Template file for 'palemoon'
-pkgname=Pale-Moon
-version=
+pkgname=palemoon
+version=33.9.0
 revision=1
 _channel=_Release
 archs="x86_64"
@@ -10,7 +10,7 @@ license="MPL-2.0"
 homepage="https://www.palemoon.org/"
 changelog="https://www.palemoon.org/releasenotes.shtml"
 distfiles="https://repo.palemoon.org/MoonchildProductions/Pale-Moon/archive/Pale-Moon-${version}_${_channel}.tar.gz"
-checksum=unknown
+checksum=8461f8ee840c5584975eb1cc67b312587dc3f82aaf99b84518c92892f26652cf
 nopie=yes
 
 do_install() {

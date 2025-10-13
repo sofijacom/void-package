@@ -1,5 +1,10 @@
 # .github/workflows/example-workflow.yml
 
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
 jobs:
   example-job:
     runs-on: ubuntu-latest

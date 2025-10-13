@@ -9,7 +9,7 @@ license="MPL-2.0"
 homepage="https://www.palemoon.org/"
 changelog="https://www.palemoon.org/releasenotes.shtml"
 distfiles="https://rm-eu.palemoon.org/release/palemoon-${version}.linux-x86_64-gtk3.tar.xz"
-checksum=322dafb1a3900801b5ee366d2e21ca9b70e9dfa3928ecbb4acbefcef61142702
+checksum=9adab71b526ec12d503d00f3270d3cc696509418311b729e1d252206e87622af
 nopie=yes
 
 do_install() {

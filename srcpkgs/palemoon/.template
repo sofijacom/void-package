@@ -1,5 +1,5 @@
 # Template file for 'palemoon'
-pkgname=palemoon
+pkgname=Pale-Moon
 version=${VERSION}
 revision=1
 archs="x86_64"

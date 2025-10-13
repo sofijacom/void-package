@@ -20,10 +20,6 @@ jobs:
       - name: "Checkout source repository"
         uses: actions/checkout@v4
 
-      - name: "Release date"
-        run: |
-          date > latest-release.txt
-
       - name: "Push to Source"
         run: |
           git config --global user.name "sofijacom"

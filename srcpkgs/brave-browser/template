@@ -1,6 +1,6 @@
 # Template file for 'brave-browser'
 pkgname=brave-browser
-version=1.83.118
+version=1.83.112
 revision=1
 archs="x86_64"
 makedepends="unzip"

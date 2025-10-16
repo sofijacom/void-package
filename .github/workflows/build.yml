@@ -47,13 +47,13 @@ jobs:
           xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git github-cli
           useradd -G xbuilder -M builder -s $(which bash)
 
-      - name: Checkout void-packages
+      - name: Checkout void-package
         uses: actions/checkout@v4
         with:
-          repository: void-linux/void-packages
+          repository: void-linux/void-package
           ref: master
 
-      - name: Merge this repository into void-linux/void-packages
+      - name: Merge this repository into void-linux/void-package
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -34,10 +34,10 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global --add safe.directory "*"
-        git remote add -f grvn https://github.com/grvn/void-packages.git
+        git remote add -f sofijacom https://github.com/sofijacom/void-package.git
         git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change grvn/main
         mkdir -p hostdir/binpkgs
-        gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo grvn/void-packages || true
+        gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo sofijacom/void-package || true
         if [ "$ARCH" = x86_64 ]; then
           rm --force hostdir/binpkgs/*x86_64-musl*
         fi
@@ -91,7 +91,7 @@ jobs:
         run: |
           git config --global --add safe.directory /__w/void-packages/void-packages
           latest_name=$(echo "Initial Commit")
-          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 grvn/main)
+          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 sofijacom/main)
           echo "Latest Tag Name: ${latest_name}"
           echo "Latest Tag SHA: ${latest_sha}"
 

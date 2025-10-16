@@ -1,6 +1,6 @@
 # Template file for 'google-chrome'
 pkgname=google-chrome
-version=141.0.7390.76
+version=141.0.7390.107
 revision=1
 _channel=stable
 archs="x86_64"

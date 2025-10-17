@@ -1,0 +1,15 @@
+# Template file for 'github-desktop'
+pkgname=github-desktop
+version=${VERSION}
+revision=1
+_channel=linux1
+archs="x86_64"
+short_desc="Simple collaboration from your desktop"
+maintainer="Sofiya <Sofiya@void.org>"
+license="MPL-2.0"
+homepage="https://github.com/shiftkey/desktop"
+changelog="https://github.com/shiftkey/desktop/releases/latest${version}/?update"
+distfiles="https://github.com/shiftkey/desktop/archive/refs/tags/release-${version}-${_channel}.tar.gz"
+checksum=${SHA256}
+nopie=yes
+

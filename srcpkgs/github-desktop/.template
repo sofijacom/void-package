@@ -12,10 +12,9 @@ license="custom:desktop"
 homepage="https://github.com/shiftkey/desktop"
 nopie=yes
 
-_baseUrl="https://github.com/shiftkey/desktop/releases/latest/download/"
+_baseUrl="https://github.com/shiftkey/desktop/releases/latest/download/GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
 _filename="GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
 _githubUrl="${_baseUrl}/${_filename}"
-_licenseUrl="https://github.com/shiftkey/desktop?tab=MIT-1-ov-file"
 
 distfiles="$_githubUrl"
 checksum=${SHA256}
@@ -23,6 +22,8 @@ checksum=${SHA256}
 do_extract() {
 	mkdir -p ${DESTDIR}
 	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}/${_filename}
+
+	done
 }
 
 do_install() {

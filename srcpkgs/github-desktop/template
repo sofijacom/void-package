@@ -21,7 +21,7 @@ checksum=8b5577761c7900cac2896b5fbc1d88f5aea48b6ce771437262be2a66ab38d987
 
 do_extract() {
 	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}-linux1/${_filename}
+	ar x ${XBPS_SRCDISTDIR}/github-desktop-${version}/${_filename}
 
 }
 

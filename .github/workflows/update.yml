@@ -20,7 +20,8 @@ jobs:
         token: ${{ secrets.PULL_PUSH }}
     - run: sudo apt update -y && sudo apt install -y jq git curl
     - run: bash ./srcpkgs/brave-browser/update.sh
-    - run: bash ./srcpkgs/google-chrome/update.sh
+    - run: bash ./srcpkgs/google-chrome/update
+    - run: bash ./srcpkgs/palemoon/update
     # - run: bash ./srcpkgs/ly/update.sh
     # - run: bash ./srcpkgs/obsidian/update.sh
     # - run: bash ./srcpkgs/openshift-oc/update.sh
@@ -29,7 +30,7 @@ jobs:
     # - run: bash ./srcpkgs/vesktop/update.sh
     - run: bash ./srcpkgs/waterfox/update.sh
     # - run: bash ./srcpkgs/wideriver/update.sh
-    - run: bash ./srcpkgs/yandex-browser/update.sh
+    - run: bash ./srcpkgs/yandex-browser/update
     - run: bash ./srcpkgs/zen-browser/update.sh
     - name: Check for updates
       id: check-updates

@@ -11,7 +11,7 @@ sudo xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :white_check_mark: |
-| google-chrome (stable) | https://www.google.com/chrome/                    | :white_check_mark: |
+| google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :white_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |

@@ -13,3 +13,7 @@ distfiles="https://github.com/shiftkey/desktop/archive/refs/tags/release-${versi
 checksum=${SHA256}
 nopie=yes
 
+do_install() {
+	tar xf data.tar.gz -C ${DESTDIR}
+
+}

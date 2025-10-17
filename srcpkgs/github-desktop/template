@@ -13,3 +13,7 @@ distfiles="https://github.com/shiftkey/desktop/archive/refs/tags/release-${versi
 checksum=b84f9529dea2e5aeefb2e670b4a702046db59629e3b312129091d6799f20fc34
 nopie=yes
 
+do_install() {
+	tar xf data.tar.gz -C ${DESTDIR}
+
+}

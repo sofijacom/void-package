@@ -9,9 +9,14 @@ maintainer="Sofiya <Sofiya@void.org>"
 license="MPL-2.0"
 homepage="https://github.com/shiftkey/desktop"
 changelog="https://github.com/shiftkey/desktop/releases/latest${version}/?update"
-distfiles="https://github.com/shiftkey/desktop/archive/refs/tags/release-${version}-${_channel}.tar.gz"
+distfiles="https://github.com/shiftkey/desktop/releases/latest/download/GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
 checksum=${SHA256}
 nopie=yes
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}-linux1.deb
+}
 
 do_install() {
 	tar xf data.tar.gz -C ${DESTDIR}

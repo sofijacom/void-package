@@ -1,0 +1,31 @@
+# Template file for 'github-desktop'
+pkgname=github-desktop
+version=3.4.13
+revision=1
+_channel=linux1
+archs="x86_64"
+hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"
+depends="gtk+3"
+short_desc="Simple collaboration from your desktop"
+maintainer="Sofiya <Sofiya@void.org>"
+license="custom:desktop"
+homepage="https://github.com/shiftkey/desktop"
+nopie=yes
+
+_baseUrl="https://github.com/shiftkey/desktop/releases/latest/download/"
+_filename="GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
+_githubUrl="${_baseUrl}/${_filename}"
+_licenseUrl="https://github.com/shiftkey/desktop?tab=MIT-1-ov-file"
+
+distfiles="$_githubUrl"
+checksum=8b5577761c7900cac2896b5fbc1d88f5aea48b6ce771437262be2a66ab38d987
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}/${_filename}
+}
+
+do_install() {
+	tar xf data.tar.xz -C ${DESTDIR}
+
+}

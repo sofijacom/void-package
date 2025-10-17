@@ -11,7 +11,7 @@ maintainer="Sofiya <sofiya@voidlinux.org>"
 license="custom:chrome"
 homepage="https://www.google.com/chrome/"
 distfiles="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-${_channel}_${version}-1_amd64.deb"
-checksum=612bc3748d538dd567f0480a529538716a451210731c4d30e04abbc5905e05c7
+checksum=74d738a546aa82180cc626cea479f7a761fff39072aa93c3458a545975fb6735
 
 
 skiprdeps="/opt/google/chrome/libqt5_shim.so /opt/google/chrome/libqt6_shim.so"

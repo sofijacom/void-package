@@ -21,9 +21,8 @@ checksum=${SHA256}
 
 do_extract() {
 	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}/${_filename}
+	ar x ${XBPS_SRCDISTDIR}/GitHubDesktop-linux-amd64-${version}-linux1/${_filename}
 
-	done
 }
 
 do_install() {

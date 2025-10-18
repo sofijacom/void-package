@@ -13,7 +13,6 @@ sudo xbps-install -S
 | brave-browser (stable) | https://www.brave.com/                            | :white_check_mark: |
 | github-desktop         | https://desktop.github.com                        | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
-| hardinfo2              | https://www.hardinfo2.org                         | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :white_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |

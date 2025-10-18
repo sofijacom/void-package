@@ -16,9 +16,7 @@ do_extract() {
   unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/hardinfo2-${version}.tar.gz" -x "cron/*" -d ${wrksrc}
 }
 
-do_install() {
-
-}
+do_install()
 
 post_install() {
   vlicense LICENSE

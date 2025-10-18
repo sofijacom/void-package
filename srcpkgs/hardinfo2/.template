@@ -1,17 +1,16 @@
 # Template file for 'hardinfo2'
 pkgname=hardinfo2
-version=2.2.13
+version=${VERSION}
 revision=1
 build_style=cmake
 configure_args="-DHARDINFO2_LIBSOUP3=0"
 hostmakedepends="pkg-config which gettext"
-makedepends="cmake glslang shaderc Vulkan-Headers libsoup libsoup-devel nghttp2-devel qt5 qt5-devel qt5-declarative-devel gtk+3-devel desktop-file-utils"
-depends="qt5-base-docs dmidecode gawk gtk+3 iperf3 libsoup3 libsoup lm_sensors mesa pciutils sysbench udisks2 usbutils Vulkan-Tools xdg-utils"
+makedepends="gtk+3-devel desktop-file-utils qt5-devel libsoup-devel"
+depends="desktop-file-utils"
 short_desc="System information and benchmark tool"
 maintainer="Sofiya <sofiya@.org>"
 license="GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-only"
 homepage="https://github.com/hardinfo2/hardinfo2"
 distfiles="https://github.com/hardinfo2/hardinfo2/archive/refs/tags/release-${version}.tar.gz"
-checksum=a3dee51427aa1fe8cb33960cbb5c59471f571060758a1499d1bae022390d7ee0
+checksum=${SHA256}
 lib32disabled=yes
-

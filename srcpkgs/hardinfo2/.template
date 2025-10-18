@@ -1,0 +1,25 @@
+# Template file for 'hardinfo2'
+pkgname=hardinfo2
+version=${VERSION}
+revision=1
+archs="x86_64"
+makedepends="unzip"
+short_desc="System Information and Benchmark for Linux Systems."
+maintainer="Sofiya <@>"
+license="GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-only"
+homepage="https://www.hardinfo2.org"
+changelog="N/A"
+distfiles="https://github.com/hardinfo2/hardinfo2/archive/refs/tags/release-${version}.tar.gz"
+checksum=${SHA256}
+
+do_extract() {
+  unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/hardinfo2-${version}.tar.gz" -x "cron/*" -d ${wrksrc}
+}
+
+do_install() {
+
+}
+
+post_install() {
+  vlicense LICENSE
+}

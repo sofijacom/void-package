@@ -5,7 +5,7 @@ revision=1
 build_style=cmake
 configure_args="-DHARDINFO2_LIBSOUP3=0"
 hostmakedepends="pkg-config which gettext"
-makedepends="cmake glslang shaderc vulkan-headers"
+makedepends="cmake glslang shaderc Vulkan-Headers"
 depends="desktop-file-utils"
 short_desc="System information and benchmark tool"
 maintainer="Sofiya <sofiya@.org>"

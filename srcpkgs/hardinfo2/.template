@@ -2,29 +2,28 @@
 pkgname=hardinfo2
 version=${VERSION}
 revision=1
-archs="x86_64"
-makedepends="unzip"
-short_desc="System Information and Benchmark for Linux Systems."
-maintainer="Sofiya <@>"
+build_style=cmake
+configure_args="-DHARDINFO2_LIBSOUP3=0"
+hostmakedepends="pkg-config which gettext"
+makedepends="gtk+3-devel desktop-file-utils qt5-devel libsoup-devel"
+depends="desktop-file-utils"
+short_desc="System information and benchmark tool"
+maintainer="Sofiya <sofiya@void.org>"
 license="GPL-2.0-or-later AND LGPL-2.1-or-later AND LGPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-only"
-homepage="https://www.hardinfo2.org"
-changelog="N/A"
+homepage="https://github.com/hardinfo2/hardinfo2"
 distfiles="https://github.com/hardinfo2/hardinfo2/archive/refs/tags/release-${version}.tar.gz"
 checksum=${SHA256}
+lib32disabled=yes
 
-do_extract() {
-  unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/hardinfo2-${version}.tar.gz" -x "cron/*" -d ${wrksrc}
-}
+#do_install() {
+#  cmake -B build -S "${pkgname}-release-${version}" \
+#    -DCMAKE_BUILD_TYPE='RelWithDebInfo' \
+#    -DCMAKE_INSTALL_PREFIX='/usr' \
+#    -DCMAKE_INSTALL_LIBDIR='lib' \
+#    -Wno-dev
+#  cmake --build build
+#}
 
-do_install() {
-  cmake -B build -S "${pkgname}-release-${version}" \
-    -DCMAKE_BUILD_TYPE='RelWithDebInfo' \
-    -DCMAKE_INSTALL_PREFIX='/usr' \
-    -DCMAKE_INSTALL_LIBDIR='lib' \
-    -Wno-dev
-  cmake --build build
-}
-
-post_install() {
-  vlicense LICENSE
-}
+#post_install() {
+#  vlicense LICENSE
+#}

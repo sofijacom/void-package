@@ -8,7 +8,7 @@ sudo xbps-install -S
 
 
 # Available packages
-| package | source | automatic update |hardinfo2
+| package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :white_check_mark: |
 | github-desktop         | https://desktop.github.com                        | :x: |

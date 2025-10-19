@@ -22,7 +22,7 @@ jobs:
     - run: bash ./srcpkgs/brave-browser/update.sh
     # - run: bash ./srcpkgs/github-desktop/update.sh
     - run: bash ./srcpkgs/google-chrome/update
-    - run: bash ./srcpkgs/hardinfo2/update.sh
+    # - run: bash ./srcpkgs/hardinfo2/update.sh
     - run: bash ./srcpkgs/palemoon/update
     # - run: bash ./srcpkgs/ly/update.sh
     # - run: bash ./srcpkgs/obsidian/update.sh

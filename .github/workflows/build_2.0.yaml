@@ -198,15 +198,14 @@ jobs:
           useradd -G xbuilder -M builder -s $(which bash)
       - uses: actions/download-artifact@v4
         with:
-          path: void-packages
+          path: repo
           pattern: void-*
 
       - name: Clean & sign
-        working-directory: void-packages/hostdir/binpkgs/
+        working-directory: ./repo
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
-          XBPS_TARGET_ARCH: ${{ matrix.arch }}
         run: |
           sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
           printf "%s\n" "${PRIVKEY}" > key.pem
@@ -216,7 +215,7 @@ jobs:
           sudo -Eu builder xbps-rindex --clean ${PWD}
 
       - name: checksum
-        working-directory: void-packages/hostdir/binpkgs/
+        working-directory: ./repo
         run: |
           rm -rf *.sha256sum *.sha512sum
           for file in *.xbps; do
@@ -230,4 +229,4 @@ jobs:
         with:
           name: "Build ${{ github.sha }}"
           tag_name: ${{ env.TAG }}
-          files: void-packages/hostdir/binpkgs//*
+          files: repo/*

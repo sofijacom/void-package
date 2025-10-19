@@ -209,8 +209,8 @@ jobs:
         run: |
           export PATH="/opt/xbps/usr/bin/:$PATH"
           xbps-rindex -r $PWD
-          xbps-rindex -s --signedby "index-0 <index@mailbox.org>" --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") $PWD
-          xbps-rindex -S --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") *.xbps
+          xbps-rindex -s --signedby "index-0 <index@mailbox.org>" --privkey < printf '%s' "${{ secrets.PRIV_KEY }}" $PWD
+          xbps-rindex -S --privkey < printf '%s' "${{ secrets.PRIV_KEY }}" *.xbps
           xbps-rindex -c $PWD
 
       - name: checksum

@@ -206,12 +206,14 @@ jobs:
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+          XBPS_TARGET_ARCH: ${{ matrix.target }}
         run: |
           sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
-          printf "%s\n" "${PRIVKEY}" > key.pem
-          sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
-          sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
-          sudo -Eu builder rm -f key.pem
+          export PATH="/opt/xbps/usr/bin/:$PATH"
+          xbps-rindex -r $PWD
+          xbps-rindex -s --signedby "index-0 <index@mailbox.org>" --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") $PWD
+          xbps-rindex -S --privkey <(printf '%s' "${{ secrets.PRIV_KEY }}") *.xbps
+          xbps-rindex -c $PWD
           sudo -Eu builder xbps-rindex --clean ${PWD}
 
       - name: checksum

@@ -208,8 +208,10 @@ jobs:
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
           xbps-rindex -r $PWD
-          xbps-rindex -s --signedby "index-0 <index@mailbox.org>" --privkey < (printf '%s' "${{ secrets.PRIV_KEY }}") $PWD
-          xbps-rindex -S --privkey < (printf '%s' "${{ secrets.PRIV_KEY }}") *.xbps
+          printf "%s\n" "${PRIVKEY}" > key.pem
+          xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
+          xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
+          rm -f key.pem
           xbps-rindex -c $PWD
 
       - name: checksum

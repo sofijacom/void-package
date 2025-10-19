@@ -206,6 +206,7 @@ jobs:
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+          XBPS_TARGET_ARCH: ${{ matrix.arch }}
         run: |
           export PATH="/repo/xbps/usr/bin/:$PATH"
           xbps-rindex -r $PWD

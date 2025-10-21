@@ -19,8 +19,11 @@ python_version=3
 
 do_install() {
 	# Copy files
-	#vmkdir opt/smartgit
-	#vcopy "*" opt/smartgit/
+	vmkdir /usr/share/smartgit
+	vcopy "*" /usr/share/smartgit/
+
+	vmkdir /usr/share/doc
+	vcopy "*" /usr/share/doc/
 
 	# Link script in $PATH
 	#vmkdir usr/bin

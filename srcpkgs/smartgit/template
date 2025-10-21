@@ -30,9 +30,9 @@ do_install() {
 	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
 
 	# Install licenses
-	vlicense license.html
-	for file in licenses/*
-	do
-	vlicense $file
-	done
+	#vlicense license.html
+	#for file in licenses/*
+	#do
+	#vlicense $file
+	#done
 }

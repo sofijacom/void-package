@@ -4,7 +4,7 @@ version=24.1.5
 revision=1
 _tarver=24_1_5
 archs="x86_64"
-depends="git git-lfs libcrypto1.1 libssl1.1"
+depends="git git-lfs openssl-devel libcrypto1.1 libssl1.1"
 short_desc="Graphical Git client"
 maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
@@ -16,8 +16,6 @@ nopie=yes
 nostrip=yes
 # restricted=yes
 python_version=3
-SONAME_libssl.so.1.1=libssl1.1
-SONAME_libcrypto.so.1.1=libcrypto1.1
 
 do_install() {
 	# Copy files

@@ -4,7 +4,7 @@ version=24.1.5
 revision=1
 _tarver=24_1_5
 archs="x86_64"
-depends="desktop-file-utils gtk+3 which git git-lfs openjdk21"
+depends="desktop-file-utils gtk+3 which git git-lfs"
 short_desc="Graphical Git client"
 maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
@@ -17,30 +17,24 @@ nopie=yes
 python_version=3
 
 do_install() {
-    # Install licenses
-    vinstall "${DESTDIR}/usr/share/licenses/${pkgname}"
-    mv "${pkgname}/licenses"/* "${DESTDIR}/usr/share/licenses/${pkgname}"
-    ln -s /opt/${pkgname}/license.html "${DESTDIR}/usr/share/licenses/${pkgname}"
-    rmdir "${pkgname}/licenses"
-    # Install application files
-    vmkdir opt/smartgit
-    vinstall "${DESTDIR}/opt"
-    mv "${pkgname}" "${DESTDIR}/opt/${pkgname}"
-    # Install desktop file
-    vmkdir usr/share/applications
-    vinstall 644 "${pkgname}.desktop" "${DESTDIR}/usr/share/applications/${pkgname}.desktop"
-    # Install icon files
-    vmkdir usr/share/icons/hicolor
-    vinstall "${DESTDIR}/usr/share/icons/hicolor"
-    cd "${DESTDIR}/usr/share/icons/hicolor"
-    for _size in 32 48 64 128 256
-    do
-        vinstall "${_size}x${_size}/apps"
-        ln -s "/opt/${pkgname}/bin/smartgit-${_size}.png" "${_size}x${_size}/apps/${pkgname}.png"
-    done
-    # Add symlink to /usr/bin
-    chmod "${DESTDIR}/opt/${pkgname}/bin/smartgit.sh"
-    vmkdir usr/bin
-    vinstall "${DESTDIR}/usr/bin"
-    ln -s "/opt/${pkgname}/bin/smartgit.sh" "${DESTDIR}/usr/bin/${pkgname}"
+	# Copy files
+	vmkdir opt/smartgit
+	vcopy "*" opt/smartgit/
+
+	# Link script in $PATH
+	vmkdir usr/bin
+	ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+
+	# Install icons and .desktop files
+	vmkdir usr/share/icons
+	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	vmkdir usr/share/applications
+	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
+
+	# Install licenses
+	vlicense license.html
+	for file in licenses/*
+	do
+	vlicense $file
+	done
 }

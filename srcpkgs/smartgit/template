@@ -16,26 +16,3 @@ distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
 checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
 nopie=yes
 python_version=3
-
-do_install() {
-	# Copy files
-	vmkdir /usr/share/smartgit
-	vcopy "*" /usr/share/smartgit/
-
-	vmkdir /usr/share/doc
-	vcopy "*" /usr/share/doc/
-
-	# Link script in $PATH
-	#vmkdir usr/bin
-	#ln -s "/usr/share/smartgit/bin/smartgit.sh" %u "${DESTDIR}/usr/bin/smartgit"
-
-	# Install icons and .desktop files
-	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
-
-	# Install licenses
-	#vlicense license.html
-	#for file in licenses/*
-	#do
-	#vlicense $file
-	#done
-}

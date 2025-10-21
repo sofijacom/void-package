@@ -4,7 +4,7 @@ version=24.1.5
 revision=1
 _tarver=24_1_5
 archs="x86_64"
-depends="desktop-file-utils gtk+3 which git git-lfs openssl-devel libcrypto1.1 libssl1.1"
+depends="desktop-file-utils gtk+3 which git git-lfs"
 short_desc="Graphical Git client"
 maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
@@ -15,7 +15,7 @@ checksum=62ab9e4dbc00f4a7171091b94de5a43f3ccdc809e7250d7e55062ca99292dbf2
 nopie=yes
 nostrip=yes
 # restricted=yes
-python_version=3
+# python_version=3
 
 do_install() {
 	# Copy files

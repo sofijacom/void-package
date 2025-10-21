@@ -10,9 +10,23 @@ maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
-# distfiles="https://download.smartgit.dev/smartgit/archive/smartgit-linux-${_tarver}.tar.gz"
-distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
-# distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-linux-${_tarver}.tar.gz"
+
+_baseUrl="https://download.smartgit.dev/smartgit/"
+_filename="smartgit-${_tarver}.deb"
+_smartgitUrl="${_baseUrl}/${_filename}"
+
+distfiles="$_smartgitUrl"
 checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
 nopie=yes
 python_version=3
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/smartgit-${_tarver}/${_filename}
+
+}
+
+do_install() {
+	tar xf data.tar.xz -C ${DESTDIR}
+
+}

@@ -1,11 +1,11 @@
 # Template file for 'smartgit'
 pkgname=smartgit
-version=24.1.5
+version=22.1.7
 revision=1
-_tarver=24_1_5
+_tarver=22.1.7
 archs="x86_64"
-# hostmakedepends=""
-depends="git git-lfs libssl1.1 libcrypto1.1"
+# hostmakedepends="libssl1.1 libcrypto1.1"
+depends="git git-lfs"
 short_desc="Graphical Git client"
 maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"

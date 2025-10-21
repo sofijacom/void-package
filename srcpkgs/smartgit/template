@@ -18,25 +18,25 @@ python_version=3
 
 do_install() {
     # Install licenses
-    vinstall -d -m 755 "${DESTDIR}/usr/share/licenses/${pkgname}"
+    vinstall 755 "${DESTDIR}/usr/share/licenses/${pkgname}"
     mv "${pkgname}/licenses"/* "${DESTDIR}/usr/share/licenses/${pkgname}"
     ln -s /opt/${pkgname}/license.html "${DESTDIR}/usr/share/licenses/${pkgname}"
     rmdir "${pkgname}/licenses"
     # Install application files
-    vinstall -d -m 755 "${DESTDIR}/opt"
+    vinstall 755 "${DESTDIR}/opt"
     mv "${pkgname}" "${DESTDIR}/opt/${pkgname}"
     # Install desktop file
-    vinstall -D -m 644 "${pkgname}.desktop" "${DESTDIR}/usr/share/applications/${pkgname}.desktop"
+    vinstall 644 "${pkgname}.desktop" "${DESTDIR}/usr/share/applications/${pkgname}.desktop"
     # Install icon files
-    vinstall -d -m 755 "${DESTDIR}/usr/share/icons/hicolor"
+    vinstall 755 "${DESTDIR}/usr/share/icons/hicolor"
     cd "${DESTDIR}/usr/share/icons/hicolor"
     for _size in 32 48 64 128 256
     do
-        vinstall -d "${_size}x${_size}/apps"
+        vinstall "${_size}x${_size}/apps"
         ln -s "/opt/${pkgname}/bin/smartgit-${_size}.png" "${_size}x${_size}/apps/${pkgname}.png"
     done
     # Add symlink to /usr/bin
     chmod 755 "${DESTDIR}/opt/${pkgname}/bin/smartgit.sh"
-    vinstall -d -m 755 "${DESTDIR}/usr/bin"
+    vinstall 755 "${DESTDIR}/usr/bin"
     ln -s "/opt/${pkgname}/bin/smartgit.sh" "${DESTDIR}/usr/bin/${pkgname}"
 }

@@ -22,7 +22,7 @@ python_version=3
 
 do_extract() {
 	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/smartgit-${_tarver}/${_filename}
+	ar x ${XBPS_SRCDISTDIR}/smartgit-${version}/${_filename}
 
 }
 

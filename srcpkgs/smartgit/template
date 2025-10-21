@@ -19,15 +19,15 @@ python_version=3
 
 do_install() {
 	# Copy files
-	vmkdir opt/smartgit
-	vcopy "*" opt/smartgit/
+	#vmkdir opt/smartgit
+	#vcopy "*" opt/smartgit/
 
 	# Link script in $PATH
-	vmkdir usr/bin
-	ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+	#vmkdir usr/bin
+	#ln -s "/usr/share/smartgit/bin/smartgit.sh" %u "${DESTDIR}/usr/bin/smartgit"
 
 	# Install icons and .desktop files
-	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
+	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
 
 	# Install licenses
 	#vlicense license.html

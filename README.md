@@ -14,6 +14,7 @@ sudo xbps-install -S
 | github-desktop         | https://desktop.github.com                        | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
+| SmartGit               | https://www.smartgit.dev/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :heavy_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |
 | zen-browser (stable)   | https://www.zen-browser.app/                      | :heavy_check_mark: |

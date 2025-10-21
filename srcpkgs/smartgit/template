@@ -10,23 +10,30 @@ maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
-
-_baseUrl="https://download.smartgit.dev/smartgit"
-_filename="smartgit-${_tarver}.deb"
-_smartgitUrl="${_baseUrl}/${_filename}"
-
-distfiles="$_smartgitUrl"
-checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
-nopie=yes
+distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-linux-${_tarver}.tar.gz"
+checksum=62ab9e4dbc00f4a7171091b94de5a43f3ccdc809e7250d7e55062ca99292dbf2
+#nopie=yes
 python_version=3
 
-do_extract() {
-	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/smartgit-${version}/${_filename}
-
-}
-
 do_install() {
-	tar xf data.tar.xz -C ${DESTDIR}
+	# Copy files
+	vmkdir opt/smartgit
+	vcopy "*" opt/smartgit/
 
+	# Link script in $PATH
+	vmkdir usr/bin
+	ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+
+	# Install icons and .desktop files
+	vmkdir usr/share/icons
+	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	vmkdir usr/share/applications
+	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
+
+	# Install licenses
+	vlicense license.html
+	for file in licenses/*
+	do
+	vlicense $file
+	done
 }

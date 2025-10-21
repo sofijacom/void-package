@@ -18,17 +18,20 @@ python_version=3
 
 do_install() {
     # Install licenses
-    vinstall 755 "${DESTDIR}/usr/share/licenses/${pkgname}"
+    vinstall "${DESTDIR}/usr/share/licenses/${pkgname}"
     mv "${pkgname}/licenses"/* "${DESTDIR}/usr/share/licenses/${pkgname}"
     ln -s /opt/${pkgname}/license.html "${DESTDIR}/usr/share/licenses/${pkgname}"
     rmdir "${pkgname}/licenses"
     # Install application files
-    vinstall 755 "${DESTDIR}/opt"
+    vmkdir opt/smartgit
+    vinstall "${DESTDIR}/opt"
     mv "${pkgname}" "${DESTDIR}/opt/${pkgname}"
     # Install desktop file
+    vmkdir usr/share/applications
     vinstall 644 "${pkgname}.desktop" "${DESTDIR}/usr/share/applications/${pkgname}.desktop"
     # Install icon files
-    vinstall 755 "${DESTDIR}/usr/share/icons/hicolor"
+    vmkdir usr/share/icons/hicolor
+    vinstall "${DESTDIR}/usr/share/icons/hicolor"
     cd "${DESTDIR}/usr/share/icons/hicolor"
     for _size in 32 48 64 128 256
     do
@@ -36,7 +39,8 @@ do_install() {
         ln -s "/opt/${pkgname}/bin/smartgit-${_size}.png" "${_size}x${_size}/apps/${pkgname}.png"
     done
     # Add symlink to /usr/bin
-    chmod 755 "${DESTDIR}/opt/${pkgname}/bin/smartgit.sh"
-    vinstall 755 "${DESTDIR}/usr/bin"
+    chmod "${DESTDIR}/opt/${pkgname}/bin/smartgit.sh"
+    vmkdir usr/bin
+    vinstall "${DESTDIR}/usr/bin"
     ln -s "/opt/${pkgname}/bin/smartgit.sh" "${DESTDIR}/usr/bin/${pkgname}"
 }

@@ -2,7 +2,7 @@
 pkgname=smartgit
 version=22.1.7
 revision=1
-_tarver=22.1.7
+_tarver=22_1_7
 archs="x86_64"
 # hostmakedepends="libssl1.1 libcrypto1.1"
 depends="git git-lfs"

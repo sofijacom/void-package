@@ -17,24 +17,26 @@ nopie=yes
 python_version=3
 
 do_install() {
-	# Copy files
-	vmkdir opt/smartgit
-	vcopy "*" opt/smartgit/
-
-	# Link script in $PATH
-	vmkdir usr/bin
-	ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
-
-	# Install icons and .desktop files
-	vmkdir usr/share/icons
-	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
-	vmkdir usr/share/applications
-	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
-
-	# Install licenses
-	vlicense license.html
-	for file in licenses/*
-	do
-	vlicense $file
-	done
+    # Install licenses
+    vinstall -d -m 755 "${DESTDIR}/usr/share/licenses/${pkgname}"
+    mv "${pkgname}/licenses"/* "${DESTDIR}/usr/share/licenses/${pkgname}"
+    ln -s /opt/${pkgname}/license.html "${DESTDIR}/usr/share/licenses/${pkgname}"
+    rmdir "${pkgname}/licenses"
+    # Install application files
+    vinstall -d -m 755 "${DESTDIR}/opt"
+    mv "${pkgname}" "${DESTDIR}/opt/${pkgname}"
+    # Install desktop file
+    vinstall -D -m 644 "${pkgname}.desktop" "${DESTDIR}/usr/share/applications/${pkgname}.desktop"
+    # Install icon files
+    vinstall -d -m 755 "${DESTDIR}/usr/share/icons/hicolor"
+    cd "${DESTDIR}/usr/share/icons/hicolor"
+    for _size in 32 48 64 128 256
+    do
+        vinstall -d "${_size}x${_size}/apps"
+        ln -s "/opt/${pkgname}/bin/smartgit-${_size}.png" "${_size}x${_size}/apps/${pkgname}.png"
+    done
+    # Add symlink to /usr/bin
+    chmod 755 "${DESTDIR}/opt/${pkgname}/bin/smartgit.sh"
+    vinstall -d -m 755 "${DESTDIR}/usr/bin"
+    ln -s "/opt/${pkgname}/bin/smartgit.sh" "${DESTDIR}/usr/bin/${pkgname}"
 }

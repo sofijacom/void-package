@@ -11,7 +11,7 @@ license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
 
-_baseUrl="https://download.smartgit.dev/smartgit/"
+_baseUrl="https://download.smartgit.dev/smartgit"
 _filename="smartgit-${_tarver}.deb"
 _smartgitUrl="${_baseUrl}/${_filename}"
 

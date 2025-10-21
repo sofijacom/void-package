@@ -14,6 +14,7 @@ distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-linux-${_tarver}.
 checksum=62ab9e4dbc00f4a7171091b94de5a43f3ccdc809e7250d7e55062ca99292dbf2
 nopie=yes
 # nostrip=yes
+lib32disabled=yes
 python_version=3
 
 do_install() {

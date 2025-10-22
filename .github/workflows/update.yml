@@ -15,10 +15,10 @@ jobs:
       matrix:
         pkg:
           - brave-browser
-          - google-chrome
-          - palemoon
+          # - google-chrome
+          # - palemoon
           - waterfox
-          - yandex-browser
+          # - yandex-browser
           - zen-browser
     steps:
     - uses: actions/checkout@v4

@@ -6,11 +6,10 @@ _tarver=24_1_5
 archs="x86_64"
 depends="desktop-file-utils gtk+3 which git git-lfs"
 short_desc="Graphical Git client"
-maintainer="mobinmob <mobinmob@disroot.org>"
+maintainer="Sofiya <sofiya@v.org>"
 license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
-# distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-linux-${_tarver}.tar.gz"
 distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
 checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
 nopie=yes
@@ -22,10 +21,6 @@ do_install() {
 	# Copy files
 	vmkdir  opt/usr/share/smartgit
 	vcopy "*" opt/smartgit/
-
-	# Link script in $PATH
-	# vmkdir usr/bin
-    # ln -s /opt/smartgit/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit.sh"
 
 	# Install icons and .desktop files
 	vmkdir usr/share/icons

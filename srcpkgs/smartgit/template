@@ -24,7 +24,7 @@ python_version=3
 #}
 
 do_install() {
-    ar -p smartgit-${_tarver}.deb data.tar.gz | tar zx -C .
+#    ar -p smartgit-${_tarver}.deb data.tar.gz | tar zx -C .
 
 	# Copy files
 	vmkdir usr/share/smartgit

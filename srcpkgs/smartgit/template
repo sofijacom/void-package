@@ -14,16 +14,10 @@ changelog="https://www.syntevo.com/smartgit/changelog.txt"
 distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
 checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
 nopie=yes
-# nostrip=yes
-lib32disabled=yes
 python_version=3
 
-#do_extract() {
-#	mkdir -p ${DESTDIR}
-#}
 
 do_install() {
-#    ar -p smartgit-${_tarver}.deb data.tar.gz | tar zx -C .
 
 	# Copy files
 	vmkdir  opt/usr/share/smartgit
@@ -31,13 +25,17 @@ do_install() {
 
 	# Link script in $PATH
 	vmkdir usr/bin
-    ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit.sh"
+    ln -s /opt/smartgit/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit.sh"
 
 	# Install icons and .desktop files
-#	vmkdir usr/share/icons
-#	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	vmkdir usr/share/icons
+	cp "${DESTDIR}/opt/smartgit/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
 
+	# Install applications
 	vmkdir usr/share/applications
 	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
+
+	# Remove applications
+	rm -r /opt/smartgit/applications
 
 }

@@ -27,15 +27,15 @@ do_install() {
 
 	# Copy files
 	vmkdir usr/share/smartgit
-	vcopy "*" usr/share/smartgit/
+	vcopy "*" opt/smartgit/
 
 	# Link script in $PATH
 	vmkdir usr/bin
-	ln -s /usr/share/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+    ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
 
 	# Install icons and .desktop files
-#	vmkdir usr/share/icons
-#	cp "${DESTDIR}usr/share/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	vmkdir usr/share/icons
+	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
 
 	vmkdir usr/share/applications
 	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/

@@ -1,8 +1,15 @@
 # Void Linux Software Repository
 
-# How to use
+> How to use
+>> _type in the terminal_
+
 ```shell
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
+```
+
+Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)
+
+```shell
 sudo xbps-install -S
 ```
 

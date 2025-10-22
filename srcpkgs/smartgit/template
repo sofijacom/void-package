@@ -20,7 +20,6 @@ python_version=3
 
 #do_extract() {
 #	mkdir -p ${DESTDIR}
-#	ar x ${XBPS_SRCDISTDIR}/smartgit-${version}/smartgit-${_tarver}.deb
 #}
 
 do_install() {
@@ -36,7 +35,7 @@ do_install() {
 
 	# Install icons and .desktop files
 	vmkdir usr/share/icons
-	cp "${DESTDIR}/usr/share/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	cp "${DESTDIR}usr/share/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
 	vmkdir usr/share/applications
 	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
 

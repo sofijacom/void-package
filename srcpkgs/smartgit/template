@@ -1,0 +1,43 @@
+# Template file for 'smartgit'
+pkgname=smartgit
+version=24.1.5
+revision=1
+_tarver=24_1_5
+archs="x86_64"
+depends="desktop-file-utils gtk+3 which git git-lfs"
+short_desc="Graphical Git client"
+maintainer="mobinmob <mobinmob@disroot.org>"
+license="custom:proprietary"
+homepage="https://www.syntevo.com/smartgit/"
+changelog="https://www.syntevo.com/smartgit/changelog.txt"
+# distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-linux-${_tarver}.tar.gz"
+distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
+checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
+nopie=yes
+# nostrip=yes
+lib32disabled=yes
+python_version=3
+
+#do_extract() {
+#	mkdir -p ${DESTDIR}
+#	ar x ${XBPS_SRCDISTDIR}/smartgit-${version}/smartgit-${_tarver}.deb
+#}
+
+do_install() {
+    ar -p smartgit-${_tarver}.deb data.tar.gz | tar zx -C .
+
+	# Copy files
+	vmkdir usr/share/smartgit
+	vcopy "*" usr/share/smartgit/
+
+	# Link script in $PATH
+	vmkdir usr/bin
+	ln -s /usr/share/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+
+	# Install icons and .desktop files
+	vmkdir usr/share/icons
+	cp "${DESTDIR}/usr/share/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
+	vmkdir usr/share/applications
+	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
+
+}

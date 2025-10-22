@@ -26,12 +26,12 @@ do_install() {
 #    ar -p smartgit-${_tarver}.deb data.tar.gz | tar zx -C .
 
 	# Copy files
-	vmkdir usr/share/smartgit
+	vmkdir  opt/usr/share/smartgit
 	vcopy "*" opt/smartgit/
 
 	# Link script in $PATH
 	vmkdir usr/bin
-    ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
+    ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit.sh"
 
 	# Install icons and .desktop files
 	vmkdir usr/share/icons

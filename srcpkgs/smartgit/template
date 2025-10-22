@@ -36,6 +36,6 @@ do_install() {
 	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
 
 	# Remove applications
-	rm -r /opt/smartgit/applications
+	rm -r opt/smartgit/applications
 
 }

@@ -24,7 +24,7 @@ do_install() {
 	vcopy "*" opt/smartgit/
 
 	# Link script in $PATH
-	vmkdir usr/bin
+	vmkdir usr/local/bin
     ln -s /opt/smartgit/smartgit/bin/smartgit.sh "${DESTDIR}/usr/local/bin/smartgit.sh"
 
 	# Install icons and .desktop files

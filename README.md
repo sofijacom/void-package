@@ -10,7 +10,7 @@ printf "repository=https://github.com/sofijacom/void-package/releases/latest/dow
 
 > [!IMPORTANT]
 > 
-> Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)
+> _Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)_
 
 ```shell
 sudo xbps-install -S

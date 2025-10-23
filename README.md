@@ -1,8 +1,8 @@
 # Void Linux Software Repository
 
 > [!NOTE]
->  _How to use_
->> _type in the terminal_
+>>  _How to use_
+>>> _type in the terminal_
 
 ```shell
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf

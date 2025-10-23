@@ -1,13 +1,14 @@
 # Void Linux Software Repository
 
-> *__NOTE__*: _How to use_
+> [!NOTE]
+>  _How to use_
 >> _type in the terminal_
 
 ```shell
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```
 
-> *__NOTE__*:
+> [!IMPORTANT]
 > 
 > Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)
 

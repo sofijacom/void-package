@@ -24,7 +24,7 @@ sudo xbps-install -S
 | github-desktop         | https://desktop.github.com                        | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
-| SeaMonkey ( browser )  | https://www.seamonkey-project.org/                | :x: |
+| SeaMonkey              | https://www.seamonkey-project.org/                | :x: |
 | SmartGit               | https://www.smartgit.dev/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :heavy_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |

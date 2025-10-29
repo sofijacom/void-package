@@ -26,11 +26,18 @@ do_install() {
 	vmkdir usr/share/icons
 	cp "${DESTDIR}/opt/smartgit/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
 
+	# Install doc files
+	cp -r "${DESTDIR}/opt/smartgit/doc" "${DESTDIR}/usr/share/doc"
+
+	# Copy license.html
+	mv "${DESTDIR}/opt/smartgit/doc/smartgit/license.html" "${DESTDIR}/opt/smartgit/smartgit"
+
 	# Install applications
 	vmkdir usr/share/applications
 	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
 
 	# Remove applications
 	rm -rf ${DESTDIR}/opt/smartgit/applications
+	rm -rf ${DESTDIR}/opt/smartgit/doc
 
 }

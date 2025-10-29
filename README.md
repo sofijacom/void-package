@@ -5,12 +5,12 @@
 >>> _type in the terminal_
 
 ```shell
-printf "repository=https://github.com/sofijacom/void-package/releases/latest/download" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
+printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```
 or
 
 ```shell
-echo "repository=https://github.com/sofijacom/void-package/releases/latest/download" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
+echo "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```
 
 > [!IMPORTANT]

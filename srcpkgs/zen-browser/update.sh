@@ -21,7 +21,7 @@ echo "Downloading Zen Browser $release_tag"
 
 sed -i 's/version=[a-zA-Z0-9.-]\+/version='"$release_tag"'/' "srcpkgs/zen-browser/template" && echo "Updated version in template to $release_tag"
 
-envsubst -i zen-browser && echo "Generated checksums for Zen Browser"
+envsubst zen-browser && echo "Generated checksums for Zen Browser"
 
 #./xbps-src pkg zen-browser && echo "Built Zen Browser package"
 

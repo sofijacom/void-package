@@ -1,22 +1,28 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-printf "Checking latest version\n"
+# Script to update Zen Browser xbps-src template
+#
+# Required: xbps-src, curl, sed, xtools
+#
+# You have to set XBPS_DISTDIR
+# Example: export XBPS_DISTDIR="$HOME/.void-packages"
 
-__dir="$(dirname "${BASH_SOURCE[0]}")"
+if [ -z "$XBPS_DISTDIR" ]; then
+  echo "Please set XBPS_DISTDIR to your xbps-src directory."
+  exit 1
+fi
 
-LATEST_VERSION=$(gh release list --repo zen-browser/desktop --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName' | grep -oE '[0-9]\.([0-9\.]+[a-z]*)+' )
-export VERSION=${LATEST_VERSION#"v"}
-CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
+cd "$XBPS_DISTDIR" || exit 1
 
-printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
-[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+release_url=$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zen-browser/desktop/releases/latest)
+release_tag=$(basename "$release_url")
+release_tag=$(echo "$release_tag" | sed 's/-//g')
+echo "Downloading Zen Browser $release_tag"
 
-# No preprepped checksum files, need to download the binary and calculate it myself
-gh release download -R zen-browser/desktop -p "zen.linux-x86_64.tar.xz" --output "zen.linux-x86_64.tar.xz"
-export SHA256=$(sha256sum ./zen.linux-x86_64.tar.xz | cut -d ' ' -f1 )
-rm ./zen.linux-x86_64.tar.xz
-[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
+sed -i 's/version=[a-zA-Z0-9.-]\+/version='"$release_tag"'/' "srcpkgs/zen-browser/template" && echo "Updated version in template to $release_tag"
 
-envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template
+xgensum -i zen-browser && echo "Generated checksums for Zen Browser"
 
-printf "Zen template updated\n"
+./xbps-src pkg zen-browser && echo "Built Zen Browser package"
+
+xi zen-browser && echo "Installed Zen Browser package $release_tag"

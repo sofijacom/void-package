@@ -1,28 +1,19 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Script to update Zen Browser xbps-src template
-#
-# Required: xbps-src, curl, sed, xtools
-#
-# You have to set XBPS_DISTDIR
-# Example: export XBPS_DISTDIR="$HOME/.void-packages"
+printf "Checking latest version\n"
 
-#if [ -z "$XBPS_DISTDIR" ]; then
-#  echo "Please set XBPS_DISTDIR to your xbps-src directory."
-#  exit 1
-#fi
+__dir="$(dirname "${BASH_SOURCE[0]}")"
 
-#cd "$XBPS_DISTDIR" || exit 1
+LATEST_VERSION=$(gh release list --repo zen-browser/desktop --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName' | grep -oE '[0-9]\.([0-9\.]+[a-z]*)+' )
+export VERSION=${LATEST_VERSION#"v"}
+CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 
-release_url=$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zen-browser/desktop/releases/latest)
-release_tag=$(basename "$release_url")
-release_tag=$(echo "$release_tag" | sed 's/-//g')
-echo "Downloading Zen Browser $release_tag"
+printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
+[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-sed -i 's/version=[a-zA-Z0-9.-]\+/version='"$release_tag"'/' "srcpkgs/zen-browser/template" && echo "Updated version in template to $release_tag"
+export SHA256=$(gh release view ${LATEST_VERSION} -R zen-browser/desktop --json assets --jq '.assets[] | select(.name=="zen.linux-x86_64.tar.xz") | .digest' | cut -d":" -f2)
+[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of checksum\n" && exit 1
 
-envsubst zen-browser && echo "Generated checksums for Zen Browser"
+envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template
 
-#./xbps-src pkg zen-browser && echo "Built Zen Browser package"
-
-#xi zen-browser && echo "Installed Zen Browser package $release_tag"
+printf "Zen template updated\n"

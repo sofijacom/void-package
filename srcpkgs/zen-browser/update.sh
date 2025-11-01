@@ -7,12 +7,12 @@
 # You have to set XBPS_DISTDIR
 # Example: export XBPS_DISTDIR="$HOME/.void-packages"
 
-if [ -z "$XBPS_DISTDIR" ]; then
-  echo "Please set XBPS_DISTDIR to your xbps-src directory."
-  exit 1
-fi
+#if [ -z "$XBPS_DISTDIR" ]; then
+#  echo "Please set XBPS_DISTDIR to your xbps-src directory."
+#  exit 1
+#fi
 
-cd "$XBPS_DISTDIR" || exit 1
+#cd "$XBPS_DISTDIR" || exit 1
 
 release_url=$(curl -Ls -o /dev/null -w '%{url_effective}' https://github.com/zen-browser/desktop/releases/latest)
 release_tag=$(basename "$release_url")

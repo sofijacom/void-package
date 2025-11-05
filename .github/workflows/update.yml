@@ -20,7 +20,7 @@ jobs:
         token: ${{ secrets.PULL_PUSH }}
     - run: sudo apt update -y && sudo apt install -y jq git curl
     - run: bash ./srcpkgs/brave-browser/update.sh
-    # - run: bash ./srcpkgs/github-desktop/update.sh
+    - run: bash ./srcpkgs/github-desktop/update.sh
     - run: bash ./srcpkgs/google-chrome/update
     # - run: bash ./srcpkgs/hardinfo2/update.sh
     - run: bash ./srcpkgs/palemoon/update

@@ -1,8 +1,8 @@
 # Template file for 'smartgit'
 pkgname=smartgit
-version=24.1.5
+version=25.1.093
 revision=1
-_tarver=24_1_5
+_tarver=25_1_093
 archs="x86_64"
 depends="desktop-file-utils gtk+3 which git git-lfs"
 short_desc="Graphical Git client"
@@ -10,8 +10,8 @@ maintainer="Sofiya <sofiya@v.org>"
 license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
-distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}.deb"
-checksum=ec1aaa99b7e4ed8652a395c9c0aef6bbd6b028886c780a400a1c45110be42b74
+distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}-linux_amd64.deb"
+checksum=a5257668014123d1f61bd99af1eab2f3de72a4fc8523ed1dae2076268abfb072
 nopie=yes
 python_version=3
 

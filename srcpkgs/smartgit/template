@@ -4,40 +4,36 @@ version=25.1.093
 revision=1
 _tarver=25_1_093
 archs="x86_64"
-depends="desktop-file-utils gtk+3 which git git-lfs"
+depends="git"
 short_desc="Graphical Git client"
-maintainer="Sofiya <sofiya@v.org>"
+maintainer="mobinmob <mobinmob@disroot.org>"
 license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
-distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}-linux_amd64.deb"
-checksum=a5257668014123d1f61bd99af1eab2f3de72a4fc8523ed1dae2076268abfb072
+distfiles="https://www.syntevo.com/downloads/smartgit/smartgit-${_tarver}-linux-amd64.tar.gz"
+checksum=138cd50d6afd604de39ed907a20d3e63ac551c9cf643c0262d60f1b84abeec81
 nopie=yes
 python_version=3
 
-
 do_install() {
-
 	# Copy files
-	vmkdir  opt/usr/share/smartgit
+	vmkdir opt/smartgit
 	vcopy "*" opt/smartgit/
+
+	# Link script in $PATH
+	vmkdir usr/bin
+	ln -s /opt/smartgit/bin/smartgit.sh "${DESTDIR}/usr/bin/smartgit"
 
 	# Install icons and .desktop files
 	vmkdir usr/share/icons
-	cp "${DESTDIR}/opt/smartgit/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
-
-	# Install doc files
-	cp -r "${DESTDIR}/opt/smartgit/doc" "${DESTDIR}/usr/share/doc"
-
-	# Copy license.html
-	mv "${DESTDIR}/opt/smartgit/doc/smartgit/license.html" "${DESTDIR}/opt/smartgit/smartgit"
-
-	# Install applications
+	cp "${DESTDIR}/opt/smartgit/bin/smartgit-256.png" "${DESTDIR}/usr/share/icons/smartgit.png"
 	vmkdir usr/share/applications
-	vinstall "${FILESDIR}/syntevo-smartgit.desktop" 644 usr/share/applications/
+	vinstall "${FILESDIR}/SmartGit.desktop" 644 usr/share/applications/
 
-	# Remove applications
-	rm -rf ${DESTDIR}/opt/smartgit/applications
-	rm -rf ${DESTDIR}/opt/smartgit/doc
-
+	# Install licenses
+	vlicense license.html
+	for file in licenses/*
+	do
+	vlicense $file
+	done
 }

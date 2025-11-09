@@ -3,7 +3,7 @@ pkgname=hardinfo2
 version=2.2.13
 revision=1
 build_style=cmake
-#configure_args="-DHARDINFO2_LIBSOUP3=0"
+# configure_args="-DHARDINFO2_LIBSOUP3=0"
 configure_args="-DHARDINFO2_NOSYNC=1"
 hostmakedepends="pkg-config which gettext"
 makedepends="cmake glslang shaderc Vulkan-Headers nghttp2-devel qt5 qt5-devel qt5-declarative-devel gtk+3-devel desktop-file-utils"
@@ -18,10 +18,20 @@ lib32disabled=yes
 
 pre_configure() {
 
- mkdir build
- cd build
- cmake ..
- make package -j
+# mkdir build
+# cd build
+# cmake ..
+# make package -j
+
+  mkdir build
+  cd ${pkgname}/build
+  CFLAGS+=' -fcommon'
+  cmake \
+    -DHARDINFO_GTK3=1 \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    ..
+  make package -j
 
 }
 

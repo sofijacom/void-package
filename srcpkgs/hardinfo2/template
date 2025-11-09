@@ -18,20 +18,10 @@ lib32disabled=yes
 
 pre_configure() {
 
-# mkdir build
-# cd build
-# cmake ..
-# make package -j
-
-  mkdir build
-  cd build
-  CFLAGS+=' -fcommon'
-  cmake \
-    -DHARDINFO_GTK3=1 \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DCMAKE_INSTALL_LIBDIR=lib \
-    ..
-  make package -j
+ mkdir build
+ cd build
+ cmake \
+ make package -j
 
 }
 

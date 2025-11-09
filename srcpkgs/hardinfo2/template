@@ -24,7 +24,7 @@ pre_configure() {
 # make package -j
 
   mkdir build
-  cd ${pkgname}/build
+  cd build
   CFLAGS+=' -fcommon'
   cmake \
     -DHARDINFO_GTK3=1 \

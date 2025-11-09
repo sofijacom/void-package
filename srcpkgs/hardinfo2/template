@@ -2,7 +2,7 @@
 pkgname=hardinfo2
 version=2.2.13
 revision=1
-build_style=make-configure
+build_style=gnu-configure
 configure_args="-DHARDINFO2_LIBSOUP3=0"
 hostmakedepends="pkg-config which gettext"
 makedepends="cmake glslang shaderc Vulkan-Headers libsoup libsoup-devel nghttp2-devel qt5 qt5-devel qt5-declarative-devel gtk+3-devel desktop-file-utils"

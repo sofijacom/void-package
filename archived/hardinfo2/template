@@ -19,7 +19,7 @@ do_build() {
 
   mkdir build
   cd build
-  cmake -DHARDINFO_NOSYNC=1
+  cmake ..
   make package -j
 }
 

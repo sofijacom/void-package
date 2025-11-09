@@ -21,7 +21,7 @@ pre_configure() {
  mkdir build
  cd build
  cmake \
- make package -j
+ make
 
 }
 

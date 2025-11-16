@@ -49,3 +49,4 @@ post_install() {
 	curl ${_licenseUrl} | html2text >> yandex-browser-eula.md
 	vlicense yandex-browser-eula.md
 }
+

@@ -31,13 +31,6 @@ sudo xbps-install -S
 | zen-browser (stable)   | https://www.zen-browser.app/                      | :heavy_check_mark: |
 
 
-# Archived packages
-| package | source | reason |
-|:--------|:-------|:-----------------|
-| pet                    | https://github.com/knqyf263/pet                   | available in [upstream void-packages](https://github.com/void-linux/void-packages) |
-| river-bedload          | https://git.sr.ht/~novakane/river-bedload         | available in [upstream void-packages](https://github.com/void-linux/void-packages) |
-
-
 # _Yandex-Browser-for-Void-Linux ![void](https://github.com/sofijacom/yandex-browser/assets/107557749/0cb14595-dcea-4f79-84a4-0185b1df379d)_
 
 

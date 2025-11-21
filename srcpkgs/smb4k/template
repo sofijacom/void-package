@@ -17,8 +17,7 @@ lib32disabled=yes
 pre_configure() {
 
 #  ./autogen.sh
-  ./configure -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`qtpaths --install-prefix` \
--DSMB4K_INSTALL_PLASMOID=ON -DSMB4K_WITH_WS_DISCOVERY=OFF
+  ./configure --prefix=/usr
   make
 }
 

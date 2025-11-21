@@ -1,0 +1,27 @@
+# Template file for 'smb4k'
+pkgname=smb4k
+_pkgname=smb4k
+version=4.0.4
+revision=1
+build_style=gnu-configure
+hostmakedepends="pkg-config"
+makedepends="autoconf automake binutils fakeroot findutils gawk gcc gettext gzip libtool m4 make patch pkgconf libevdev-devel"
+depends=""
+short_desc="Smb4K is an advanced network neighborhood browser and Samba share mounting utility"
+maintainer="Sofiya <sofiya@v.com>"
+license="BSD-2-Clause CC0-1.0 GPL-2.0-or-later"
+homepage="https://github.com/KDE/smb4k"
+distfiles="https://github.com/KDE/smb4k/archive/refs/tags/${pkgname}-${version}.tar.gz"
+checksum=ed00dd600ab65a62306d05ce0d7b588d6954dcd051765bbf7e5259ec170b4ed4
+lib32disabled=yes
+
+#pre_configure() {
+
+#  ./autogen.sh
+#  ./configure --prefix=/usr
+#  make
+#}
+
+post_install() {
+	vlicense LICENSES
+}

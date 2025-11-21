@@ -14,12 +14,13 @@ distfiles="https://github.com/KDE/smb4k/archive/refs/tags/${version}.tar.gz"
 checksum=ed00dd600ab65a62306d05ce0d7b588d6954dcd051765bbf7e5259ec170b4ed4
 lib32disabled=yes
 
-#pre_configure() {
+pre_configure() {
 
 #  ./autogen.sh
-#  ./configure --prefix=/usr
-#  make
-#}
+  ./configure -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`qtpaths --install-prefix` \
+-DSMB4K_INSTALL_PLASMOID=ON -DSMB4K_WITH_WS_DISCOVERY=OFF
+  make
+}
 
 post_install() {
 	vlicense LICENSES

@@ -40,14 +40,15 @@ do_install() {
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
 	done
 
-	install /opt/yandex/browser/update_codecs /opt/yandex/browser
-
 	# Remove the Debian/Ubuntu crontab
 	rm -rf ${DESTDIR}/etc
 	rm -rf ${DESTDIR}/opt/yandex/browser/cron
 }
 
 post_install() {
+
+	install ${DESTDIR}/opt/yandex/browser/update_codecs /opt/yandex/browser
+
 	curl ${_licenseUrl} | html2text >> yandex-browser-eula.md
 	vlicense yandex-browser-eula.md
 }

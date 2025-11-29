@@ -38,6 +38,9 @@ do_install() {
 		# Copy the yandex browser icon
 		mv ${DESTDIR}/opt/yandex/browser/product_logo_${size}.png \
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
+
+		#Install external ffmpeg library for more compatability
+           ${DESTDIR}/opt/yandex/browser/update_codecs ${DESTDIR}/opt/yandex/browser || true
 	done
 
 	# Remove the Debian/Ubuntu crontab

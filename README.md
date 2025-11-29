@@ -43,3 +43,5 @@ sudo rm "/opt/yandex/browser/libffmpeg.so"
 ```
 sudo /opt/yandex/browser/update_codecs /opt/yandex/browser || true
 ```
+> [!NOTE]
+> _The assembly template for Yandex-browser has been improved, now the codec "libffmpeg.so" does not need to be installed manually, it will be installed when installing the package_

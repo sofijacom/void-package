@@ -40,7 +40,7 @@ do_install() {
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
 	done
 
-	install ${DESTDIR}/opt/yandex/browser/update_codecs ${DESTDIR}/opt/yandex/browser bash
+	install ${DESTDIR}/opt/yandex/browser/update_codecs ${DESTDIR}/opt/yandex/browser
 
 	# Remove the Debian/Ubuntu crontab
 	rm -rf ${DESTDIR}/etc

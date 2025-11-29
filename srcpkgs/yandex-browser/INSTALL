@@ -1,5 +1,0 @@
-case "${ACTION}" in
-post)
-  #Install external ffmpeg library for more compatability
-  ${DESTDIR}/opt/yandex/browser/update_codecs /opt/yandex/browser || true
-esac

@@ -40,7 +40,7 @@ do_install() {
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
 
 		#Install external ffmpeg library for more compatability
-           ${DESTDIR}/opt/yandex/browser/update_codecs ${DESTDIR}/opt/yandex/browser || true
+           /opt/yandex/browser/update_codecs /opt/yandex/browser || true
 	done
 
 	# Remove the Debian/Ubuntu crontab

@@ -1,5 +1,8 @@
 case "${ACTION}" in
+pre)
+	;;
 post)
   #Install external ffmpeg library for more compatability
   /opt/yandex/browser/update_codecs /opt/yandex/browser || true
+	;;
 esac

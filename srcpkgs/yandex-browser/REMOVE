@@ -2,8 +2,9 @@ case "${ACTION}" in
 pre)
 	;;
 post)
-    sudo rm -rf /opt/yandex/browser/codecs_checksum
-    sudo rm -rf /opt/yandex/browser/libffmpeg.so
+    rm -rf /opt/yandex/browser/codecs_checksum
+    rm -rf /opt/yandex/browser/libffmpeg.so
+    rm -rf /opt/yandex
 	;;
 esac
 

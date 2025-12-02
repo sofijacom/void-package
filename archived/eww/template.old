@@ -1,0 +1,40 @@
+# Template file for 'eww'
+pkgname=eww
+version=0.6.0
+revision=1
+reverts="0.6.0.r88.gfddb4a0-1"
+nightly_date=2025-11-10
+short_desc="Custom widgets system for any window manager"
+hostmakedepends="rustup pkg-config"
+makedepends="atk-devel pango-devel gdk-pixbuf-devel gtk-layer-shell-devel gtk+3-devel libdbusmenu-glib-devel"
+depends="libdbusmenu-gtk3 gtk+3 gtk-layer-shell"
+maintainer="Sofiya <sofiya@v.com>"
+license="MIT"
+homepage="https://github.com/elkowar/eww"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+checksum=cef361946946c566b79f8ddc6208d1a3f16b4ff9961439a3f86935e1cfa174a1
+conflicts="eww-git"
+
+do_build() {
+	# We need rust nightly
+	export RUSTUP_HOME=${wrksrc}/rustup
+	rustup-init --default-toolchain nightly-${nightly_date} -y
+	export PATH=${RUSTUP_HOME}/toolchains/nightly-${nightly_date}-${XBPS_RUST_TARGET}/bin:$PATH
+
+	# Build wayland version
+	cargo build --release --package eww --no-default-features --features wayland --target-dir waylandtarget
+
+	# Build x11 version
+	cargo build --release --package eww --no-default-features --features x11 --target-dir x11target
+}
+
+do_install() {
+	vbin waylandtarget/release/eww eww-wayland
+	vbin x11target/release/eww eww-x11
+
+	vmkdir usr/share/examples/eww
+	vcopy examples/eww-bar usr/share/examples/eww/eww-bar
+	
+	vlicense LICENSE
+}
+

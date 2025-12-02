@@ -2,8 +2,8 @@
 pkgname=eww
 version=0.5.0
 revision=1
-reverts="0.6.0.r88.gfddb4a0-1"
-nightly_date=2023-11-16
+# reverts="0.6.0.r88.gfddb4a0-1"
+nightly_date=2025-11-10
 short_desc="Custom widgets system for any window manager"
 hostmakedepends="rustup pkg-config"
 makedepends="atk-devel pango-devel gdk-pixbuf-devel gtk-layer-shell-devel gtk+3-devel libdbusmenu-glib-devel"

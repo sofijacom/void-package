@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-site="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
-pattern="yandex-browser-stable_\K\d+\.\d+\.\d+\.\d+(?=_amd64\.deb)"
-

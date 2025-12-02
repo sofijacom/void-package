@@ -1,40 +1,25 @@
 # Template file for 'eww'
 pkgname=eww
-version=0.5.0
+version=0.6.0
 revision=1
-# reverts="0.6.0.r88.gfddb4a0-1"
-nightly_date=2025-11-10
-short_desc="Custom widgets system for any window manager"
-hostmakedepends="rustup pkg-config"
-makedepends="atk-devel pango-devel gdk-pixbuf-devel gtk-layer-shell-devel gtk+3-devel libdbusmenu-glib-devel"
-depends="libdbusmenu-gtk3 gtk+3 gtk-layer-shell"
-maintainer="Sofiya <sofiya@v.com>"
+build_style=cargo
+build_helper="qemu"
+make_install_args="--path=crates/eww"
+hostmakedepends="pkg-config"
+makedepends="gtk+3-devel gtk-layer-shell-devel pango-devel gdk-pixbuf-devel
+ cairo-devel glib-devel libdbusmenu-gtk3-devel"
+short_desc="Toolkit for creating custom bars and widgets"
+maintainer="Sofiya <sofiya@v.com"
 license="MIT"
-homepage="https://github.com/elkowar/eww"
-distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
-checksum=ea4f62e48e3750a361e0f359933d7d840d158592ff5b3683ba1f3ccf42bda819
-conflicts="eww-git"
+homepage="https://elkowar.github.io/eww"
+changelog="https://raw.githubusercontent.com/elkowar/eww/master/CHANGELOG.md"
+distfiles="https://github.com/elkowar/eww/archive/refs/tags/v${version}.tar.gz"
+checksum=cef361946946c566b79f8ddc6208d1a3f16b4ff9961439a3f86935e1cfa174a1
 
-do_build() {
-	# We need rust nightly
-	export RUSTUP_HOME=${wrksrc}/rustup
-	rustup-init --default-toolchain nightly-${nightly_date} -y
-	export PATH=${RUSTUP_HOME}/toolchains/nightly-${nightly_date}-${XBPS_RUST_TARGET}/bin:$PATH
-
-	# Build wayland version
-	cargo build --release --package eww --no-default-features --features wayland --target-dir waylandtarget
-
-	# Build x11 version
-	cargo build --release --package eww --no-default-features --features x11 --target-dir x11target
-}
-
-do_install() {
-	vbin waylandtarget/release/eww eww-wayland
-	vbin x11target/release/eww eww-x11
-
-	vmkdir usr/share/examples/eww
-	vcopy examples/eww-bar usr/share/examples/eww/eww-bar
-	
+post_install() {
 	vlicense LICENSE
+	for sh in bash fish zsh; do
+		vtargetrun "${DESTDIR}/usr/bin/eww" shell-completions -s "$sh" > "eww.$sh"
+		vcompletion "eww.$sh" "$sh"
+	done
 }
-

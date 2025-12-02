@@ -1,6 +1,6 @@
 # Template file for 'eww'
 pkgname=eww
-version=0.6.0
+version=0.4.0
 revision=1
 reverts="0.4.0.r47.ga9a32c1"
 nightly_date=2022-09-04
@@ -8,11 +8,11 @@ short_desc="Custom widgets system for any window manager"
 hostmakedepends="rustup pkg-config"
 makedepends="atk-devel pango-devel gdk-pixbuf-devel gtk-layer-shell-devel gtk+3-devel"
 depends="gtk-layer-shell gtk+3"
-maintainer="Makrennel <makrommel@protonmail.ch>"
+maintainer="Sofiya <sofiya@v.com>"
 license="MIT"
 homepage="https://github.com/elkowar/eww"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
-checksum=cef361946946c566b79f8ddc6208d1a3f16b4ff9961439a3f86935e1cfa174a1
+checksum=67f1dfdf856168d4b0e731acdd9e7bed034c09480ce2264f857d7e48f576fc8a
 conflicts="eww-git"
 
 do_build() {

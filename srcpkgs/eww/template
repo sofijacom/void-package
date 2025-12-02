@@ -12,7 +12,7 @@ maintainer="Sofiya <sofiya@v.com>"
 license="MIT"
 homepage="https://github.com/elkowar/eww"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
-checksum=cef361946946c566b79f8ddc6208d1a3f16b4ff9961439a3f86935e1cfa174a1
+checksum=ea4f62e48e3750a361e0f359933d7d840d158592ff5b3683ba1f3ccf42bda819
 conflicts="eww-git"
 
 do_build() {

@@ -15,6 +15,7 @@ checksum=a5257668014123d1f61bd99af1eab2f3de72a4fc8523ed1dae2076268abfb072
 nopie=yes
 python_version=3
 
+
 do_install() {
 
 	# Copy files

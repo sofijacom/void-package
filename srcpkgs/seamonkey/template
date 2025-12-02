@@ -13,7 +13,6 @@ distfiles="https://archive.seamonkey-project.org/releases/${version}/linux-x86_6
 checksum=56607cdb040aee55caef740441dd06a4d2a385c4c279a29d5aa95757aacfb7e0
 nopie=yes
 
-
 do_install() {
 	vmkdir opt
 	vcopy * opt/

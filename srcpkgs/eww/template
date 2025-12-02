@@ -1,9 +1,9 @@
 # Template file for 'eww'
 pkgname=eww
-version=0.4.0
+version=0.6.0
 revision=1
-reverts="0.4.0.r47.ga9a32c1"
-nightly_date=2022-09-04
+reverts="0.6.0.r88.gfddb4a0-1"
+nightly_date=2025-10-12
 short_desc="Custom widgets system for any window manager"
 hostmakedepends="rustup pkg-config"
 makedepends="atk-devel pango-devel gdk-pixbuf-devel gtk-layer-shell-devel gtk+3-devel"

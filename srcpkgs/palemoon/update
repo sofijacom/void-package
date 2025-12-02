@@ -1,0 +1,2 @@
+
+pattern="v\K[\d_+]+(?=\.tar\.xz)"

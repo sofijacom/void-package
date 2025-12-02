@@ -34,7 +34,7 @@ jobs:
     # - run: bash ./srcpkgs/wideriver/update.sh
     # - run: bash ./srcpkgs/yandex-browser/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
-    # - run: bash ./srcpkgs/eww/update.sh
+    - run: bash ./srcpkgs/eww/update.sh
     - name: Check for updates
       id: check-updates
       run: |

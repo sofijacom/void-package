@@ -21,6 +21,7 @@ sudo xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :heavy_check_mark: |
+| eww                    | https://github.com/elkowar/eww                    | :heavy_check_mark: |
 | github-desktop         | https://desktop.github.com                        | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |

@@ -12,6 +12,7 @@ changelog="https://github.com/zen-browser/desktop/releases"
 distfiles="https://github.com/zen-browser/desktop/releases/download/${version}/zen.linux-x86_64.tar.xz"
 checksum=cae97299622a6ef3fd8c06ff3494f8625094467ac5ac48ee63a81a0ac67fa14d
 
+
 do_install() {
   install -dm755 "${DESTDIR}/opt/${pkgname}" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/share/applications" "${DESTDIR}/usr/share/pixmaps"
 

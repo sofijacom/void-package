@@ -14,6 +14,7 @@ homepage="https://browser.yandex.ru/"
 restricted=yes
 # repository=nonfree
 
+
 _baseUrl="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable"
 _filename="yandex-browser-${_channel}_${version}-1_amd64.deb"
 _yandexUrl="${_baseUrl}/${_filename}"

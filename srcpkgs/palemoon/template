@@ -12,6 +12,7 @@ distfiles="https://rm-eu.palemoon.org/release/palemoon-${version}.linux-x86_64-g
 checksum=f35d9de2a1f9fb3139a5a87f175d1a468e922b14bf1886658e96209a94e423d8
 nopie=yes
 
+
 do_install() {
 	vmkdir opt/palemoon
 	vcopy "*" opt/palemoon/

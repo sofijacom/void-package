@@ -12,6 +12,7 @@ license="custom:github-desktop"
 homepage="https://github.com/shiftkey/desktop"
 nopie=yes
 
+
 _baseUrl="https://github.com/shiftkey/desktop/releases/latest/download/"
 _filename="GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
 _githubUrl="${_baseUrl}/${_filename}"

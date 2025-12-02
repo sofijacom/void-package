@@ -12,7 +12,6 @@ distfiles="https://cdn1.waterfox.net/waterfox/releases/${version}/Linux_x86_64/w
 checksum=4d00ad85b740de2f4697944b46454e2bfa23b538f04e5003b66d384c66872270
 nopie=yes
 
-
 do_install() {
 	vmkdir opt/waterfox
 	vcopy "*" opt/waterfox

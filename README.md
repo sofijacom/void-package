@@ -21,7 +21,7 @@ sudo xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | brave-browser (stable) | https://www.brave.com/                            | :heavy_check_mark: |
-| github-desktop         | https://desktop.github.com                        | :x: |
+| github-desktop         | https://github.com/shiftkey/desktop               | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | SeaMonkey              | https://www.seamonkey-project.org/                | :x: |

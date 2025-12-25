@@ -23,6 +23,7 @@ sudo xbps-install -S
 | brave-browser (stable) | https://www.brave.com/                            | :heavy_check_mark: |
 | github-desktop         | https://github.com/shiftkey/desktop               | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
+| mullvadvpn             | https://github.com/mullvad/mullvadvpn-app/        | :x: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | SeaMonkey              | https://www.seamonkey-project.org/                | :x: |
 | SmartGit               | https://www.smartgit.dev/                         | :x: |

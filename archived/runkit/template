@@ -39,7 +39,7 @@ do_install() {
     vinstall assets/polkit-1/actions/tech.geektoshi.Runkit.policy 644 usr/share/polkit-1/actions
 
 	# service descriptions
-    vinstall assets/config/services.json 644 /usr/share/runkit/
+    vinstall assets/config/services.json 755 /usr/share/runkit/
 
 	# Install (runkit , runkitd , services-merge)
     vmkdir usr/libexec
@@ -49,9 +49,6 @@ do_install() {
 }
 
 post_install() {
-	# service descriptions
-    vinstall assets/config/services.json 755 /usr/share/runkit/
-
     # Remove
     rm -rf ${DESTDIR}/tmp
 

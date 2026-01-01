@@ -49,6 +49,9 @@ do_install() {
 }
 
 post_install() {
+	# service descriptions
+    vinstall assets/config/services.json 755 /usr/share/runkit/
+
     # Remove
     rm -rf ${DESTDIR}/tmp
 

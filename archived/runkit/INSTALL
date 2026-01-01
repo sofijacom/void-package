@@ -1,9 +1,0 @@
-case "${ACTION}" in
-pre)
-	;;
-post)
-mkdir -p $HOME/.config/runkit
-cp /usr/share/runkit/services.json $HOME/.config/runkit/
-	;;
-esac
-

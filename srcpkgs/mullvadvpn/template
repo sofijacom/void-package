@@ -3,13 +3,13 @@ pkgname=mullvadvpn
 version=2025.14
 revision=1
 archs="x86_64* aarch64*"
+hostmakedepends="tar xz"
 maintainer="Sofiya <Sofiya@void.org>"
 short_desc="Mullvad VPN client"
 homepage="https://mullvad.net/"
 license="custom:mullvadvpn"
 distfiles="https://github.com/mullvad/mullvadvpn-app/releases/download/${version}/MullvadVPN-${version}_amd64.deb"
 checksum=247b981e2e2e047ccca296b8e62a70b1dc7fdcec7f17137795884100240e0a41
-hostmakedepends="tar xz"
 
 do_extract() {
     ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/MullvadVPN-${version}_amd64.deb

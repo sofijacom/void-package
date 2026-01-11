@@ -1,4 +1,4 @@
-name: Auto Update Mullvad VPN Template
+name: Auto update mullvadvpn template
 
 on:
   schedule:

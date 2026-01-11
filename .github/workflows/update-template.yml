@@ -44,7 +44,7 @@ jobs:
         if: steps.get_release.outputs.skip_update != 'true'
         id: check_version
         run: |
-          CURRENT_VERSION=$(grep '^version=' srcpkgs/mullvadvpn | cut -d= -f2)
+          CURRENT_VERSION=$(grep '^version=' srcpkgs/mullvadvpn/template | cut -d= -f2)
           echo "current_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Download and Calculate Checksum
@@ -58,15 +58,15 @@ jobs:
       - name: Update Template File
         if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
         run: |
-          sed -i "s/^version=.*/version=${{ steps.get_release.outputs.version }}/" template
-          sed -i "s/^checksum=.*/checksum=${{ steps.download_and_verify.outputs.sha256 }}/" template
+          sed -i "s/^version=.*/version=${{ steps.get_release.outputs.version }}/" srcpkgs/mullvadvpn/template
+          sed -i "s/^checksum=.*/checksum=${{ steps.download_and_verify.outputs.sha256 }}/" srcpkgs/mullvadvpn/template
 
       - name: Commit and Push Changes
         if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add template
+          git add srcpkgs/mullvadvpn/template
           git commit -m "Update Mullvad VPN to v${{ steps.get_release.outputs.version }} [automated update]"
           git push
 

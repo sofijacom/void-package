@@ -14,7 +14,7 @@ hostmakedepends="tar xz"
 do_extract() {
     ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/MullvadVPN-${version}_amd64.deb
     tar xf data.tar.xz -C ${wrksrc}
-    mv ${wrksrc}/opt/Mullvad\ VPN ${wrksrc}/opt/Mullvad VPN
+    mv ${wrksrc}/opt/Mullvad\ VPN ${wrksrc}/opt/MullvadVPN
 }
 
 do_install() {

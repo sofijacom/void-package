@@ -1,0 +1,78 @@
+name: Auto Update Mullvad VPN Template
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # Runs daily at noon UTC
+  workflow_dispatch:      # Manual trigger
+
+jobs:
+  update-template:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y curl jq
+
+      - name: Fetch Latest Mullvad Release Info
+        id: get_release
+        run: |
+          API_URL="https://api.github.com/repos/mullvad/mullvadvpn-app/releases/latest"
+          RESPONSE=$(curl -s "$API_URL")
+
+          echo "Full release asset list for debugging:"
+          echo "$RESPONSE" | jq '.assets[].name'
+
+          VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
+          DEB_URL=$(echo "$RESPONSE" | jq -r '.assets[] | select(.name | test(".*amd64.*\\.deb$")) | .browser_download_url')
+
+          echo "Parsed version: $VERSION"
+          echo "Detected .deb URL: $DEB_URL"
+
+          if [[ -z "$DEB_URL" ]]; then
+            echo "::notice title=No .deb found::The latest release does not contain a .deb asset. Exiting gracefully."
+            echo "skip_update=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "deb_url=${DEB_URL}" >> "$GITHUB_OUTPUT"
+
+      - name: Read Current Version from Template
+        if: steps.get_release.outputs.skip_update != 'true'
+        id: check_version
+        run: |
+          CURRENT_VERSION=$(grep '^version=' srcpkgs/mullvadvpn | cut -d= -f2)
+          echo "current_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Download and Calculate Checksum
+        if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        id: download_and_verify
+        run: |
+          curl -Lo mullvad.deb "${{ steps.get_release.outputs.deb_url }}"
+          SHA256=$(sha256sum mullvad.deb | awk '{print $1}')
+          echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
+
+      - name: Update Template File
+        if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        run: |
+          sed -i "s/^version=.*/version=${{ steps.get_release.outputs.version }}/" srcpkgs/mullvadvpn/template
+          sed -i "s/^checksum=.*/checksum=${{ steps.download_and_verify.outputs.sha256 }}/" srcpkgs/mullvadvpn/template
+
+      - name: Commit and Push Changes
+        if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add srcpkgs/mullvadvpn/template
+          git commit -m "Update Mullvad VPN to v${{ steps.get_release.outputs.version }} [automated update]"
+          git push
+
+      - name: Create and Push Git Tag
+        if: steps.get_release.outputs.skip_update != 'true' && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        run: |
+          TAG="v${{ steps.get_release.outputs.version }}"
+          git tag "$TAG"
+          git push origin "$TAG"

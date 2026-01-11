@@ -37,18 +37,19 @@ do_install() {
     vcopy usr/bin/* /usr/bin/
     vcopy usr/lib/systemd/system/* /usr/lib/systemd/system/
     vcopy usr/share/icons/hicolor/* /usr/share/icons/hicolor/
-    vcopy usr/share/applications/* /usr/share/applications/
+#    vcopy usr/share/applications/* /usr/share/applications/
+    vinstall ${FILESDIR}/mullvad-vpn.desktop 644 usr/share/applications/
     vcopy usr/share/doc/mullvad-vpn/* /usr/share/doc/mullvad-vpn/
     vcopy usr/share/bash-completion/completions/* /usr/share/bash-completion/completions/
     vcopy usr/share/fish/vendor_completions.d/* /usr/share/fish/vendor_completions.d/
 
     vmkdir /usr/share/zsh/site-functions
 
-    mkdir -p ${DESTDIR}/opt/Mullvad VPN
-    cp -a ${wrksrc}/opt/Mullvad VPN/* ${DESTDIR}/opt/Mullvad VPN/
+    mkdir -p ${DESTDIR}/opt/MullvadVPN
+    cp -a ${wrksrc}/opt/MullvadVPN/* ${DESTDIR}/opt/MullvadVPN/
 
     # Exclude apisocks5 completely
-    rm -f ${DESTDIR}/opt/Mullvad VPN/resources/apisocks5
+    rm -f ${DESTDIR}/opt/MullvadVPN/resources/apisocks5
 }
 
 pkg_install() {

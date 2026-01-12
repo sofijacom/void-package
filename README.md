@@ -30,19 +30,3 @@ sudo xbps-install -S
 | waterfox-browser       | https://www.waterfox.net/                         | :heavy_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |
 | zen-browser (stable)   | https://www.zen-browser.app/                      | :heavy_check_mark: |
-
-
-# _Yandex-Browser-for-Void-Linux ![void](https://github.com/sofijacom/yandex-browser/assets/107557749/0cb14595-dcea-4f79-84a4-0185b1df379d)_
-
-
-Install codec:
-```
-# perform this action if you already had the codec installed
-
-sudo rm "/opt/yandex/browser/libffmpeg.so"
-```
-```
-sudo /opt/yandex/browser/update_codecs /opt/yandex/browser || true
-```
-> [!NOTE]
-> _The assembly template for Yandex-browser has been improved, now the codec "libffmpeg.so" does not need to be installed manually, it will be installed when installing the package_

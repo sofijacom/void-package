@@ -31,7 +31,7 @@ do_install() {
 	tar xf data.tar.xz -C ${DESTDIR}
 
 	# Install the icons
-	for size in 16 24 32 48 64 128 256 512; do
+	for size in 16 24 32 48 64 128 256; do
 		# Create the yandex browser xdg directory
 		mkdir -p ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps
 

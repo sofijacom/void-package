@@ -4,7 +4,7 @@ pkgname=osmo
 version=0.4.4
 revision=1
 build_style=gnu-configure
-configure_args="--prefix=/usr"
+configure_args="--prefix=/usr -DCONTACTS_ENABLED=1"
 hostmakedepends="pkg-config"
 # makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libwebkit2gtk41-devel)
 # $(vopt_if gspell gspell-devel) $(vopt_if libical libical-devel)
@@ -22,5 +22,5 @@ checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 build_options="contacts gspell libical backup"
 build_options_default="contacts"
-desc_option_contacts="Enable contacts, depends on libwebkit2gtk41-devel"
+desc_option_contacts="Enable contacts, depends on libwebkit2gtk41"
 desc_option_backup="Enable backup !! unavailable !!"

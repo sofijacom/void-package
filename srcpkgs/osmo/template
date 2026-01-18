@@ -6,9 +6,10 @@ revision=1
 build_style=gnu-configure
 configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
-makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libwebkit2gtk41-devel)
- $(vopt_if gspell gspell-devel) $(vopt_if ical libical-devel) 
- $(vopt_if backup 'libarchive-devel libgringotts-devel')"
+# makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libwebkit2gtk41-devel)
+# $(vopt_if gspell gspell-devel) $(vopt_if libical libical-devel)
+# $(vopt_if backup 'libarchive-devel libgringotts-devel')"
+makedepends="gtk+3-devel libxml2-devel libnotify-devel libwebkit2gtk41-devel gspell-devel libical-devel libarchive-devel libgringotts-devel"
 short_desc="A handy personal organizer"
 depends="sox gspell libarchive libgringotts libical"
 maintainer="Sofiya <sofiya@v.org>"

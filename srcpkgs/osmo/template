@@ -19,7 +19,6 @@ homepage="http://clayo.org/osmo/"
 source="https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${version}/${pkgname}-${version}.tar.gz
         osmo-0.4.4-webkit2-4.1.patch"
 checksum="1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6"
-            "c18c93537a149a28d64870a12f9552b3993b7a0804ebdbff8a1447d1f9a5d621"
 
 pre_configure() {
     # Switch to webkit2gtk 4.1

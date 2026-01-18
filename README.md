@@ -26,6 +26,7 @@ sudo xbps-install -S
 | hardinfo2              | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
 | mullvad VPN            | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
+| Osmo                   | https://sourceforge.net/projects/osmo-pim/files/  | :x: |
 | SeaMonkey              | https://www.seamonkey-project.org/                | :x: |
 | SmartGit               | https://www.smartgit.dev/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :heavy_check_mark: |

@@ -4,7 +4,7 @@ pkgname=osmo
 version=0.4.4
 revision=1
 build_style=gnu-configure
-configure_args="--prefix=/usr -DCONTACTS_ENABLED=1"
+configure_args="--prefix=/usr CONTACTS_ENABLED=1"
 hostmakedepends="pkg-config"
 # makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libwebkit2gtk41-devel)
 # $(vopt_if gspell gspell-devel) $(vopt_if libical libical-devel)

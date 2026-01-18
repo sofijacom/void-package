@@ -14,11 +14,23 @@ optdepends="sox: to play sounds"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="http://clayo.org/osmo/"
-distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
-checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
+# distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
+# checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
+source=(https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz
+        osmo-0.4.4-webkit2-4.1.patch)
+sha256sums=('1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6'
+            'c18c93537a149a28d64870a12f9552b3993b7a0804ebdbff8a1447d1f9a5d621')
+
+pre_configure() {
+    # Switch to webkit2gtk 4.1
+    # https://sourceforge.net/p/osmo-pim/osmo/ci/2dd4439d685b66a4ed711ab9608e5c1b27ef88ce/
+    patch -Np1 -i ../osmo-0.4.4-webkit2-4.1.patch
+    autoreconf -fiv
+}
 
 build_options="contacts gspell ical backup"
 build_options_default="contacts"
 desc_option_contacts="Enable contacts, depends on webkit2gtk"
 desc_option_backup="Enable backup !! unavailable !!"
+
 

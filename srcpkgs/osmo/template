@@ -4,21 +4,17 @@ pkgname=osmo
 version=0.4.4
 revision=1
 build_style=gnu-configure
-configure_args="--prefix=/usr CONTACTS_ENABLED=1"
+configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
-# makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libwebkit2gtk41-devel)
-# $(vopt_if gspell gspell-devel) $(vopt_if libical libical-devel)
-# $(vopt_if backup 'libarchive-devel libgringotts-devel')"
 makedepends="gtk+3-devel libxml2-devel libnotify-devel libwebkit2gtk41-devel gspell-devel libical-devel libarchive-devel libgringotts-devel"
-short_desc="A handy personal organizer"
 depends="sox"
+short_desc="A handy personal organizer"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="http://clayo.org/osmo/"
 # source="https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${version}/${pkgname}-${version}.tar.gz
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
-
 
 build_options="contacts gspell libical backup"
 build_options_default="contacts"

@@ -5,7 +5,7 @@ revision=1
 build_style=gnu-configure
 configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
-makedepends="gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel"
+makedepends="gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel libwebkit2gtk41-devel"
 depends="sox"
 short_desc="A handy personal organizer"
 maintainer="Sofiya <sofiya@v.org>"

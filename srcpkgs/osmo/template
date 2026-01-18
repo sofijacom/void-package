@@ -1,4 +1,5 @@
 # Template file for 'osmo'
+
 pkgname=osmo
 version=0.4.4
 revision=1
@@ -17,6 +18,7 @@ homepage="http://clayo.org/osmo/"
 # source="https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${version}/${pkgname}-${version}.tar.gz
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
+
 
 build_options="contacts gspell ical backup"
 build_options_default="contacts"

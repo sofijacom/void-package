@@ -1,0 +1,26 @@
+# Template file for 'libgringotts'
+pkgname=libgringotts
+version=1.2.1
+revision=1
+build_style=gnu-configure
+configure_args="--prefix=/usr"
+hostmakedepends="pkg-config"
+makedepends="libmcrypt-devel mhash-devel zlib-devel bzip2-devel"
+short_desc="Encryption backend for Gringotts"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL"
+homepage="https://sourceforge.net/projects/gringotts.berlios/"
+distfiles="https://sourceforge.net/projects/gringotts.berlios/files/$pkgname-$version.tar.bz2"
+checksum=a75e6f757b975d3da662fe7ea2d985f358f31ad2dede1a222bb4aa403d0dbfd1
+
+
+libgringotts-devel_package() {
+    short_desc+=" - development files"
+    depends=${sourcepkg}>=${version}_${revision}
+    pkg_install() {
+	vmove usr/include
+	vmove "usr/lib/*.a"
+	vmove "usr/lib/*.so"
+	vmove usr/lib/pkgconfig
+    }
+}

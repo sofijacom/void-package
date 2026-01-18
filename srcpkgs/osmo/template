@@ -9,7 +9,7 @@ makedepends="gtk+3-devel libxml2-devel libnotify-devel $(vopt_if contacts libweb
  $(vopt_if gspell gspell-devel) $(vopt_if ical libical-devel) 
  $(vopt_if backup 'libarchive-devel libgringotts-devel')"
 short_desc="Personal organizer, calendar, tasks manager, address book and notes"
-# depends="gtk+3"
+depends=""
 optdepends="sox"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"

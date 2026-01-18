@@ -11,7 +11,7 @@ hostmakedepends="pkg-config"
 # $(vopt_if backup 'libarchive-devel libgringotts-devel')"
 makedepends="gtk+3-devel libxml2-devel libnotify-devel libwebkit2gtk41-devel gspell-devel libical-devel libarchive-devel libgringotts-devel"
 short_desc="A handy personal organizer"
-depends="sox gspell libarchive libgringotts libical"
+depends="sox"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="http://clayo.org/osmo/"
@@ -20,7 +20,7 @@ distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 
-build_options="contacts gspell ical backup"
+build_options="contacts gspell libical backup"
 build_options_default="contacts"
-desc_option_contacts="Enable contacts, depends on webkit2gtk"
+desc_option_contacts="Enable contacts, depends on libwebkit2gtk41-devel"
 desc_option_backup="Enable backup !! unavailable !!"

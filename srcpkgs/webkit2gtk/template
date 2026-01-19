@@ -41,7 +41,7 @@ maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="https://webkitgtk.org"
 distfiles="https://webkitgtk.org/releases/webkitgtk-${version}.tar.xz"
-checksum="01d0aa6375a60188b5835d91e75daf8f5f734d2ff906f37e89c4a632123c3fe9"
+checksum="368f16540f4c4e069645879465188ba57bf1016c9060495aaff043307eba5219"
 
 # Upstream prefers Clang
     export CC=clang

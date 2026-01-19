@@ -18,7 +18,6 @@ configure_args="
  -DUSE_FLITE=OFF
  -DUSE_LIBBACKTRACE=OFF
 "
-# hostmakedepends="pkgconf"
 makedepends="
     clang
     cmake
@@ -39,7 +38,7 @@ makedepends="
     unifdef
     wayland-protocols
 "
-# depends=""
+depends=""
 short_desc="Web content engine for GTK"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"

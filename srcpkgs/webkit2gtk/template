@@ -19,12 +19,13 @@ configure_args="
  -DUSE_GTK4=OFF
  -DUSE_LIBBACKTRACE=OFF
 "
-hostmakedepends="cmake pkgconf"
+hostmakedepends="cmake libgcrypt pkgconf"
 makedepends="
     clang
     cmake
     perl
     libgcrypt
+    libgcrypt-devel
     gi-docgen
     glib-devel
     gobject-introspection

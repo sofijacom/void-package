@@ -23,6 +23,7 @@ hostmakedepends="cmake pkgconf"
 makedepends="
     clang
     cmake
+    perl
     gi-docgen
     glib-devel
     gobject-introspection

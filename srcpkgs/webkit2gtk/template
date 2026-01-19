@@ -1,6 +1,6 @@
 # Template file for 'webkit2gtk'
 pkgname=webkit2gtk
-version=2.51.4
+version=2.40.0
 revision=1
 build_style=cmake
 configure_args="
@@ -46,7 +46,7 @@ maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="https://webkitgtk.org"
 distfiles="https://webkitgtk.org/releases/webkitgtk-${version}.tar.xz"
-checksum="368f16540f4c4e069645879465188ba57bf1016c9060495aaff043307eba5219"
+checksum="a4607ea1bf89669e89b1cb2c63faaec513f93de09b6ae60cc71d6a8aab7ab393"
 
 # Upstream prefers Clang
     export CC=clang

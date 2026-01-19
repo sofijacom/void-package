@@ -26,6 +26,7 @@ makedepends="
     perl
     libgcrypt
     libgcrypt-devel
+    libsoup3-devel
     gi-docgen
     glib-devel
     gobject-introspection

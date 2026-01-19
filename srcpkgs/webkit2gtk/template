@@ -16,15 +16,14 @@ configure_args="
  -DENABLE_SPEECH_SYNTHESIS=OFF
  -DPORT=GTK
  -DUSE_FLITE=OFF
- -DUSE_GTK4=OFF
  -DUSE_LIBBACKTRACE=OFF
 "
-hostmakedepends="cmake libgcrypt pkgconf"
+hostmakedepends="pkgconf"
 makedepends="
     clang
     cmake
     perl
-    libgcrypt
+    cairo
     libgcrypt-devel
     libsoup3-devel
     libtasn1-devel
@@ -49,10 +48,9 @@ distfiles="https://webkitgtk.org/releases/webkitgtk-${version}.tar.xz"
 checksum="b877cca1f105235f5dd57c7ac2b2c2be3c6b691ff444f93925c7254cf156c64d"
 
 # Upstream prefers Clang
-    export CC=clang
-    export CXX=clang++
-    LDFLAGS+=" -fuse-ld=lld"
-
-    CFLAGS+=' -fcf-protection=none'
-    CXXFLAGS+=' -fcf-protection=none'
+#    export CC=clang
+#    export CXX=clang++
+#    LDFLAGS+=" -fuse-ld=lld"
+#
+#    CXXFLAGS+=' -fcf-protection=none'
 

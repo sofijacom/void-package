@@ -24,6 +24,7 @@ makedepends="
     clang
     cmake
     perl
+    libgcrypt
     gi-docgen
     glib-devel
     gobject-introspection

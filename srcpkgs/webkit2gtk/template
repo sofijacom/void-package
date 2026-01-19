@@ -1,0 +1,53 @@
+# Template file for 'webkit2gtk'
+pkgname=webkit2gtk
+version=2.51.4
+revision=1
+build_style=cmake
+configure_args="
+ -Bflarebird-build
+ -GNinja
+ -DCMAKE_BUILD_TYPE=Release
+ -DCMAKE_INSTALL_PREFIX=/usr
+ -DCMAKE_INSTALL_LIBDIR=lib64
+ -DBUILD_SHARED_LIBS=ON
+ -DCMAKE_SKIP_RPATH=ON
+ -DENABLE_DOCUMENTATION=ON
+ -DENABLE_MINIBROWSER=ON
+ -DENABLE_SPEECH_SYNTHESIS=OFF
+ -DPORT=GTK
+ -DUSE_FLITE=OFF
+ -DUSE_GTK4=OFF
+ -DUSE_LIBBACKTRACE=OFF
+"
+hostmakedepends="cmake pkgconf"
+makedepends="
+    clang
+    cmake
+    gi-docgen
+    glib-devel
+    gobject-introspection
+    gperf
+    gst-plugins-bad1
+    lld
+    ninja
+    python3
+    ruby
+    unifdef
+    wayland-protocols
+"
+# depends=""
+short_desc="Web content engine for GTK"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL-2.0-or-later"
+homepage="https://webkitgtk.org"
+distfiles="https://webkitgtk.org/releases/webkitgtk-${version}.tar.xz"
+checksum="01d0aa6375a60188b5835d91e75daf8f5f734d2ff906f37e89c4a632123c3fe9"
+
+# Upstream prefers Clang
+    export CC=clang
+    export CXX=clang++
+    LDFLAGS+=" -fuse-ld=lld"
+
+    CFLAGS+=' -fcf-protection=none'
+    CXXFLAGS+=' -fcf-protection=none'
+

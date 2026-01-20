@@ -17,8 +17,8 @@ checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 pre_configure() {
   autoreconf -f -i
-#  ./configure
-#  make
+  ./configure
+  make
 }
 
 # build_options="contacts gspell libical backup"

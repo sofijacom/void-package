@@ -1,7 +1,3 @@
-Date:   Tuesday January 20 16:26:03 2026 -0500
-
-    Switch to webkit2gtk 4.1
-
 --- a/configure.ac
 +++ b/configure.ac
 @@ -131,7 +131,7 @@

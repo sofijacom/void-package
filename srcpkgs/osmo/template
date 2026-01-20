@@ -5,7 +5,7 @@ revision=1
 build_style=gnu-configure
 configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
-makedepends="m4 perl gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel libwebkit2gtk41-devel"
+makedepends="automake autoconf m4 perl gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel libwebkit2gtk41-devel"
 depends="sox libwebkit2gtk41"
 short_desc="A handy personal organizer"
 maintainer="Sofiya <sofiya@v.org>"
@@ -16,7 +16,7 @@ distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 pre_configure() {
-#  autoreconf -f -i
+  autoreconf -f -i
   ./configure
   make
 }

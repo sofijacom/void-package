@@ -15,6 +15,12 @@ homepage="http://clayo.org/osmo/"
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
+pre_configure() {
+  autoreconf -f -i
+#  ./configure
+#  make
+}
+
 # build_options="contacts gspell libical backup"
 # build_options_default="contacts gspell libical backup"
 # desc_option_contacts="Enable contacts, depends on webkit2gtk"

@@ -1,0 +1,28 @@
+# Template file for 'pup-volume-monitor'
+pkgname=pup-volume-monitor
+version=0.2.1
+revision=1
+build_style=gnu-configure
+configure_args="--prefix=/usr --sysconfdir=/etc --disable-static"
+hostmakedepends="pkg-config gettext"
+makedepends="desktop-file-utils gawk m4 cmake autoconf automake libtool pkgconf glib-devel libblkid-devel eudev-libudev-devel"
+short_desc="This is pup-volume-monitor, a lightweight drive and volume management backend."
+maintainer="Sofiya <sofiya@v.org>"
+license="MIT"
+homepage="https://github.com/01micko/pup-volume-monitor"
+distfiles="https://github.com/01micko/pup-volume-monitor/archive/aa2fbe6f815909f060027ba1e0f93075b91e4384.zip"
+checksum=d4cd01930806c37140a7ca12ba81cd2afd8daea13cb1b78c2c7be13b5cb0784a
+lib32disabled=yes
+
+pre_configure() {
+	./autogen.sh
+}
+
+post_install() {
+    # Readme
+    vdoc README.md
+
+    # Remove
+    rm -rf ${DESTDIR}/usr/lib/pkgconfig
+    rm -rf ${DESTDIR}/usr/include
+}

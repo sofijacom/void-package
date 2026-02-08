@@ -1,0 +1,10 @@
+# Start the pup-volume-monitor
+cat <<'EOF' > ~/.config/autostart/pup-volume-monitor.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+NoDisplay=true
+Name=pup-volume-monitor
+Exec=pup-volume-monitor
+
+EOF

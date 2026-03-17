@@ -87,5 +87,5 @@ jobs:
           git config user.email "rich@bandaholics.cash"
           git add srcpkgs/mullvadvpn/template
           git commit -m "Update to v${{ steps.get_release.outputs.version }} [auto]"
-          git pull --rebase origin master
+          git pull --rebase origin main
           git push

@@ -39,7 +39,7 @@ jobs:
         if: steps.get_release.outputs.version
         id: check_version
         run: |
-          CURRENT_VERSION=$(grep '^version=' template | cut -d= -f2)
+          CURRENT_VERSION=$(grep '^version=' srcpkgs/mullvadvpn/template | cut -d= -f2)
           echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
 
       - name: Download and Checksum
@@ -77,8 +77,8 @@ jobs:
               next
             }
             { print }
-          ' template > template.new
-          mv template.new template
+          ' srcpkgs/mullvadvpn/template > template.new
+          mv template.new srcpkgs/mullvadvpn/template
 
       - name: Commit and Push
         if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version

@@ -77,8 +77,8 @@ jobs:
               next
             }
             { print }
-          ' srcpkgs/mullvadvpn/template > template.new
-          mv template.new srcpkgs/mullvadvpn/template
+          ' srcpkgs/mullvadvpn/template > srcpkgs/mullvadvpn/template.new
+          mv srcpkgs/mullvadvpn/template.new srcpkgs/mullvadvpn/template
 
       - name: Commit and Push
         if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version

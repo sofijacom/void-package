@@ -1,0 +1,91 @@
+name: Auto Update Mullvad VPN Template
+
+on:
+  schedule:
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-template:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y curl jq
+
+      - name: Fetch Latest Stable Release
+        id: get_release
+        run: |
+          RELEASES=$(curl -s https://api.github.com/repos/mullvad/mullvadvpn-app/releases?per_page=50)
+          VERSION=$(echo "$RELEASES" | jq -r '[.[] | select(.tag_name | test("^\\d{4}\\.\\d+$"))] | sort_by(.published_at) | reverse | .[0].tag_name')
+          if [[ -z "$VERSION" ]]; then
+            echo "No stable release found"
+            exit 0
+          fi
+          DEB_URL_AMD64=$(echo "$RELEASES" | jq -r "[.[] | select(.tag_name == \"$VERSION\")] | .[0].assets[] | select(.name | test(\"_amd64\\\\.deb$\")) | .browser_download_url")
+          DEB_URL_ARM64=$(echo "$RELEASES" | jq -r "[.[] | select(.tag_name == \"$VERSION\")] | .[0].assets[] | select(.name | test(\"_arm64\\\\.deb$\")) | .browser_download_url")
+          if [[ -z "$DEB_URL_AMD64" || -z "$DEB_URL_ARM64" ]]; then
+            echo "Missing required Linux .deb assets for $VERSION"
+            exit 0
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "deb_url_amd64=$DEB_URL_AMD64" >> $GITHUB_OUTPUT
+          echo "deb_url_arm64=$DEB_URL_ARM64" >> $GITHUB_OUTPUT
+
+      - name: Read Current Version
+        if: steps.get_release.outputs.version
+        id: check_version
+        run: |
+          CURRENT_VERSION=$(grep '^version=' template | cut -d= -f2)
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Download and Checksum
+        if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        id: download
+        run: |
+          curl -Lo mullvad-amd64.deb "${{ steps.get_release.outputs.deb_url_amd64 }}"
+          curl -Lo mullvad-arm64.deb "${{ steps.get_release.outputs.deb_url_arm64 }}"
+          SHA256_AMD64=$(sha256sum mullvad-amd64.deb | awk '{print $1}')
+          SHA256_ARM64=$(sha256sum mullvad-arm64.deb | awk '{print $1}')
+          echo "sha256_amd64=$SHA256_AMD64" >> $GITHUB_OUTPUT
+          echo "sha256_arm64=$SHA256_ARM64" >> $GITHUB_OUTPUT
+
+      - name: Update Template
+        if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        run: |
+          VERSION="${{ steps.get_release.outputs.version }}"
+          SHA256_AMD64="${{ steps.download.outputs.sha256_amd64 }}"
+          SHA256_ARM64="${{ steps.download.outputs.sha256_arm64 }}"
+
+          awk -v version="$VERSION" -v sha_amd64="$SHA256_AMD64" -v sha_arm64="$SHA256_ARM64" '
+            BEGIN { in_case = 0; arch = "" }
+            /^version=/ { print "version=" version; next }
+            /^revision=/ { print "revision=1"; next }
+            /^case "\$\{XBPS_TARGET_MACHINE\}" in$/ { in_case = 1; print; next }
+            in_case && /^[[:space:]]*x86_64\*\)/ { arch = "x86_64"; print; next }
+            in_case && /^[[:space:]]*aarch64\*\)/ { arch = "aarch64"; print; next }
+            in_case && /^[[:space:]]*;;/ { arch = ""; print; next }
+            in_case && arch == "x86_64" && /^[[:space:]]*checksum=/ {
+              print "        checksum=" sha_amd64
+              next
+            }
+            in_case && arch == "aarch64" && /^[[:space:]]*checksum=/ {
+              print "        checksum=" sha_arm64
+              next
+            }
+            { print }
+          ' template > template.new
+          mv template.new template
+
+      - name: Commit and Push
+        if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        run: |
+          git config user.name "Wizzard"
+          git config user.email "rich@bandaholics.cash"
+          git add template
+          git commit -m "Update to v${{ steps.get_release.outputs.version }} [auto]"
+          git pull --rebase origin master
+          git push

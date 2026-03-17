@@ -82,6 +82,8 @@ jobs:
 
       - name: Commit and Push
         if: steps.get_release.outputs.version && steps.get_release.outputs.version != steps.check_version.outputs.current_version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "Wizzard"
           git config user.email "rich@bandaholics.cash"

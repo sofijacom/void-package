@@ -35,7 +35,7 @@ jobs:
         - /dev:/dev
       env:
         ARCH: '${{ matrix.config.arch }}'
-        XBPS_TARGET_ARCH: ${{ matrix.arch }}
+        XBPS_TARGET_ARCH: "${{ matrix.config.arch }}"
         REPO_OWNER: "${{ github.repository_owner }}"
         REPO_NAME: "${{ github.event.repository.name }}"
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -135,7 +135,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.arch }}-repodata
+          name: ${{ matrix.config.arch }}-repodata
           path: ./hostdir/binpkgs
 
       - name: short sha

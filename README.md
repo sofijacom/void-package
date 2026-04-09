@@ -1,4 +1,19 @@
+<div align="center">
+	
 # Void Linux Software Repository
+
+[![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=for-the-badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)
+&nbsp;
+[![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=for-the-badge&label=AUTO-UPDATE&logo=github&logoColor=white)](https://github.com/sofijacom/void-package/actions)
+
+![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=for-the-badge&label=License&color=purple&logo=gitbook)
+![GitHub contributors](https://img.shields.io/github/contributors/sofijacom/void-package?style=for-the-badge&color=purple&logo=github&label=Contributors)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=for-the-badge&logo=github&label=Release&color=purple)
+![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=for-the-badge&label=Open%20Issues&logo=github&color=purple)
+![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=for-the-badge&label=Closed%20Issues&logo=github&color=purple)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=for-the-badge&label=Last%20Commit&logo=github&color=purple)
+
+</div>
 
 > [!NOTE]
 >>  _How to use_

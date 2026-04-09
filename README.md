@@ -2,7 +2,6 @@
 	
 # Void Linux Software Repository
 
-![Security Audit](https://img.shields.io/github/actions/workflow/status/Letdown2491/waypoint-gtk/security.yml?label=Security%20Audit&logo=github)
 ![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux)
 
 [![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=for-the-badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)

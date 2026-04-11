@@ -4,17 +4,17 @@
 
 ![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux)
 
-[![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=for-the-badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)
 &nbsp;
-[![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=for-the-badge&label=AUTO-UPDATE&logo=github&logoColor=white)](https://github.com/sofijacom/void-package/actions)
+[![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=badge&label=AUTO-UPDATE&logo=github&logoColor=white)](https://github.com/sofijacom/void-package/actions)
 
-![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=for-the-badge&label=License&color=purple&logo=gitbook)
-![GitHub contributors](https://img.shields.io/github/contributors/sofijacom/void-package?style=for-the-badge&color=purple&logo=github&label=Contributors)
-![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=for-the-badge&logo=github&label=Release&color=purple)
-![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=for-the-badge&label=Open%20Issues&logo=github&color=purple)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=for-the-badge&label=Closed%20Issues&logo=github&color=purple)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=for-the-badge&label=Last%20Commit&logo=github&color=purple)
-
+![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=badge&label=License&color=purple&logo=gitbook)
+![GitHub contributors](https://img.shields.io/github/contributors/sofijacom/void-package?style=badge&color=purple&logo=github&label=Contributors)
+![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=badge&logo=github&label=Release&color=purple)
+![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=badge&label=Open%20Issues&logo=github&color=purple)
+![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&color=purple)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&color=purple)
+<!-- style=for-the-badge -->
 </div>
 
 > [!NOTE]

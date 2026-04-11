@@ -1,6 +1,6 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
-version=26.3.1.961
+version=26.3.1.1088
 revision=1
 _channel=stable
 archs="x86_64"
@@ -20,7 +20,7 @@ _yandexUrl="${_baseUrl}/${_filename}"
 _licenseUrl="https://yandex.ru/legal/browser_agreement"
 
 distfiles="$_yandexUrl"
-checksum=47c2d50366e3cb5b344966f0fc408080d5efe5c00de0189da7ac3f3113081493
+checksum=8af56b588c48f2965386886f98ae9f95b98c8b5f1c20847b06f7cb2cd2932ba0
 
 do_extract() {
 	mkdir -p ${DESTDIR}

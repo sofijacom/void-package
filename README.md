@@ -5,7 +5,6 @@
 ![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux)
 
 [![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)
-&nbsp;
 [![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=badge&label=AUTO-UPDATE&logo=github&logoColor=white)](https://github.com/sofijacom/void-package/actions)
 
 ![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=badge&label=License&color=purple&logo=gitbook)

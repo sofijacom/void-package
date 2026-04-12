@@ -1,0 +1,30 @@
+# Template file for 'albert-launcher'
+pkgname=albert
+version=34.0.10
+revision=1
+archs="x86_64"
+create_wrksrc=yes
+build_style=cmake
+configure_args+=" -DCMAKE_BUILD_TYPE=MinSizeRel"
+configure_args+=" -DCMAKE_INSTALL_PREFIX=/usr"
+configure_args+=" -DCMAKE_INSTALL_LIBDIR=lib"
+configure_args+=" -DCMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS=ON"
+configure_args+=" -DQHOTKEY_INSTALL=OFF"
+configure_args+=" -DBUILD_PLUGIN_DEBUG=OFF" 
+hostmakedepends="pkgconf binutils tar xz"
+makedepends="cmake git libqalculate pybind11 python qt6-tools"
+depends="hicolor-icon-theme qcoro-qt6 qt6-qt5compat qt6-scxml qt6-declarative qt6-shadertools qt6-svg qtkeychain-qt6"
+optdepends="libqalculate libarchive python" 
+short_desc="A fast and flexible keyboard launcher"
+maintainer="sofiya <sofiya@v.org>"
+license="custom"
+homepage="https://albertlauncher.github.io"
+changelog="https://raw.githubusercontent.com/albertlauncher/albert/refs/heads/main/CHANGELOG.md"
+distfiles="https://github.com/albertlauncher/albert/releases/download/v${version}/v${version}.tar.gz"
+checksum=""
+
+post_install() {
+  # license
+  # vlicense LICENSE.md > LICENSE
+  vlicense "${FILESDIR}/LICENSE.md" "${DESTDIR}/usr/share/licenses/$pkgname/LICENSE"
+}  

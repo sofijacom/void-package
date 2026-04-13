@@ -4,7 +4,7 @@ version=0.2.1
 revision=1
 build_style=gnu-configure
 configure_args="--prefix=/usr --sysconfdir=/etc --disable-static"
-hostmakedepends="pkg-config gettext"
+hostmakedepends="pkg-config gettext gawk"
 makedepends="desktop-file-utils gawk m4 cmake autoconf automake libtool pkgconf glib-devel libblkid-devel eudev-libudev-devel"
 short_desc="This is pup-volume-monitor, a lightweight drive and volume management backend."
 maintainer="Sofiya <sofiya@v.org>"

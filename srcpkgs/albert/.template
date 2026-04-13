@@ -3,7 +3,7 @@ pkgname=albert
 version=${VERSION}
 revision=1
 archs="x86_64"
-#create_wrksrc=yes
+# create_wrksrc=yes
 build_style=cmake
 configure_args+=" -DCMAKE_BUILD_TYPE=MinSizeRel"
 configure_args+=" -DCMAKE_INSTALL_PREFIX=/usr"
@@ -22,6 +22,7 @@ homepage="https://albertlauncher.github.io"
 changelog="https://raw.githubusercontent.com/albertlauncher/albert/refs/heads/main/CHANGELOG.md"
 distfiles="https://github.com/albertlauncher/albert/releases/download/v${version}/v${version}.tar.gz"
 checksum=${SHA256}
+
 
 post_install() {
   # license

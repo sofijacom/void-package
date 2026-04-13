@@ -3,8 +3,7 @@ pkgname=albert
 version=34.0.10
 revision=1
 archs="x86_64"
-# create_wrksrc=yes
-patch_args="-Np1"
+create_wrksrc=yes
 build_style=cmake
 configure_args=" -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_FIND_PACKAGE_RESOLVE_SYMLINKS=ON -DQHOTKEY_INSTALL=OFF -DBUILD_PLUGIN_DEBUG=OFF"
 #configure_args+=" -DCMAKE_INSTALL_PREFIX=/usr"

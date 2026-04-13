@@ -24,8 +24,8 @@ changelog="https://raw.githubusercontent.com/albertlauncher/albert/refs/heads/ma
 distfiles="https://github.com/albertlauncher/albert/releases/download/v${version}/v${version}.tar.gz"
 checksum=95de5ce2801a6be3c8350cf6caee5fdf97d06ca0501572f965f09a1f206219c6
 
-#post_install() {
-#  # license
-#  # vlicense LICENSE.md > LICENSE
-#  vlicense "${FILESDIR}/LICENSE.md" "${DESTDIR}/usr/share/licenses/$pkgname/LICENSE"
-#}
+post_install() {
+  # license
+  # vlicense LICENSE.md > LICENSE
+  vlicense "${FILESDIR}/LICENSE.md" "${DESTDIR}/usr/share/licenses/$pkgname/LICENSE"
+}

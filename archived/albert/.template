@@ -1,11 +1,10 @@
 # Template file for 'albert-launcher'
 pkgname=albert
-version=34.0.10
+version=${VERSION}
 revision=1
 archs="x86_64"
-create_wrksrc=yes
+#create_wrksrc=yes
 build_style=cmake
-configure_args+=" --no-warn-unused-cli"
 configure_args+=" -DCMAKE_BUILD_TYPE=MinSizeRel"
 configure_args+=" -DCMAKE_INSTALL_PREFIX=/usr"
 configure_args+=" -DCMAKE_INSTALL_LIBDIR=lib"
@@ -22,10 +21,10 @@ license="custom"
 homepage="https://albertlauncher.github.io"
 changelog="https://raw.githubusercontent.com/albertlauncher/albert/refs/heads/main/CHANGELOG.md"
 distfiles="https://github.com/albertlauncher/albert/releases/download/v${version}/v${version}.tar.gz"
-checksum=95de5ce2801a6be3c8350cf6caee5fdf97d06ca0501572f965f09a1f206219c6
+checksum=${SHA256}
 
-#post_install() {
-#  # license
-#  # vlicense LICENSE.md > LICENSE
-#  vlicense "${FILESDIR}/LICENSE.md" "${DESTDIR}/usr/share/licenses/$pkgname/LICENSE"
-#}
+post_install() {
+  # license
+  # vlicense LICENSE.md > LICENSE
+  vlicense "${FILESDIR}/LICENSE.md" "${DESTDIR}/usr/share/licenses/$pkgname/LICENSE"
+}

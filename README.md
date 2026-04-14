@@ -3,6 +3,7 @@
 # Void Linux Software Repository
 
 ![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux)
+[![x85_64-glibc](https://img.shields.io/badge/x86__64-glibc-478061?style=badge)](#)
 
 [![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=badge&label=BUILD&logo=githubactions&logoColor=white)](https://github.com/sofijacom/void-package/actions)
 [![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=badge&label=AUTO-UPDATE&logo=github&logoColor=white)](https://github.com/sofijacom/void-package/actions)

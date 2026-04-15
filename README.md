@@ -41,8 +41,8 @@ sudo xbps-install -S
 | github-desktop         | https://github.com/shiftkey/desktop               | :x: |
 | google-chrome (stable) | https://www.google.com/chrome/                    | :x: |
 | hardinfo2              | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
-| mullvad VPN            | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
 | LibreWolf (browser )   | https://librewolf.net/                            | :x: |
+| mullvad VPN            | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | pup-volume-monitor     | https://github.com/01micko/pup-volume-monitor     | :x: |
 | Osmo + dependency ( libgringotts )                   | https://sourceforge.net/projects/osmo-pim/files/  | :x: |

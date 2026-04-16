@@ -46,7 +46,7 @@ sudo xbps-install -S
 | palemoon ( browser )   | https://www.palemoon.org/                         | :x: |
 | pup-volume-monitor     | https://github.com/01micko/pup-volume-monitor     | :x: |
 | Osmo + dependency ( libgringotts )                   | https://sourceforge.net/projects/osmo-pim/files/  | :x: |
-| SeaMonkey              | https://www.seamonkey-project.org/                | :x: |
+| SeaMonkey (Web-browser)| https://www.seamonkey-project.org/                | :x: |
 | SmartGit               | https://www.smartgit.dev/                         | :x: |
 | waterfox-browser       | https://www.waterfox.net/                         | :heavy_check_mark: |
 | yandex-browser (stable)| https://repo.yandex.ru/                           | :x: |

@@ -5,7 +5,7 @@ printf "Checking latest version\n"
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 LATEST_VERSION=$(gh release list --repo NDViet/microsoft-edge-stable --exclude-drafts --exclude-pre-releases --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
-export VERSION=${LATEST_VERSION#"v"}
+export VERSION=${LATEST_VERSION#"-1"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"

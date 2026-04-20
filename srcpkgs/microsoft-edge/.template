@@ -7,14 +7,14 @@ archs="x86_64"
 create_wrksrc=yes
 hostmakedepends="ImageMagick"
 makedepends="ImageMagick"
-depends="gtk+3"
+depends=""
 short_desc="A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier"
 maintainer="Sofiya <sofiya@v.org>"
 license="custom:license"
 homepage="https://www.microsoft.com/en-us/edge"
 changelog="https://github.com/NDViet/microsoft-edge-stable/blob/main/README.md"
 # distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/${_pkgname}-${_channel}_${version}-1_amd64.deb"
-distfiles="https://github.com/NDViet/microsoft-edge-stable/releases/download/${version}-1/${_pkgname}-${_channel}_${version}-1_amd64.deb"
+distfiles="https://github.com/NDViet/microsoft-edge-stable/releases/download/${version}-1/microsoft-edge-${_channel}_${version}-1_amd64.deb"
 checksum=${SHA256}
 
 do_install() {

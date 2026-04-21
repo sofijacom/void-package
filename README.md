@@ -41,8 +41,8 @@ sudo xbps-install -S
 | GitHub-desktop              | https://github.com/shiftkey/desktop               | :x: |
 | Google-chrome (stable)      | https://www.google.com/chrome/                    | :x: |
 | Hardinfo2                   | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
-| LibreWolf (web browser)     | https://librewolf.net/                            | :x: |
-| Microsoft-edge (web browser)| https://github.com/NDViet/microsoft-edge-stable   | :x: |
+| LibreWolf (Web browser)     | https://librewolf.net/                            | :x: |
+| Microsoft-edge (Web browser)| https://github.com/NDViet/microsoft-edge-stable   | :x: |
 | Mullvad VPN                 | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
 | Palemoon ( browser )        | https://www.palemoon.org/                         | :x: |
 | Pup-volume-monitor          | https://github.com/01micko/pup-volume-monitor     | :x: |

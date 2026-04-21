@@ -1,6 +1,7 @@
 # Template file for 'microsoft-edge-stable'
 pkgname=microsoft-edge
 version=147.0.3912.72
+timestamp=1
 revision=1
 _channel=stable
 archs="x86_64"

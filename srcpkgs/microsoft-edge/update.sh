@@ -29,7 +29,7 @@ export VERSION=${VERSION%-*}
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-export SHA256=$(curl -L https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}-1/microsoft-edge-stable_${VERSION}-1_amd64.deb.sha256 | cut -d ' ' -f1 )
+export SHA256=$(curl -L https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}/microsoft-edge-stable_${VERSION}_amd64.deb.sha256 | cut -d ' ' -f1 )
 [[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
 
 envsubst '${SHA256} ${VERSION} ${TIMESTAMP}' < ${__dir}/.template > ${__dir}/template

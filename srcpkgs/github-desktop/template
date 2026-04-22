@@ -1,6 +1,6 @@
 # Template file for 'github-desktop'
 pkgname=github-desktop
-version=3.4.13
+version=release-3.4.13-linux1
 revision=1
 _channel=linux1
 archs="x86_64"
@@ -17,7 +17,7 @@ _filename="GitHubDesktop-linux-amd64-${version}-${_channel}.deb"
 _githubUrl="${_baseUrl}/${_filename}"
 
 distfiles="$_githubUrl"
-checksum=8b5577761c7900cac2896b5fbc1d88f5aea48b6ce771437262be2a66ab38d987
+checksum=0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5
 
 do_extract() {
 	mkdir -p ${DESTDIR}
@@ -29,4 +29,3 @@ do_install() {
 	tar xf data.tar.xz -C ${DESTDIR}
 
 }
-

@@ -29,7 +29,7 @@ jobs:
     # - run: bash ./srcpkgs/yandex-browser/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
     # - run: bash ./srcpkgs/albert/update.sh
-    - run: bash ./srcpkgs/microsoft-edge/update.sh
+    # - run: bash ./srcpkgs/microsoft-edge/update.sh
     - name: Check for updates
       id: check-updates
       run: |

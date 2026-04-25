@@ -24,7 +24,6 @@ jobs:
     # - run: bash ./srcpkgs/google-chrome/update
     - run: bash ./srcpkgs/hardinfo2/update.sh
     # - run: bash ./srcpkgs/palemoon/update
-    # - run: bash ./srcpkgs/vesktop/update.sh
     # - run: bash ./srcpkgs/waterfox/update.sh
     # - run: bash ./srcpkgs/yandex-browser/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh

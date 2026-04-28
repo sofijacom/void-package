@@ -1,0 +1,2 @@
+#!/bin/sh
+exec lact daemon 2>&1

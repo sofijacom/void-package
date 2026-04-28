@@ -1,8 +1,0 @@
-case "${ACTION}" in
-pre)
-	;;
-post)
-    # Enable the daemon to allow LACT to apply settings on boot:
-    ln -s /etc/sv/lactd /var/service/
-	;;
-esac

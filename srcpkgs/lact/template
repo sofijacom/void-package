@@ -12,6 +12,7 @@ license="MIT"
 homepage="https://github.com/ilya-zlobintsev/LACT"
 distfiles="https://github.com/ilya-zlobintsev/LACT/archive/v${version}.tar.gz"
 checksum=4a422ef394351704b6506d97e1a8ff262b8cd9af4b81ef1e096bc60c22797bf8
+lib32disabled=yes
 
 do_install() {
 	vbin target/x86_64-unknown-linux-gnu/release/lact

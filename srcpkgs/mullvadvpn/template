@@ -1,6 +1,6 @@
 # Template file for 'mullvadvpn'
 pkgname=mullvadvpn
-version=2026.2
+version=2026.1
 revision=1
 archs="x86_64* aarch64*"
 hostmakedepends="tar xz"

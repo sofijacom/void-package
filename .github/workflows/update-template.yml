@@ -77,8 +77,8 @@ jobs:
           git tag "$TAG"
           git push origin "$TAG"
 
-      - name: Push changes
-        uses: ad-m/github-push-action@v1.1.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+       #- name: Push changes
+       #  uses: ad-m/github-push-action@v1.1.0
+       #  with:
+       #    github_token: ${{ secrets.GITHUB_TOKEN }}
+       #    branch: ${{ github.ref }}

@@ -68,7 +68,7 @@ jobs:
           git config user.email "github-actions@github.com"
           git add srcpkgs/mullvadvpn/template
           git commit -m "Update Mullvad VPN to v${{ steps.get_release.outputs.version }} [automated update]"
-          git pull --rebase origin master
+          git pull --rebase origin main
           git push
 
       - name: Create and Push Git Tag

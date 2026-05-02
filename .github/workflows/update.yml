@@ -29,7 +29,6 @@ jobs:
     - run: bash ./srcpkgs/zen-browser/update.sh
     # - run: bash ./srcpkgs/albert/update.sh
     # - run: bash ./srcpkgs/microsoft-edge/update.sh
-    - run: bash ./srcpkgs/lact/update.sh
     - name: Check for updates
       id: check-updates
       run: |

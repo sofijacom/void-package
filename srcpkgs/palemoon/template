@@ -1,6 +1,6 @@
 # Template file for 'palemoon'
 pkgname=palemoon
-version=34.2.0
+version=34.2.2
 revision=1
 archs="x86_64"
 short_desc="Open Source, Goanna-based web browser"
@@ -9,7 +9,7 @@ license="MPL-2.0"
 homepage="https://www.palemoon.org/"
 changelog="https://www.palemoon.org/releasenotes.shtml"
 distfiles="https://rm-eu.palemoon.org/release/palemoon-${version}.linux-x86_64-gtk3.tar.xz"
-checksum=b0f596a73ff54d47372d59932124e9ea8f908d037ea211f047fcaccfd392a37d
+checksum=5760cf61473b3223d64eb740925022a17e4016675fe86d2d3c2696e5127e1ec0
 nopie=yes
 
 do_install() {

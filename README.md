@@ -42,7 +42,6 @@ sudo xbps-install -S
 | GitHub-desktop              | https://github.com/shiftkey/desktop               | :x: |
 | Google-chrome (stable)      | https://www.google.com/chrome/                    | :x: |
 | Hardinfo2                   | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
-| Lact                        | https://github.com/ilya-zlobintsev/LACT           | :heavy_check_mark: |
 | LibreWolf (Web browser)     | https://librewolf.net/                            | :x: |
 | Microsoft-edge (Web browser)| https://github.com/NDViet/microsoft-edge-stable   | :x: |
 | Mullvad VPN                 | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |

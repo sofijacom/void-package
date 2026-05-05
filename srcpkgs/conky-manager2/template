@@ -1,9 +1,10 @@
 pkgname=conky-manager2
 version=2.7
 revision=1
-build_style=meson
+build_style=cmake
+# configure_args=""
 hostmakedepends="pkg-config autoconf automake libtool glib"
-makedepends="vala cmake glib"
+makedepends="vala"
 depends="cairo conky desktop-file-utils gtk+3 ImageMagick json-glib libgee p7zip rsync"
 short_desc="Fork of GUI for managing Conky widgets"
 maintainer="Sofiya <sofiya@v.com>"

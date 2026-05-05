@@ -39,6 +39,7 @@ sudo xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | Brave-browser (stable)      | https://www.brave.com/                            | :heavy_check_mark: |
+| Conky-manager2              | https://github.com/zcot/conky-manager2            | :x: | 
 | GitHub-desktop              | https://github.com/shiftkey/desktop               | :x: |
 | Google-chrome (stable)      | https://www.google.com/chrome/                    | :x: |
 | Hardinfo2                   | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |

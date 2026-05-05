@@ -13,7 +13,7 @@ homepage="https://github.com/sofijacom/conky-manager"
 provides="conky-manager"
 license="GPL3"
 distfiles="https://github.com/sofijacom/conky-manager/archive/refs/tags/v${version}.tar.gz"
-checksum="ea9cb7a9e7523fd014c9df0b152c9c3765c5c86ef2ed043d66b04f6e0573218c"
+checksum="8062c36d928c11ed1b7842565a6e3be3e038d33724c476610bc5eec03d80c3ab"
 lib32disabled=yes
 
 

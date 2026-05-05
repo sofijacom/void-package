@@ -1,5 +1,6 @@
 # Template file for 'conky-manager2'
-pkgname=conky-manager
+_pkgname=conky-manager
+pkgname=conky-manager2
 version=2.7
 revision=1
 build_style=meson
@@ -14,3 +15,14 @@ license="GPL3"
 distfiles="https://github.com/zcot/conky-manager2/archive/refs/tags/v${version}.tar.gz"
 checksum="ea9cb7a9e7523fd014c9df0b152c9c3765c5c86ef2ed043d66b04f6e0573218c"
 lib32disabled=yes
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/conky-manager2-${version}/${_pkgname}
+
+}
+
+do_install() {
+	tar xf data.tar.xz -C ${DESTDIR}
+
+}

@@ -1,0 +1,16 @@
+pkgname=conky-manager2
+version=2.7
+revision=1
+build_style=meson
+hostmakedepends="pkg-config autoconf automake libtool"
+makedepends="vala"
+depends="cairo conky desktop-file-utils gtk+3 ImageMagick json-glib libgee p7zip rsync"
+short_desc="Fork of GUI for managing Conky widgets"
+maintainer="Sofiya <sofiya@v.com>"
+homepage="https://github.com/zcot/conky-manager2"
+provides="conky-manager2"
+license="GPL3"
+distfiles="https://github.com/zcot/conky-manager2/archive/refs/tags/${pkgname}-${version}.tar.gz"
+checksum="ea9cb7a9e7523fd014c9df0b152c9c3765c5c86ef2ed043d66b04f6e0573218c"
+lib32disabled=yes
+

@@ -1,4 +1,5 @@
-pkgname=conky-manager2
+# Template file for 'conky-manager2'
+pkgname=conky-manager
 version=2.7
 revision=1
 build_style=meson

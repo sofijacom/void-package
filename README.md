@@ -1,4 +1,4 @@
-<div align="center">
+<!--<div align="center">-->
 	
 # Void Linux Software Repository
 
@@ -16,7 +16,7 @@
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)
 
-</div>
+<!--</div> -->
 
 > [!NOTE]
 >>  _How to use_

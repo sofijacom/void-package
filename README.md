@@ -15,7 +15,7 @@
 [![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=badge&label=Open%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)
-<!-- style=for-the-badge -->
+
 </div>
 
 > [!NOTE]
@@ -66,6 +66,7 @@ sudo xbps-install -S
 
 
 ```
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -78,6 +79,7 @@ sudo xbps-install -S
 	<string>void-package-github-actions</string>
 </dict>
 </plist>
+
 ```
 
 </details>

@@ -39,22 +39,22 @@ sudo xbps-install -S
 
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
-| Brave-browser (stable)      | https://www.brave.com/                            | :heavy_check_mark: |
-| Conky-manager2              | https://github.com/zcot/conky-manager2            | :x: | 
-| GitHub-desktop              | https://github.com/shiftkey/desktop               | :x: |
-| Google-chrome (stable)      | https://www.google.com/chrome/                    | :x: |
-| Hardinfo2                   | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
-| LibreWolf (Web browser)     | https://librewolf.net/                            | :x: |
-| Microsoft-edge (Web browser)| https://github.com/NDViet/microsoft-edge-stable   | :x: |
-| Mullvad VPN                 | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
-| Palemoon ( browser )        | https://www.palemoon.org/                         | :x: |
-| Pup-volume-monitor          | https://github.com/01micko/pup-volume-monitor     | :x: |
-| Osmo + dependency ( libgringotts ) | https://sourceforge.net/projects/osmo-pim/files/  | :x: |
-| SeaMonkey (Web-browser)     | https://www.seamonkey-project.org/                | :x: |
-| SmartGit                    | https://www.smartgit.dev/                         | :x: |
-| Waterfox-browser            | https://www.waterfox.net/                         | :heavy_check_mark: |
-| Yandex-browser (stable)     | https://repo.yandex.ru/                           | :x: |
-| Zen-browser (stable)        | https://www.zen-browser.app/                      | :heavy_check_mark: |
+| Brave-browser (stable)              | https://www.brave.com/                            | :heavy_check_mark: |
+| Conky-manager2                      | https://github.com/zcot/conky-manager2            | :x: | 
+| GitHub-desktop                      | https://github.com/shiftkey/desktop               | :x: |
+| Google-chrome (stable)              | https://www.google.com/chrome/                    | :x: |
+| Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | :heavy_check_mark: |
+| LibreWolf (Web browser)             | https://librewolf.net/                            | :x: |
+| Microsoft-edge (Web browser)        | https://github.com/NDViet/microsoft-edge-stable   | :x: |
+| Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | :heavy_check_mark: |
+| Palemoon ( browser )                | https://www.palemoon.org/                         | :x: |
+| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | :x: |
+| Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | :x: |
+| SeaMonkey (Web-browser)             | https://www.seamonkey-project.org/                | :x: |
+| SmartGit                            | https://www.smartgit.dev/                         | :x: |
+| Waterfox-browser                    | https://www.waterfox.net/                         | :heavy_check_mark: |
+| Yandex-browser (stable)             | https://repo.yandex.ru/                           | :x: |
+| Zen-browser (stable)                | https://www.zen-browser.app/                      | :heavy_check_mark: |
  
 <details>
 <summary><b>repo-key</b></summary>

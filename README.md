@@ -1,4 +1,4 @@
-<div align="center">
+<!-- <div align="center"> -->
 	
 # Void Linux Software Repository
 
@@ -15,7 +15,7 @@
 [![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=badge&label=Open%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)
-</div>
+<!-- </div> -->
 
 
 > [!NOTE]
@@ -56,9 +56,10 @@ sudo xbps-install -S
 | Yandex-browser (stable)             | https://repo.yandex.ru/                           | :x: |
 | Zen-browser (stable)                | https://www.zen-browser.app/                      | :heavy_check_mark: |
 
- 
-<!--<details>
-<summary><b>repo-key</b></summary> -->
+<br>
+
+<details>
+<summary><b>repo-key</b></summary>
 	
 > repo-key `00:ca:42:57:c9:c0:9a:ec:94:b4:7d:97:e5:a9:aa:1e.plist`
 > ``` 

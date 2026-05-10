@@ -58,8 +58,8 @@ sudo xbps-install -S
 
 <br>
 
-<details>
-<summary><b>repo-key</b></summary>
+<!-- <details>
+<summary><b>repo-key</b></summary> -->
 	
 > repo-key `00:ca:42:57:c9:c0:9a:ec:94:b4:7d:97:e5:a9:aa:1e.plist`
 > ``` 
@@ -82,7 +82,7 @@ sudo xbps-install -S
 </plist>
 ```
 
-</details>
+<!-- </details> -->
 
 <p align="center">
 	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />

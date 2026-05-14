@@ -22,7 +22,7 @@ jobs:
     - run: bash ./srcpkgs/brave-browser/update.sh
     - run: bash ./srcpkgs/hardinfo2/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
-    - run: bash ./srcpkgs/microsoft-edge/update.sh
+    # - run: bash ./srcpkgs/microsoft-edge/update.sh
     - name: Check for updates
       id: check-updates
       run: |

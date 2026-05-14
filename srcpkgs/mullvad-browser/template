@@ -1,0 +1,45 @@
+# Template file for 'mullvad-browser'
+pkgname=mullvad-browser
+version=15.0.12
+revision=1
+# Upstream release artifacts currently provide Linux binaries only for x86_64.
+archs="x86_64"
+nopie=yes
+nostrip=yes
+hostmakedepends="curl xz"
+depends="desktop-file-utils hicolor-icon-theme libnotify libavcodec xdg-utils"
+short_desc="Privacy-focused browser developed by Mullvad VPN and the Tor Project"
+maintainer="rich@bandaholics.cash"
+license="MPL-2.0"
+homepage="https://mullvad.net/browser"
+changelog="https://github.com/mullvad/mullvad-browser/releases"
+distfiles="https://github.com/mullvad/mullvad-browser/releases/download/15.0.12/mullvad-browser-linux-x86_64-15.0.12.tar.xz"
+checksum=4ea7daf5fdaae1bbf62a9a2da032af9251261dae40178011a7fa8ac65541a261
+
+do_install() {
+	vmkdir opt/${pkgname}
+	vmkdir usr/bin
+	vcopy * opt/${pkgname}
+
+	chmod -R ugo+rX ${DESTDIR}/opt/${pkgname}
+	touch "${DESTDIR}/opt/${pkgname}/Browser/is-packaged-app"
+
+	vinstall "${FILESDIR}/mullvad-browser.desktop" 0644 usr/share/applications/
+	vinstall ${FILESDIR}/policies.json 644 opt/${pkgname}/Browser/distribution/
+
+	ln -sf /opt/${pkgname}/Browser/start-mullvad-browser "${DESTDIR}/usr/bin/mullvad-browser"
+
+	vinstall Browser/browser/chrome/icons/default/default48.png 0644 usr/share/pixmaps mullvad-browser.png
+	for size in 16 32 48 64 128; do
+		vinstall Browser/browser/chrome/icons/default/default${size}.png 0644 \
+			usr/share/icons/hicolor/${size}x${size}/apps mullvad-browser.png
+	done
+
+	ln -Ts /usr/share/hunspell "${DESTDIR}/opt/${pkgname}/Browser/dictionaries"
+	ln -Ts /usr/share/hyphen "${DESTDIR}/opt/${pkgname}/Browser/hyphenation"
+	ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/opt/${pkgname}/Browser/libnssckbi.so"
+}
+
+post_install() {
+	vlicense Browser/MullvadBrowser/Docs/Licenses/Firefox.txt LICENSE
+}

@@ -2,7 +2,7 @@
 
 printf "Checking latest version\n"
 
-LATEST_VERSION=$(gh release list --repo NDViet/microsoft-edge --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+LATEST_VERSION=$(gh release list --repo NDViet/microsoft-edge-stable --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 export VERSION=${LATEST_VERSION#"v"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 

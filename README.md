@@ -52,7 +52,7 @@ sudo xbps-install -S
 | Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | :x: |
 | SeaMonkey (Web-browser)             | https://www.seamonkey-project.org/                | :x: |
 | SmartGit                            | https://www.smartgit.dev/                         | :x: |
-| Waterfox-browser                    | https://www.waterfox.net/                         | :heavy_check_mark: |
+| Waterfox-browser                    | https://www.waterfox.net/                         | :x: |
 | Yandex-browser (stable)             | https://repo.yandex.ru/                           | :x: |
 | Zen-browser (stable)                | https://www.zen-browser.app/                      | :heavy_check_mark: |
  

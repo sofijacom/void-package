@@ -2,7 +2,7 @@
 
 <!-- <img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.gif" /> -->
 
-<img width="450" height="auto" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.png" />
+<img width="450" height="auto" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux-1.png" />
 
 <!-- # 【 Void Linux Software Repository 】 -->
 <!-- # 【 Unofficial package repository for Void Linux 】 -->

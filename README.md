@@ -1,6 +1,6 @@
 <div align="center">
 
-<img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/void-linux.gif" />
+<img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.gif" />
 
 
 <!-- ![Alt text](https://github.com/sofijacom/void-package/void-linux.svg) -->

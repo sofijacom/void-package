@@ -58,6 +58,8 @@ sudo xbps-install -S
 | Waterfox-browser                    | https://www.waterfox.net/                         | :x: |
 | Yandex-browser (stable)             | https://repo.yandex.ru/                           | :x: |
 | Zen-browser (stable)                | https://www.zen-browser.app/                      | :heavy_check_mark: |
+
+<br>
  
 <details>
 <summary><b>repo-key (Click to expand)</b></summary>

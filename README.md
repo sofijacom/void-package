@@ -1,9 +1,9 @@
 <div align="center">
 
-<img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/void-linux.gif" />
+<img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/void-linux.gif" />
 
 
-![Alt text](https://github.com/sofijacom/void-package/void-linux.svg)
+<!-- ![Alt text](https://github.com/sofijacom/void-package/void-linux.svg) -->
 	
 <!-- <img src="https://voidlinux.org/assets/img/void_bg.png" width="75" /> -->
 

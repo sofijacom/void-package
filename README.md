@@ -1,5 +1,7 @@
 <div align="center">
 	
+<!-- <img src="https://voidlinux.org/assets/img/void_bg.png" width="75" /> -->
+
 # 【 Void Linux Software Repository 】
 
 [![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux&colorA=363a4f)](#)

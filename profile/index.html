@@ -19,171 +19,19 @@
 </head>
 <body>
     <header>
-        <div class="container">
-            <img src="resources/XLibre-1.png" alt="XLibre" class="icon" width="850" height="auto">
-            <p class="subtitle">Void Linux Package</p>
-        </div>
+        <div class="wrapper">
+           <svg>
+              <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+                  Void Linux
+              </text>
+          </svg>
+       </div> 
     </header>
     
     <main>
-<p align="center">
-<svg viewbox="0 0 100 20">
-  <defs>
-    <lineargradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="5%" stop-color="#829298"/>
-      <stop offset="95%" stop-color="#495881"/>
-    </lineargradient>
-    <pattern id="wave" x="0" y="0" width="120" height="20" patternUnits="userSpaceOnUse">
-      <path id="wavePath" d="M-40 9 Q-30 7 -20 9 T0 9 T20 9 T40 9 T60 9 T80 9 T100 9 T120 9 V20 H-40z" fill="url(#gradient)"> 
-      
-      <!-- Анимация волны достигается перемещением path  -->
-     
-     <animatetransform attributeName="transform" type="translate" begin="0s" dur="1.5s" from="0,0" to="40,0" repeatCount="indefinite" />
-      </path>
-    </pattern>
-  </defs>
-      <!-- Паттерн c анимированной волной применяется к тексту -->
-  <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#wave)"  fill-opacity="0.9">WELCOME</text>
-  <text text-anchor="middle" x="50" y="15" font-size="17" fill="url(#gradient)" fill-opacity="0.3">WELCOME</text>
-</svg>
-  </p>
-
-        <div class="container">
-            <section class="hero">
-                <h2>We Don't Wait for Official Repositories</h2>
-                <p class="lead">
-                  We create them ourselves!
-                </p>
-                <img width="888" height="40" alt="split" src="resources/split.png" />
-                <img width="850" height="auto" alt="split" src="resources/laptop.png" />
-            </section>
-
-            <section class="philosophy">
-                <h3>Our Philosophy</h3>
-                <div class="philosophy-grid">
-                    <div class="philosophy-item">
-                        <h4>🗲 Fast Updates</h4>
-                        <p>Get the latest XLibre versions without waiting for official repository cycles.</p>
-                    </div>
-                    <div class="philosophy-item">
-                   <!-- <h4><img width="18" height="18" alt="split" src="resources/void.png"/> XLibre Void Linux</h4> -->
-                    <img src="resources/XLibre-6.png" alt="XLibre" class="icon" width="130" height="auto">
-                   <!--  <p>XLibre Void Linux</p> -->
-                    </div>                  
-                    <div class="philosophy-item">
-                        <h4>🛠️ Community-Driven</h4>
-                        <p>Built by users, for users and no unnecessary drama over on a social network argument by a distro. We maintain what we need.</p>
-                    </div>
-                </div>
-            </section>
-
-             <section class="installation">
-               <h3>Installation Instructions</h3>
-                    <div class="method">
-                        <h3>Void Linux</h3>
-                        <p>Add repository to your void Linux system and install XLibre:</p>
-                        <div class="code-block">
-                            <h4>1. Add the repository key</h4>
-                            <pre><code>sudo wget -O /var/db/xbps/keys/00:ca:42:57:c9:c0:9a:ec:94:b4:7d:97:e5:a9:aa:1e.plist https://github.com/xlibre-void/xlibre/raw/refs/heads/main/repo-keys/x86_64/00:ca:42:57:c9:c0:9a:ec:94:b4:7d:97:e5:a9:aa:1e.plist</code></pre>
-                        </div>
-                        <div class="code-block">
-                            <h4>2. Add the repository to your sources</h4>
-                            <pre><code>sudo mkdir -p /etc/xbps.d</code></pre>
-                            <pre><code>printf "repository=https://github.com/xlibre-void/xlibre/releases/latest/download/\n" | sudo tee /etc/xbps.d/99-repository-xlibre.conf</code></pre>
-                        </div>
-                        <div class="code-block">
-                            <h4>3. Synchronize the repository</h4>
-                            <pre><code>sudo xbps-install -S</code></pre>
-                        </div>
-                        <div class="code-block">
-                            <h4>4. Install XLibre</h4>
-                            <pre><code>sudo xbps-install -Su xlibre</code></pre>
-                        </div>
-                    </div>
-            </section>
-
-            <section class="alternative-methods">
-                <h3>Alternative method for installing XLibre</h3>
-                    <div class="method">                    
-                        <p>Automatically replaces X.Org server packages with Xlibre xserver packages</p>
-                    <div class="code-block">
-                        <h4>One-line Installation</h4>
-                        <pre><code>wget -O - https://github.com/xlibre-void/xlibre/raw/refs/heads/main/install-xlibre.sh | tee install-xlibre.sh && chmod +x install-xlibre.sh && sudo ./install-xlibre.sh</code></pre>
-                    </div>
-                </div>     
-           </section>
-            
-            <section class="support">
-                <h3>Support & Community</h3>
-                <div class="support-grid">
-                    <div class="support-item">
-                        <h4>📝 Issues</h4>
-                        <p>Report bugs or request features on our GitHub repository.</p>
-                        <a href="https://github.com/xlibre-void/xlibre/issues" class="btn">Report Issue</a>
-                    </div>
-                    <div class="support-item">
-                        <h4>💬 Discussions</h4>
-                        <p>Join the community discussion about XLibre on Xlibre-Void Linux.</p>
-                        <a href="https://github.com/xlibre-void/xlibre/discussions" class="btn">Join Discussion</a>
-                    </div>
-                </div>
-            </section>
-
-            <section class="why-independent">
-                <h3>Why We Go Independent</h3>
-                <div class="reasons">   
-                    <div class="reason">
-                        <h4>Focus</h4>
-                        <p>We focus specifically on XLibre, ensuring it's always up-to-date and properly maintained for Void Linux users.</p>
-                    </div>
-                    <div class="reason">
-                      <!--  <h4>🖥️</h4> -->
-                      <img src="resources/xlibre-transparent.png" alt="XLibre" class="icon" width="100" height="auto">
-                      <!--  <p>XLibre Void Linux </p> -->
-                     </div>                
-                    <div class="reason">
-                        <h4>Flexibility</h4>
-                        <p>We can respond quickly to user feedback and provide custom builds.</p>
-                    </div>
-                </div>
-            </section> 
-        </div> 
-        
-            <div class="container-giscus">
-              <section class="comment-form">
-                <!--<h4 class="page__comments-title">Leave a comment</h4>-->
-                <h2 class="commentShowForm"><a href="#" onclick="return commentShowForm()">Leave a comment</a></h2>  
-             <div class="giscus">
-          </div>        
-       </section>   
-
-<script src="https://giscus.app/client.js"
-        data-repo="xlibre-void/.github"
-        data-repo-id="R_kgDOQu3lrw"
-        data-category="General"
-        data-category-id="DIC_kwDOQu3lr84C0bSo"
-        data-mapping="title"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-reactions-layout="compact"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="catppuccin_latte"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
-</script>
 </main>
                 
     <footer>
-        <div class="container">
-            <p>&copy; 2025-2026 · XLibre Void made by <a href="https://github.com/sofijacom">sofijacom</a> • Maintained 💜 sofijacom </p>
-            <p>
-                <a href="https://github.com/xlibre-void/xlibre">GitHub Repository • xlibre-void </a> | 
-                <a href="https://github.com/xlibre-void/xlibre/blob/main/LICENSE">License MIT</a>
-            </p>
-        </div>
     </footer>  
 </body>
 </html>

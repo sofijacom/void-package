@@ -1,4 +1,6 @@
 <div align="center">
+
+![Alt text](https://github.com/sofijacom/void-package/void-linux.svg)
 	
 <!-- <img src="https://voidlinux.org/assets/img/void_bg.png" width="75" /> -->
 

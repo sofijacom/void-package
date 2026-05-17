@@ -23,6 +23,7 @@
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)
 <!-- style=for-the-badge -->
 </div>
+<br>
 
 > [!NOTE]
 >>  _How to use_
@@ -31,6 +32,7 @@
 ```shell
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```
+<br>
 
 > [!IMPORTANT]
 > 

@@ -11,7 +11,7 @@ short_desc="Attempt at creating a safer, faster, and more stable browser"
 maintainer="Sofiya <sofiya@v.org>"
 license="custom:yandex"
 homepage="https://browser.yandex.ru/"
-# nostrip=yes
+nostrip=yes
 restricted=yes
 # repository=nonfree
 

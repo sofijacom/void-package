@@ -47,15 +47,15 @@ sudo xbps-install -S
 
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
-| Brave-browser (stable)              | https://www.brave.com/                            | ☑️ |
+| Brave-browser (stable)              | https://www.brave.com/                            | ✔️ |
 | Conky-manager2                      | https://github.com/zcot/conky-manager2            | ❌ | 
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ❌ |
 | Google-chrome (stable)              | https://www.google.com/chrome/                    | ❌ |
-| Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ☑️ |
+| Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
 | LibreWolf (Web browser)             | https://librewolf.net/                            | ❌ |
 | Microsoft-edge (Web browser)        | https://github.com/NDViet/microsoft-edge-stable   | ❌ |
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ❌ |
-| Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ☑️ |
+| Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
 | Palemoon ( browser )                | https://www.palemoon.org/                         | ❌ |
 | Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | ❌ |
 | Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | ❌ |
@@ -63,7 +63,7 @@ sudo xbps-install -S
 | SmartGit                            | https://www.smartgit.dev/                         | ❌ |
 | Waterfox-browser                    | https://www.waterfox.net/                         | ❌ |
 | Yandex-browser (stable)             | https://repo.yandex.ru/                           | ❌ |
-| Zen-browser (stable)                | https://www.zen-browser.app/                      | ✅ |
+| Zen-browser (stable)                | https://www.zen-browser.app/                      | ✔️ |
 
 <br>
  

@@ -1,6 +1,6 @@
 # Template file for 'librewolf'
 pkgname=librewolf
-version=150.0.3
+version=151.0.1
 revision=1
 _rev=1
 wrksrc=${pkgname}-${version}-${_rev}
@@ -10,7 +10,7 @@ maintainer="sofiya <sofiya@v.org>"
 license="GPL-3.0-only AND LGPL-2.1-only AND LGPL-3.0-only AND MPL-2.0"
 homepage="https://codeberg.org/librewolf/source/releases"
 distfiles="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${version}-${_rev}/${pkgname}-${version}-${_rev}.source.tar.gz"
-checksum=1344a3245d6384ec3e486fcc37309372ce0495e7c56f84b74a8487f7936e799b
+checksum=46e58bcfcbcd597c01ddd32965a47aa478fe3a9a944e8bbbc1eccfc4f7f70a02
 
 lib32disabled=yes
 

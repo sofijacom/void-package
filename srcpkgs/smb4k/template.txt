@@ -1,0 +1,23 @@
+# Template file for 'smb4k'
+pkgname=smb4k
+version=4.0.6
+revision=1
+archs="x86_64"
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF -DSMB4K_WITH_WS_DISCOVERY=ON"
+hostmakedepends="pkg-config autoconf automake libtool pkgconf"
+makedepends="extra-cmake-modules kdoctools kf6-kirigami libplasma"
+depends=""
+short_desc="A KDE program that browses samba shares"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL-2.0-or-later"
+homepage="https://smb4k.sourceforge.net/"
+changelog="https://github.com/KDE/smb4k"
+distfiles="https://downloads.sourceforge.net/project/${pkgname}/${version}/${pkgname}-${version}.tar.xz"
+checksum=5ae52e1f1a66bd7d0f1a9bcaccc80447e0b8ea181c40c87119b2427546ed0e26
+lib32disabled=yes
+
+post_install() {
+    # Readme
+    vdoc README.md
+}    

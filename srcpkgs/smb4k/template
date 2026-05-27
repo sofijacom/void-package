@@ -4,7 +4,9 @@ version=4.0.6
 revision=1
 archs="x86_64"
 build_style=cmake
-configure_args="-DBUILD_TESTING=OFF -DSMB4K_WITH_WS_DISCOVERY=ON"
+# configure_args="-DBUILD_TESTING=OFF -DSMB4K_WITH_WS_DISCOVERY=ON"
+configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`qtpaths --install-prefix` \
+-DSMB4K_INSTALL_PLASMOID=ON -DSMB4K_WITH_WS_DISCOVERY=ON"
 hostmakedepends="pkg-config autoconf automake libtool pkgconf"
 makedepends="extra-cmake-modules kdoctools kf6-kirigami libplasma"
 depends=""

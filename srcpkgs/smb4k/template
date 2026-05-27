@@ -8,7 +8,7 @@ build_style=cmake
 configure_args="-DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DSMB4K_INSTALL_PLASMOID=ON -DSMB4K_WITH_WS_DISCOVERY=ON"
 hostmakedepends="pkg-config autoconf automake libtool pkgconf gettext"
 makedepends="extra-cmake-modules kdoctools kf6-kirigami libplasma qt6-base-devel qt6-declarative-devel qtkeychain-qt6-devel qt6-tools-devel"
-depends="glibc kauth kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kdsoap-ws-discovery-client ki18n kiconthemes kio kjobwidgets knotifications kwallet kwidgetsaddons kwindowsystem kxmlgui libstdc++"
+depends="glibc kauth kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kdsoap-ws-discovery-client ki18n kiconthemes kio kjobwidgets knotifications kwallet kwidgetsaddons kwindowsystem kxmlgui libstdc++ smbclient"
 short_desc="A KDE program that browses samba shares"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"

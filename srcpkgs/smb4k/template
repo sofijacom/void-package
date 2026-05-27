@@ -4,11 +4,43 @@ version=4.0.6
 revision=1
 archs="x86_64"
 build_style=cmake
-# configure_args="-DBUILD_TESTING=OFF -DSMB4K_WITH_WS_DISCOVERY=ON"
 configure_args="-DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DSMB4K_INSTALL_PLASMOID=ON -DSMB4K_WITH_WS_DISCOVERY=ON"
 hostmakedepends="pkg-config autoconf automake libtool pkgconf gettext"
-makedepends="extra-cmake-modules kdoctools kf6-kirigami libplasma qt6-base-devel qt6-declarative-devel qtkeychain-qt6-devel qt6-tools-devel"
-depends="glibc kauth kcompletion kconfig kconfigwidgets kcoreaddons kcrash kdbusaddons kdsoap-ws-discovery-client ki18n kiconthemes kio kjobwidgets knotifications kwallet kwidgetsaddons kwindowsystem kxmlgui libstdc++ smbclient"
+makedepends="
+         glibc-devel
+         kauth-devel
+         kcompletion-devel
+         kconfig-devel
+         kconfigwidgets-devel
+         kcoreaddons-devel
+         kcrash-devel
+         kdbusaddons-devel
+         kdsoap-ws-discovery-client-devel
+         ki18n-devel
+         kiconthemes-devel
+         kio-devel
+         kjobwidgets-devel
+         knotifications-devel
+         kwallet-devel
+         kwidgetsaddons-devel
+         kwindowsystem-devel
+         kxmlgui-devel
+         libstdc++-devel       
+         qt6-base-devel
+         qt6-declarative-devel
+         qtkeychain-qt6-devel   
+         smbclient-devel
+         qt6-tools-devel
+         qtkeychain-qt6-devel
+         qt6-declarative-devel
+         qt6-base-devel
+         libplasma-devel
+         kf6-kirigami-devel
+         kdoctools-devel
+         extra-cmake-modules
+"
+
+depends=""
 short_desc="A KDE program that browses samba shares"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"

@@ -28,8 +28,7 @@ makedepends="
          libstdc++-devel       
          qt6-base-devel
          qt6-declarative-devel
-         qtkeychain-qt6-devel   
-         smbclient-devel
+         qtkeychain-qt6-devel
          qt6-tools-devel
          qtkeychain-qt6-devel
          qt6-declarative-devel
@@ -40,7 +39,7 @@ makedepends="
          extra-cmake-modules
 "
 
-depends=""
+depends="smbclient"
 short_desc="A KDE program that browses samba shares"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"

@@ -16,9 +16,8 @@
 -      YANDEX_BROWSER_ARGS+=("--enable-wayland-ime")
 -    fi
 -  fi
--fi
 +# Enable native Wayland support if not explicitly disabled
 +if [ -z "${YANDEX_DISABLE_WAYLAND-}" ] &&
 +   [ "$XDG_SESSION_TYPE" = "wayland" ]; then
 +  YANDEX_BROWSER_ARGS+=("--ozone-platform=wayland" "--enable-features=WaylandWindowDecorations")
-+ fi
+ fi

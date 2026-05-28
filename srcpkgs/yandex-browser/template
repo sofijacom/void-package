@@ -24,21 +24,22 @@ _licenseUrl="https://yandex.ru/legal/browser_agreement"
 distfiles="$_yandexUrl"
 checksum=0d7cd31000c744bf2ac45f0c7dee2ca17399742085be87165b5af4c20512dae1
 
-do_extract() {
-	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
-	
-	tar xf data.tar.xz -C ${DESTDIR}
-}
+#do_extract() {
+#	mkdir -p ${DESTDIR}
+#	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
+#	
+#	tar xf data.tar.xz -C ${DESTDIR}
+#}
 
 post_patch() {
+    tar -xf data.tar.xz
     patch -p1 < "${DESTDIR}/wayland.patch"
  }   
 
 do_install() {
-#	vcopy etc /
-#	vcopy opt /
-#	vcopy usr /
+	vcopy etc /
+	vcopy opt /
+	vcopy usr /
 
 	# Install the icons
 	for size in 16 24 32 48 64 128 256; do
@@ -51,7 +52,7 @@ do_install() {
 	done
 
 	# Remove the Debian/Ubuntu crontab
-	rm -rf ${DESTDIR}/etc
+	rm -rf ${DESTDIR}/etc/cron.daily
 	rm -rf ${DESTDIR}/opt/yandex/browser/cron
 }
 

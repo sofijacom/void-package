@@ -14,6 +14,7 @@ homepage="https://browser.yandex.ru/"
 nostrip=yes
 restricted=yes
 # repository=nonfree
+lib32disabled=yes
 
 _baseUrl="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable"
 _filename="yandex-browser-${_channel}_${version}-1_amd64.deb"
@@ -26,12 +27,18 @@ checksum=0d7cd31000c744bf2ac45f0c7dee2ca17399742085be87165b5af4c20512dae1
 do_extract() {
 	mkdir -p ${DESTDIR}
 	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
+	
+	tar xf data.tar.xz -C ${DESTDIR}
 }
 
+post_patch() {
+    patch -p1 < "${DESTDIR}/wayland.patch"
+ }   
+
 do_install() {
-	tar xf data.tar.xz -C ${DESTDIR}
-	
-    patch -p1 < "${DESTDIR}/wayland.patch"	
+#	vcopy etc /
+#	vcopy opt /
+#	vcopy usr /
 
 	# Install the icons
 	for size in 16 24 32 48 64 128 256; do

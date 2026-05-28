@@ -1,5 +1,4 @@
---- a/opt/yandex/browser/yandex-browser
-+++ b/opt/yandex/browser/yandex-browser
+
 @@ -37,18 +37,10 @@
  	YANDEX_BROWSER_ARGS=( $YANDEX_BROWSER_FLAGS )
  fi

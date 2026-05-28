@@ -2,7 +2,7 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
 version=${VERSION}
-revision=1
+revision=2
 _channel=stable
 archs="x86_64"
 depends="gtk4 binutils liberation-fonts-ttf jq at-spi2-atk curl expat libcups mesa nss squashfs-tools wget xdg-utils vulkan-loader libXcomposite"
@@ -23,13 +23,16 @@ _licenseUrl="https://yandex.ru/legal/browser_agreement"
 distfiles="$_yandexUrl"
 checksum=${SHA256}
 
-do_extract() {
-	mkdir -p ${DESTDIR}
-	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
-}
+# do_extract() {
+#	mkdir -p ${DESTDIR}
+#	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
+# }
 
 do_install() {
-	tar xf data.tar.xz -C ${DESTDIR}
+#	tar xf data.tar.xz -C ${DESTDIR}
+	vcopy etc /
+	vcopy opt /
+	vcopy usr /
 
 	# Install the icons
 	for size in 16 24 32 48 64 128 256 512; do

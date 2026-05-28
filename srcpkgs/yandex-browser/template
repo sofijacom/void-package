@@ -31,10 +31,10 @@ checksum=0d7cd31000c744bf2ac45f0c7dee2ca17399742085be87165b5af4c20512dae1
 #	tar xf data.tar.xz -C ${DESTDIR}
 #}
 
-post_patch() {
-    tar -xf data.tar.xz
-    patch -p1 < "${DESTDIR}/wayland.patch"
- }   
+#post_patch() {
+#    tar -xf data.tar.xz
+#    patch -p1 < "${DESTDIR}/wayland.patch"
+# }   
 
 do_install() {
 	vcopy etc /

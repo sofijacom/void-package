@@ -48,6 +48,7 @@ sudo xbps-install -S
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
 | Brave-browser (stable)              | https://www.brave.com/                            | ✔️ |
+| Calamares                           | https://calamares.io                              | ❌ |
 | Conky-manager2                      | https://github.com/zcot/conky-manager2            | ❌ | 
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ❌ |
 | Google-chrome (stable)              | https://www.google.com/chrome/                    | ❌ |

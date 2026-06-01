@@ -19,7 +19,7 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
 
 LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*.deb" | tail -1)
-export VERSION=${LATEST_VERSION#"yandex-browser-stable_"}
+export VERSION=${LATEST_VERSION##"yandex-browser-stable_ 1_amd64.deb"}
 
 # LATEST_VERSION=$(curl -Ls "https://" \
 #    | grep -oP '"version":"\K[^"]+' | head -1)

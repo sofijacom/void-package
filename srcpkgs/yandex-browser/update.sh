@@ -16,9 +16,9 @@ echo "### Checking for yandex-browser updates..."
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 # Ambil versi terbaru dari Yandex version API
-LATEST_VERSION=$(curl -Ls "https://" \
-    | grep -oP '"version":"\K[^"]+' | head -1)
-
+#LATEST_VERSION=$(curl -Ls "https://" \
+#    | grep -oP '"version":"\K[^"]+' | head -1)
+LATEST_VERSION=$(curl -Ss --request GET "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/" | jq -r '.[0] | .name')
 
 if [ -z "$LATEST_VERSION" ]; then
     echo "Error: Failed to fetch latest version."

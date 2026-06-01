@@ -16,23 +16,31 @@ echo "### Checking for yandex-browser updates..."
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 # Ambil versi terbaru dari Yandex version API
-LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1) \
-    | grep -oP tr '">< ' '\n' | head -1
+LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
+wait
+if wget --version | head -1 | grep -q ' 1.'; then
+    wget -q --no-verbose --show-progress --progress=bar "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/$DEB" || exit 1
+else
+    wget "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/$DEB" || exit 1
+fi
+ar x ./*.deb
+tar xf ./control.tar.xz
+VERSION=$(cat control | grep Version | cut -c 10-)
 
 
-if [ -z "$LATEST_VERSION" ]; then
+if [ -z "$VERSION" ]; then
     echo "Error: Failed to fetch latest version."
     exit 1
 fi
 
-if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
+if [ "$VERSION" = "$CURRENT_VERSION" ]; then
     echo "No update required. Current version: $CURRENT_VERSION"
     exit 0
 fi
 
-echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
+echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-DEB_URL="${URL}yandex-browser-${CHANNEL}_${LATEST_VERSION}-1_amd64.deb"
+DEB_URL="${URL}yandex-browser-${CHANNEL}_${VERSION}-1_amd64.deb"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$DEB_URL" | sha256sum | awk '{print $1}')
@@ -44,9 +52,9 @@ fi
 
 echo "Checksum: $CHK"
 
-sed -i "s/^version=.*/version=$LATEST_VERSION/" "$TPL"
+sed -i "s/^version=.*/version=$VERSION/" "$TPL"
 sed -i "s/^revision=.*/revision=1/" "$TPL"
 sed -i "s/^checksum=.*/checksum=$CHK/" "$TPL"
 
-echo "NEW_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
-echo "### Done! yandex-browser updated to $LATEST_VERSION"
+echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
+echo "### Done! yandex-browser updated to $VERSION"

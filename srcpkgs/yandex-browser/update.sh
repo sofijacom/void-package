@@ -15,9 +15,9 @@ echo "### Checking for yandex-browser updates..."
 
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
-# Ambil versi terbaru dari Yandex version API
+# Ambil versi terbaru dari Chrome version API
 LATEST_VERSION=$(curl -s "https://browser.yandex.ru/download?os=linux&partner_id=switch-browser&banerid=6301000000&switch=1" \
-    | grep -oP '"version":"\K\d+\.\d+\.\d+\.\d+(?=" | head -1)
+    | grep -oP '"version":"\K[^"]+' | head -1)
 
 
 if [ -z "$LATEST_VERSION" ]; then

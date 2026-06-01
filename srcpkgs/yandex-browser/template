@@ -1,6 +1,6 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
-version=26.4.1.1101
+version=
 revision=4
 _channel=stable
 archs="x86_64"

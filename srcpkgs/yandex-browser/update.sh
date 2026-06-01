@@ -16,7 +16,7 @@ echo "### Checking for yandex-browser updates..."
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 # Yandex version
-LATEST_VERSION=$(curl -Ss --request GET "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | jq -r '.[0] | .name')
+LATEST_VERSION=$(curl -Ss --request GET "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | tail -1)
 
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
 

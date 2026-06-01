@@ -50,7 +50,7 @@ fi
 echo "Checksum: $CHK"
 
 sed -i "s/^version=.*/version=$VERSION/" "$TPL"
-sed -i "s/^revision=.*/revision=1/" "$TPL"
+sed -i "s/^revision=.*/revision=4/" "$TPL"
 sed -i "s/^checksum=.*/checksum=$CHK/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV

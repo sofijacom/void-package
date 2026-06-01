@@ -2,7 +2,7 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
 version=${VERSION}
-revision=3
+revision=4
 _channel=stable
 archs="x86_64"
 depends="gtk4 binutils liberation-fonts-ttf jq at-spi2-atk curl dbus expat libcups mesa nss squashfs-tools wget xdg-utils vulkan-loader libXcomposite"
@@ -14,6 +14,7 @@ homepage="https://browser.yandex.ru/"
 nostrip=yes
 restricted=yes
 # repository=nonfree
+lib32disabled=yes
 
 _baseUrl="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable"
 _filename="yandex-browser-${_channel}_${version}-1_amd64.deb"
@@ -23,13 +24,7 @@ _licenseUrl="https://yandex.ru/legal/browser_agreement"
 distfiles="$_yandexUrl"
 checksum=${SHA256}
 
-# do_extract() {
-#	mkdir -p ${DESTDIR}
-#	ar x ${XBPS_SRCDISTDIR}/yandex-browser-${version}/${_filename}
-# }
-
 do_install() {
-#	tar xf data.tar.xz -C ${DESTDIR}
 	vcopy etc /
 	vcopy opt /
 	vcopy usr /

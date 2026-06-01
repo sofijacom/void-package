@@ -1,6 +1,6 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
-version=yandex-browser-stable_26.4.1.1101-1_amd64.deb
+version=26.4.1.1101-1_amd64.deb
 revision=1
 _channel=stable
 archs="x86_64"
@@ -22,7 +22,7 @@ _yandexUrl="${_baseUrl}/${_filename}"
 _licenseUrl="https://yandex.ru/legal/browser_agreement"
 
 distfiles="$_yandexUrl"
-checksum=47cea59605e7b14d7aa955d9a2d7e4c19ce237428884b6022b99df1685e08f50
+checksum=7cdffd2ed9830ae46a5ffb5ce0874e41b7b12fe8be5cc9d6ba9ffd0f2aff5cb0
 
 do_install() {
 	vcopy etc /

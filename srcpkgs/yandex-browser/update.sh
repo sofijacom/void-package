@@ -3,7 +3,6 @@
 # site="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
 # pattern=""
 
-
 set -e
 
 TPL="srcpkgs/yandex-browser/template"
@@ -18,7 +17,7 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 # Yandex version
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
 
-LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep "..*amd64.deb" | tail -1)
+LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*1" | tail -1)
 export VERSION=${LATEST_VERSION#"yandex-browser-stable_"}
 
 # LATEST_VERSION=$(curl -Ls "https://" \
@@ -50,7 +49,6 @@ fi
 echo "Checksum: $CHK"
 
 sed -i "s/^version=.*/version=$VERSION/" "$TPL"
-sed -i "s/^revision=.*/revision=4/" "$TPL"
 sed -i "s/^checksum=.*/checksum=$CHK/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV

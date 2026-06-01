@@ -2,10 +2,10 @@
 # Template file for 'yandex-browser'
 pkgname=yandex-browser
 version=${VERSION}
-revision=2
+revision=3
 _channel=stable
 archs="x86_64"
-depends="gtk4 binutils liberation-fonts-ttf jq at-spi2-atk curl expat libcups mesa nss squashfs-tools wget xdg-utils vulkan-loader libXcomposite"
+depends="gtk4 binutils liberation-fonts-ttf jq at-spi2-atk curl dbus expat libcups mesa nss squashfs-tools wget xdg-utils vulkan-loader libXcomposite"
 optdepends="speech-dispatcher gstreamer1"
 short_desc="Attempt at creating a safer, faster, and more stable browser"
 maintainer="Sofiya <sofiya@yandex.ru>"
@@ -43,6 +43,9 @@ do_install() {
 		mv ${DESTDIR}/opt/yandex/browser/product_logo_${size}.png \
 		   ${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/yandex-browser.png
 	done
+
+    sed -i '/^\[Desktop Entry\]/a NoDisplay=true' \
+        "${DESTDIR}"/usr/share/applications/ru.yandex.desktop.browser.desktop
 
 	# Remove the Debian/Ubuntu crontab
 	rm -rf ${DESTDIR}/etc

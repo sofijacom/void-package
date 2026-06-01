@@ -23,7 +23,7 @@ jobs:
     - run: bash ./srcpkgs/hardinfo2/update.sh
     - run: bash ./srcpkgs/zen-browser/update.sh
     - run: bash ./srcpkgs/google-chrome/update.sh
-    - run: bash ./srcpkgs/yandex-browser/update.sh
+    # - run: bash ./srcpkgs/yandex-browser/update.sh
     # - run: bash ./srcpkgs/microsoft-edge/update.sh
     - name: Check for updates
       id: check-updates

@@ -23,6 +23,9 @@ CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)
 CURRENT_VERSION=$(printf "%s-%s" "${CUR_VERSION}" "${CUR_TIMESTAMP}")
 
+printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
+[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+
 export TIMESTAMP=${VERSION##*-}
 export VERSION=${VERSION%-*}
 

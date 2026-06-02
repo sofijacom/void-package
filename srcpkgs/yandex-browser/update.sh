@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-# site="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
-# pattern=""
-
 set -e
 
 TPL="srcpkgs/yandex-browser/template"
 APP="yandex-browser"
 CHANNEL="stable"
-URL="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
 PACKAGES_URL="http://repo.yandex.ru/yandex-browser/deb/dists/stable/main/binary-amd64/Packages"
+URL="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
 
 echo "### Checking for yandex-browser updates..."
 
@@ -18,10 +15,10 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 # Fetch latest version from the Yandex apt repository
 echo "Fetching package index from $PACKAGES_URL ..."
 LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
-  | awk '/^Package: yandex-browser-stable$/,/^$/' \
+  | awk '/^Package: yandex-browser-stable$/,/^$/-1' \
   | awk '/^Version:/ { print $2; exit }')
 
-export VERSION=${LATEST_VERSION#"-1"}
+export VERSION=${LATEST_VERSION#"v"}
 
 # Yandex version
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)

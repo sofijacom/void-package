@@ -8,6 +8,8 @@ CHANNEL="stable"
 PACKAGES_URL="http://repo.yandex.ru/yandex-browser/deb/dists/stable/main/binary-amd64/Packages"
 URL="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable/"
 
+__dir="$(dirname "${BASH_SOURCE[0]}")"
+
 echo "### Checking for yandex-browser updates..."
 
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)

@@ -18,9 +18,6 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
 # export VERSION=${LATEST_VERSION#"yandex-browser-stable_"}
 
-LATEST_VERSION=$(curl -Ls "http://browser.yandex.com/download/?beta=1&os=linux&x64=1&package=deb&full=1/" | tr '">< ' '\n' | grep ".*deb" | tail -1)
-export VERSION=${LATEST_VERSION#"v"}
-
 # LATEST_VERSION=$(curl -Ls "https://" \
 #    | grep -oP '"version":"\K[^"]+' | head -1)
 

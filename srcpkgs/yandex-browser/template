@@ -23,7 +23,7 @@ _yandexUrl="${_baseUrl}/${_filename}"
 _licenseUrl="https://yandex.ru/legal/browser_agreement"
 
 distfiles="$_yandexUrl"
-checksum=50ec93695838043f0ffdbed000d56a9c6ea8c033c4f06d18f26409bd44d1e008
+checksum=e3e48aec9c201834fac7be4a9f46be3c90e27ee106737787453b05ce0927428c
 
 do_install() {
 	vcopy etc /

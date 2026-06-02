@@ -15,7 +15,7 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 # Fetch latest version from the Yandex apt repository
 echo "Fetching package index from $PACKAGES_URL ..."
 LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
-  | awk '/Package: yandex-browser-stable$/,/^$/,/$/' \
+  | awk '/^Package: yandex-browser-stable$/,/^$/\$-1' \
   | awk '/^Version:/ { print $2; exit }')
 
 export VERSION=${LATEST_VERSION#"v"}

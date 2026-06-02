@@ -18,7 +18,13 @@ LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
   | awk '/^Package: yandex-browser-stable$/,/^$/' \
   | awk '/^Version:/ { print $2; exit }')
 
-export VERSION=${LATEST_VERSION#" -1"}
+VERSION=${LATEST_VERSION#"v"}
+CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
+CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)
+CURRENT_VERSION=$(printf "%s-%s" "${CUR_VERSION}" "${CUR_TIMESTAMP}")
+
+export TIMESTAMP=${VERSION##*-}
+export VERSION=${VERSION%-*}
 
 # Yandex version
 # LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)

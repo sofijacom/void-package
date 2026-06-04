@@ -36,9 +36,6 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-#export SHA256=$(curl -sL https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}/microsoft-edge-stable_${VERSION}-1_amd64.deb
-#https://github.com/NDViet/microsoft-edge-stable/releases/download/148.0.3967.96-1/microsoft-edge-stable_148.0.3967.96-1_amd64.deb
-
 DEB_URL="${URL}${VERSION}-1/microsoft-edge-${CHANNEL}_${VERSION}-1_amd64.deb"
 
 echo "Calculating checksum..."

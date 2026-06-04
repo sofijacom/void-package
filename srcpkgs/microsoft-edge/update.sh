@@ -5,7 +5,7 @@ set -e
 TPL="srcpkgs/microsoft-edge/template"
 APP="microsoft-edge"
 CHANNEL="stable"
-PACKAGES_URL="https://github.com/NDViet/microsoft-edge-stable/releases/tags"
+#PACKAGES_URL="https://github.com/NDViet/microsoft-edge-stable/releases/tags"
 URL="https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}/"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
@@ -15,12 +15,12 @@ echo "### Checking for microsoft-edge updates..."
 # CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 # Fetch latest version from the Yandex apt repository
-echo "Fetching package index from $PACKAGES_URL ..."
-LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
-  | awk '/^Package: microsoft-edge-stable$/,/^$/' \
-  | awk '/^Version:/ { print $2; exit }')
+#echo "Fetching package index from $PACKAGES_URL ..."
+#LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
+#  | awk '/^Package: microsoft-edge-stable$/,/^$/' \
+#  | awk '/^Version:/ { print $2; exit }')
 
-#LATEST_VERSION=$(gh release list --repo NDViet/microsoft-edge-stable --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+LATEST_VERSION=$(gh release list --repo NDViet/microsoft-edge-stable --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

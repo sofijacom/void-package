@@ -5,8 +5,8 @@ set -e
 TPL="srcpkgs/microsoft-edge/template"
 APP="microsoft-edge"
 CHANNEL="stable"
-PACKAGES_URL="https://github.com/NDViet/microsoft-edge-stable/releases/"
-URL="https://github.com/NDViet/microsoft-edge-stable/releases/download/"
+PACKAGES_URL="https://github.com/NDViet/microsoft-edge-stable/releases/tag/"
+URL="https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 

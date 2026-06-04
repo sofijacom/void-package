@@ -55,7 +55,7 @@ sudo xbps-install -S
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ❌ |
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
-| Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ❌ |
+| Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
 | Palemoon ( browser )                | https://www.palemoon.org/                         | ❌ |
 | Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | ❌ |

@@ -25,6 +25,7 @@ jobs:
     - run: bash ./srcpkgs/google-chrome/update.sh
     - run: bash ./srcpkgs/yandex-browser/update.sh
     - run: bash ./srcpkgs/microsoft-edge/update.sh
+    - run: bash ./srcpkgs/mullvad-browser/update.sh
     - name: Check for updates
       id: check-updates
       run: |

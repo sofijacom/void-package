@@ -5,7 +5,7 @@ set -e
 TPL="srcpkgs/microsoft-edge/template"
 APP="microsoft-edge"
 CHANNEL="stable"
-URL="https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}/"
+URL="https://github.com/NDViet/microsoft-edge-stable/releases/download/"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
@@ -39,7 +39,7 @@ echo "Update found: $CURRENT_VERSION -> $VERSION"
 #export SHA256=$(curl -sL https://github.com/NDViet/microsoft-edge-stable/releases/download/${VERSION}/microsoft-edge-stable_${VERSION}-1_amd64.deb
 #https://github.com/NDViet/microsoft-edge-stable/releases/download/148.0.3967.96-1/microsoft-edge-stable_148.0.3967.96-1_amd64.deb
 
-DEB_URL="${URL}microsoft-edge-${CHANNEL}_${VERSION}-1_amd64.deb"
+DEB_URL="${URL}${VERSION}/microsoft-edge-${CHANNEL}_${VERSION}-1_amd64.deb"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$DEB_URL" | sha256sum | awk '{print $1}')

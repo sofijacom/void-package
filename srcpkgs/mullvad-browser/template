@@ -2,7 +2,6 @@
 pkgname=mullvad-browser
 version=15.0.14
 revision=1
-# Upstream release artifacts currently provide Linux binaries only for x86_64.
 archs="x86_64"
 nopie=yes
 nostrip=yes

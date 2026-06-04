@@ -1,6 +1,6 @@
 # Template file for 'microsoft-edge-stable'
 pkgname=microsoft-edge
-version=148.0.3967.96
+version=148.0.3967.95
 timestamp=1
 revision=1
 _channel=stable

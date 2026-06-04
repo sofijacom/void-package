@@ -12,8 +12,6 @@ __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for yandex-browser updates..."
 
-# CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
-
 # Fetch latest version from the Yandex apt repository
 echo "Fetching package index from $PACKAGES_URL ..."
 LATEST_VERSION=$(curl -sL "$PACKAGES_URL" \
@@ -30,10 +28,6 @@ printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CU
 
 export TIMESTAMP=${VERSION##*-}
 export VERSION=${VERSION%-*}
-
-# Yandex version
-# LATEST_VERSION=$(curl -Ls "https://repo.yandex.ru/yandex-browser/deb/pool/main/y/$APP-$CHANNEL/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
-# export VERSION=${LATEST_VERSION#"yandex-browser-stable_"}
 
 if [ -z "$VERSION" ]; then
     echo "Error: Failed to fetch latest version."

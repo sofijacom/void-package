@@ -2,6 +2,8 @@
 
 printf "Checking latest version\n"
 
+__dir="$(dirname "${BASH_SOURCE[0]}")"
+
 LATEST_VERSION=$(gh release list --repo mullvad/mullvad-browser --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 export VERSION=${LATEST_VERSION#"v"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

@@ -1,0 +1,8 @@
+case "${ACTION}" in
+pre)
+	;;
+post)
+    # To enable the mullvad service, run:
+    ln -s /etc/sv/mullvad /var/service/
+	;;
+esac

@@ -49,7 +49,7 @@ sudo xbps-install -S
 |:--------|:-------|:-----------------|
 | Brave-browser ( stable )            | https://www.brave.com/                            | ✔️ |
 | Calamares ( Graphical installer )   | https://calamares.io                              | ❌ |
-| Conky-manager2                      | https://github.com/zcot/conky-manager2            | ❌ | 
+| Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 | 
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ❌ |
 | Google-chrome ( stable )            | https://www.google.com/chrome/                    | ✔️ |
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
@@ -58,8 +58,8 @@ sudo xbps-install -S
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
 | Palemoon ( browser )                | https://www.palemoon.org/                         | ❌ |
-| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | ❌ |
-| Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | ❌ |
+| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
+| Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
 | SeaMonkey ( Web-browser )           | https://www.seamonkey-project.org/                | ❌ |
 | SmartGit                            | https://www.smartgit.dev/                         | ❌ |
 | Waterfox-browser                    | https://www.waterfox.net/                         | ❌ |

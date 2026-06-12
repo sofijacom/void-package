@@ -102,5 +102,5 @@ sudo xbps-install -S
 </p>
 
 <p align="center">
-	<a href="https://github.com/sofijacom/void-package/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&logo=gitbook&label=License&message=MIT&logoColor=d9e0ee&colorA=363a4f&colorB=b7bdf8"/></a>
+	<a href="https://github.com/sofijacom/void-package/blob/main/LICENSE"><img src="https://img.shields.io/static/v1.svg?style=for-the-badge&logo=gitbook&label=License&message=MIT&logoColor=EDE9FE&colorA=363a4f&colorB=b7bdf8"/></a>
 </p>

@@ -14,14 +14,14 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/build.yml?style=badge&label=BUILD&logo=githubactions&logoColor=white&colorA=363a4f)](https://github.com/sofijacom/void-package/actions)
 [![Build](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update-template.yml?style=badge&label=UPDATE-TEMPLATE&logo=githubactions&logoColor=white&colorA=363a4f)](https://github.com/sofijacom/void-package/actions)
 [![Updates](https://img.shields.io/github/actions/workflow/status/sofijacom/void-package/update.yml?style=badge&label=AUTO-UPDATE&logo=github&logoColor=white&colorA=363a4f)](https://github.com/sofijacom/void-package/actions)
-
+<!--
 [![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=badge&label=License&colorA=363a4f&colorB=purple&logo=gitbook)](#)
 [![GitHub contributors](https://img.shields.io/github/contributors/sofijacom/void-package?style=badge&colorA=363a4f&colorB=purple&logo=github&label=Contributors)](#)
 [![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=badge&logo=github&label=Release&colorA=363a4f&colorB=purple)](#)
 [![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=badge&label=Open%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)
-<!-- style=for-the-badge -->
+-->
 </div>
 <br>
 

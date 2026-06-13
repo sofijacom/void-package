@@ -53,6 +53,7 @@ sudo xbps-install -S
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ❌ |
 | Google-chrome ( stable )            | https://www.google.com/chrome/                    | ✔️ |
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
+| Helium-browser                      | https://helium.computer/                          | ✔️ |
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ❌ |
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |

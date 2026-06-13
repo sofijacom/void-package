@@ -1,0 +1,41 @@
+# Template file for 'helium-browser'
+pkgname=helium-browser
+version=0.13.2.1
+revision=1
+archs="x86_64"
+depends="desktop-file-utils hicolor-icon-theme libnotify xdg-utils"
+short_desc="Private, fast, and honest web browser"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL-3.0"
+homepage="https://helium.computer/"
+changelog="https://github.com/imputnet/helium-linux/releases"
+distfiles="https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz"
+checksum="3b21c86dd118041c8568435ad160fb5a853380baf211a4f8eeef05913ece63e7"
+nostrip=yes
+
+do_install() {
+    install -dm755 "${DESTDIR}/opt/${pkgname}" \
+        "${DESTDIR}/usr/bin" \
+        "${DESTDIR}/usr/share/applications" \
+        "${DESTDIR}/usr/share/pixmaps" \
+        "${DESTDIR}/usr/share/icons/hicolor/256x256/apps"
+
+    # copy semua isi tarball ke /opt
+    vcopy * "opt/${pkgname}"
+
+    # symlink binary
+    ln -sf "/opt/${pkgname}/helium" "${DESTDIR}/usr/bin/helium"
+
+    # desktop file
+    vinstall "${FILESDIR}/helium.desktop" 0644 usr/share/applications/
+
+    # icon (FIX: pakai file yang memang ada)
+    vinstall "product_logo_256.png" 0644 usr/share/pixmaps helium.png
+    vinstall "product_logo_256.png" 0644 \
+        usr/share/icons/hicolor/256x256/apps helium.png
+
+    # dictionaries & libs
+    ln -Ts /usr/share/hunspell "${DESTDIR}/opt/${pkgname}/dictionaries"
+    ln -Ts /usr/share/hyphen "${DESTDIR}/opt/${pkgname}/hyphenation"
+    ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/opt/${pkgname}/libnssckbi.so"
+}

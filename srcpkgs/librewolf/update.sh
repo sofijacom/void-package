@@ -12,7 +12,7 @@ echo "### Checking for librewolf updates..."
 #LATEST_VERSION=$(curl -Ss --request GET "https://codeberg.org/librewolf/source/releases/tag" | jq -r '.[0] | .name')
 
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/packages/librewolf/generic/librewolf-source" | \
-  jq -r '.tag_name // empty' | sed 's/^v//')
+  jq -r '.tags_name // empty' | sed 's/^v//')
 
 
 export VERSION=${LATEST_VERSION#"v"}

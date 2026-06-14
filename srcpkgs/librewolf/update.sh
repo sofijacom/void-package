@@ -9,10 +9,10 @@ __dir="$(dirname "${BASH_SOURCE[0]}")"
 echo "### Checking for librewolf updates..."
 # https://codeberg.org/api/packages/librewolf/generic/librewolf-source/151.0.4-1/librewolf-151.0.4-1.source.tar.gz
 
-#PROJECT_ID="abf57e09399b44fba07424d3f56d76d807ddec4f"
-LATEST_VERSION=$(curl -Ss --request GET "https://codeberg.org/librewolf/source/releases/tag" | jq -r '.[0] | .name')
+#LATEST_VERSION=$(curl -Ss --request GET "https://codeberg.org/librewolf/source/releases/tag" | jq -r '.[0] | .name')
 
-
+LATEST_VER=$(curl -s "https://api.codeberg.org/repos/$REPO/releases" | \
+  jq -r '.tag_name // empty' | sed 's/^v//')
 
 
 export VERSION=${LATEST_VERSION#"v"}

@@ -7,8 +7,12 @@ TPL="srcpkgs/librewolf/template"
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
+# REPO_BASE_URL="https://codeberg.org/librewolf/source/releases/download/latest"
 
-LATEST_VERSION=$(cb release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+LATEST_VERSION=$(codeberg.org release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+
+
+
 export VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)

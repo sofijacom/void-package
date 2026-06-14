@@ -13,8 +13,8 @@ echo "### Checking for librewolf updates..."
 
 # LATEST_VERSION=$(curl -sL https://codeberg.org/repos/librewolf/source/releases | jq -r ".tag_name")
 
-LATEST_VERSION=$(curl -sL https://codeberg.org/librewolf/source/releases | \
-  jq -r '.tag_name' | sed 's/^v//')
+LATEST_VERSION=$(curl -sL https://codeberg.org/librewolf/source/releases/tag | \
+  jq -r | sed 's/^v//')
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

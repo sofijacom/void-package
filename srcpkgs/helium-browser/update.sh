@@ -4,7 +4,7 @@ set -e
 REPO="imputnet/helium-linux"
 TPL="srcpkgs/helium-browser/template"
 
-echo "### Checking for helium-browser-bin updates..."
+echo "### Checking for helium-browser updates..."
 
 LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)

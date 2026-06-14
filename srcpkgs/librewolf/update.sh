@@ -7,9 +7,11 @@ TPL="srcpkgs/librewolf/template"
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
-LATEST_VERSION="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/"
+# https://codeberg.org/api/packages/librewolf/generic/librewolf-source/151.0.4-1/librewolf-151.0.4-1.source.tar.gz
 
-#LATEST_VERSION=$(gh release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+PROJECT_ID="abf57e09399b44fba07424d3f56d76d807ddec4f"
+LATEST_VERSION=$(curl -Ss --request GET "https://gitlab.com/api/v4/projects/${PROJECT_ID}/repository/tags" | jq -r '.[0] | .name')
+
 
 
 

@@ -7,9 +7,9 @@ TPL="srcpkgs/librewolf/template"
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
-# REPO_BASE_URL="https://codeberg.org/librewolf/source/releases/download/latest"
+REPO_BASE_URL="https://codeberg.org/librewolf/source/releases/download/latest"
 
-LATEST_VERSION=$(git release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+#LATEST_VERSION=$(gh release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 
 
 

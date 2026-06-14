@@ -8,8 +8,8 @@ __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
 
-# LATEST_VERSION=$(gh release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
-LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
+LATEST_VERSION=$(gh release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+#LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
@@ -35,7 +35,7 @@ fi
 echo "Update found: $CURRENT_VERSION -> $_VERSION"
 
 # URL_X86="https://github.com/$REPO/releases/download/${LATEST_VERSION}/zen.linux-x86_64.tar.xz"
-URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${LATEST_VERSION}/librewolf-${LATEST_VERSION}.source.tar.gz
+URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${LATEST_VERSION}/librewolf-${LATEST_VERSION}.source.tar.gz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

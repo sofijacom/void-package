@@ -7,20 +7,11 @@ TPL="srcpkgs/librewolf/template"
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
+
 # https://codeberg.org/api/packages/librewolf/generic/librewolf-source/151.0.4-1/librewolf-151.0.4-1.source.tar.gz
+LATEST_VERSION=
 
-#LATEST_VERSION=$(curl -Ss --request GET "https://codeberg.org/librewolf/source/releases/tag" | jq -r '.[0] | .name')
-
-LATEST_VERSION=$(curl -s "https://codeberg.org/api/packages/$REPO/releases" | \
-  jq -r '.tag_name // empty' | sed 's/^v//')
-
-if [ -z "$LATEST_VERSION" ]; then
-  LATEST_VERSION=$(curl -s "https://codeberg.org/api/packages/$REPO/tags" | \
-    jq -r '.[0].name // empty' | sed 's/^v//')
-fi
-
-
-export VERSION=${LATEST_VERSION#"v"}
+VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)
 CURRENT_VERSION=$(printf "%s-%s" "${CUR_VERSION}" "${CUR_TIMESTAMP}")

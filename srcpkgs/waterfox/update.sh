@@ -16,7 +16,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
 
-URL_X86="https://cdn.waterfox.com/waterfox/releases/${LATEST_VERSION}/Linux_x86_64/waterfox-${LATEST_VERSION}.tar.bz2
+URL_X86="https://cdn.waterfox.com/waterfox/releases/${LATEST_VERSION}/Linux_x86_64/waterfox-${LATEST_VERSION}.tar.bz2"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

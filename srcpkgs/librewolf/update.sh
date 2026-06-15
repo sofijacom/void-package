@@ -11,7 +11,7 @@ echo "### Checking for librewolf updates..."
 
 # curl -sL https://api.codeberg.org/repos/ваш_пользователь/ваш_репозиторий/releases/latest | jq -r ".tag_name"
 
-LATEST_VERSION=curl -L -s "https://api.codeberg.org/repos/librewolf/source/releases/latest" | jq -r ".tag_name"
+LATEST_VERSION=curl -s "https://api.codeberg.org/repos/librewolf/source/releases/latest" | jq -r ".tag_name"
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

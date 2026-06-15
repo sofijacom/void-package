@@ -10,7 +10,10 @@ echo "### Checking for librewolf updates..."
 
 # LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/ваш_пользователь/ваш_репозиторий/releases/latest | jq -r ".tag_name")
 
-LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/${REPO}/releases/latest | jq -r '.tag_name'); echo $tag_name
+# LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/${REPO}/releases/latest | jq -r '.tag_name')
+
+LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/${REPO}/releases/latest \
+| grep "tag_name"
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

@@ -10,7 +10,10 @@ echo "### Checking for librewolf updates..."
 
 # LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/ваш_пользователь/ваш_репозиторий/releases/latest | jq -r ".tag_name")
 
-LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/librewolf/source/releases/latest '.tag_name // empty' | sed 's/^v//')
+# LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/librewolf/source/releases/latest '.tag_name // empty' | sed 's/^v//')
+
+# Latest version is the current release tag on Github.
+LATEST_VERSION=$(curl --silent --location -H "Authorization: token ${GITHUB_API_TOKEN}" "https://api.codeberg.org/repos/librewolf/source/releases/latest" | jq -r .tag_name)
 
 VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)

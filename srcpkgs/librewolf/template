@@ -1,6 +1,6 @@
 # Template file for 'librewolf'
 pkgname=librewolf
-version=3.4.2
+version=151.0.4
 timestamp=1
 revision=1
 _rev=1
@@ -12,7 +12,7 @@ license="GPL-3.0-only AND LGPL-2.1-only AND LGPL-3.0-only AND MPL-2.0"
 homepage="https://codeberg.org/librewolf/source/releases"
 # distfiles="https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${version}-${revision}/${pkgname}-${version}-${revision}.source.tar.gz"
 distfiles="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${version}-${_rev}/${pkgname}-${version}-${_rev}.source.tar.gz"
-checksum=
+checksum=c270c1ab946c71e458f41b9eb8db88b76f30b98c4b87cbd9c23cce8d91925b92
 
 lib32disabled=yes
 

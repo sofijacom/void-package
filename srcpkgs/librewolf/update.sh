@@ -3,6 +3,7 @@ set -e
 
 REPO="librewolf/source"
 TPL="srcpkgs/librewolf/template"
+ID="9991091"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
@@ -11,7 +12,7 @@ echo "### Checking for librewolf updates..."
 # LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/ваш_пользователь/ваш_репозиторий/releases/latest | jq -r ".tag_name")
 #LATEST_VERSION=$(curl -sL https://api.codeberg.org/repos/librewolf/source/releases/latest | jq -r ".tag_name")
 
-LATEST_VERSION=$(curl -sL "https://codeberg.org/api/v1/repos/librewolf/source/releases/9991091/assets" \
+LATEST_VERSION=$(curl -sL "https://codeberg.org/api/v1/repos/librewolf/source/releases/${ID}/assets" \
   | awk '/^"name": librewolf$/,/^$/' \
   | awk '/^"name":/ { print $2; exit }')
 

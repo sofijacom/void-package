@@ -2,7 +2,7 @@
 set -e
 
 REPO="Calamares/calamares"
-TPL="srcpkgs/librewolf/template"
+TPL="srcpkgs/calamares/template"
 ID="7639303"
 
 echo "### Checking for Calamares updates..."

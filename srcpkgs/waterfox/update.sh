@@ -1,19 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/bash
+set -e
 
-printf "Checking latest version\n"
+REPO="BrowserWorks/waterfox"
+TPL="srcpkgs/waterfox/template"
 
-__dir="$(dirname "${BASH_SOURCE[0]}")"
+echo "### Checking for waterfox updates..."
 
-LATEST_VERSION=$(gh release list --repo BrowserWorks/waterfox --exclude-drafts --exclude-pre-releases --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
-export VERSION=${LATEST_VERSION#"v"}
-CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
+LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
+CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
-printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
-[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
+    echo "No update required. Current version: $CURRENT_VERSION"
+    exit 0
+fi
 
-export SHA256=$(curl -L https://github.com/BrowserWorks/waterfox/releases/download/${VERSION}/archive/refs/tags/${VERSION}tar.gz.sha256 | cut -d ' ' -f1 )
-[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
+echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
 
-envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template
+URL_X86="https://cdn.waterfox.com/waterfox/releases/${LATEST_VERSION}/Linux_x86_64/waterfox-${LATEST_VERSION}.tar.bz2
 
-printf "Waterfox template updated\n"
+echo "Calculating checksum..."
+CHK=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')
+
+if [ -z "$CHK" ]; then
+    echo "Error: Failed to fetch checksum."
+    exit 1
+fi
+
+echo "Checksum: $CHK"
+
+sed -i "s/^version=.*/version=$LATEST_VERSION/" "$TPL"
+sed -i "s/^revision=.*/revision=1/" "$TPL"
+sed -i "s/^checksum=.*/checksum=\"$CHK\"/" "$TPL"
+
+echo "NEW_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
+echo "### Done! waterfox updated to $LATEST_VERSION"

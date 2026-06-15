@@ -29,6 +29,7 @@ jobs:
     - run: bash ./srcpkgs/helium-browser/update.sh
     - run: bash ./srcpkgs/waterfox/update.sh
     - run: bash ./srcpkgs/librewolf/update.sh
+    - run: bash ./srcpkgs/calamares/update.sh
     - name: Check for updates
       id: check-updates
       run: |

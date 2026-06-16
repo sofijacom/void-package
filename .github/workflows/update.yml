@@ -30,6 +30,7 @@ jobs:
     - run: bash ./srcpkgs/waterfox/update.sh
     - run: bash ./srcpkgs/librewolf/update.sh
     - run: bash ./srcpkgs/calamares/update.sh
+    - run: bash ./srcpkgs/palemoon/update.sh
     - name: Check for updates
       id: check-updates
       run: |

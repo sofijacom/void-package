@@ -58,7 +58,7 @@ sudo xbps-install -S
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
-| Palemoon ( browser )                | https://www.palemoon.org/                         | ❌ |
+| Palemoon ( browser )                | https://www.palemoon.org/                         | ✔️ |
 | Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
 | Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
 | SeaMonkey ( Web-browser )           | https://www.seamonkey-project.org/                | ❌ |

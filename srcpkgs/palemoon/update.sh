@@ -24,7 +24,7 @@ fi
 # Extract the archiv
 [ -e ./*tar.* ] && tar fx ./*tar.* && rm -f ./*tar.* || exit 1
 
-LATEST_VERSION=$(cat ./palemoon/application.ini | grep "^Version=" | head -1 | cut -c 9-)
+LATEST_VERSION=$(cat ./${APP}/application.ini | grep "^Version=" | head -1 | cut -c 9-)
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then

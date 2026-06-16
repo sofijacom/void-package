@@ -8,8 +8,8 @@ TOOLKIT="gtk3"
 echo "### Checking for helium-browser updates..."
 
 # TEMPORARY DIRECTORY
-mkdir -p tmp
-cd ./tmp || exit 1
+#mkdir -p tmp
+#cd ./tmp || exit 1
 
 # Detect the channel
 DOWNLOAD_URL="https://www.palemoon.org/download.php?mirror=us&bits=64&type=linux${TOOLKIT}"

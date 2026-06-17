@@ -32,6 +32,8 @@ jobs:
     - run: bash ./srcpkgs/calamares/update.sh
     - run: bash ./srcpkgs/palemoon/update.sh
     - run: bash ./srcpkgs/smartgit/update.sh
+    - run: bash ./srcpkgs/seamonkey/update.sh
+    - run: bash ./srcpkgs/github-desktop/update.sh
     - name: Check for updates
       id: check-updates
       run: |

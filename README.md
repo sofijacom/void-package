@@ -67,6 +67,11 @@ sudo xbps-install -S
 | Yandex-browser ( stable )           | https://repo.yandex.ru/                           | ✔️ |
 | Zen-browser ( stable )              | https://www.zen-browser.app/                      | ✔️ |
 
+### TODO
+
+- [x] Build and package void-package once a new version is released via GitHub Actions
+- ▷
+
 <br>
  
 <details>

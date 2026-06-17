@@ -5,7 +5,7 @@ set -e
 TPL="srcpkgs/smartgit/template"
 APP="smartgit"
 
-echo "### Checking for microsoft-edge updates..."
+echo "### Checking for smartgit updates..."
 
 # Detect the channel
 # https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb

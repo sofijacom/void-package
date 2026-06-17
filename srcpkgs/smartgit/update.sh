@@ -8,14 +8,14 @@ APP="smartgit"
 echo "### Checking for smartgit updates..."
 
 # Detect the channel
-# https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb
+URL=https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb
 
-# LATEST_VERSION=$(curl -Ls "https://download.smartgit.dev/smartgit/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
-#wait
+# DEB_VERSION=$(curl -Ls "https://download.smartgit.dev/smartgit/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
+# wait
 if wget --version | head -1 | grep -q ' 1.'; then
-    wget -q --no-verbose --show-progress --progress=bar "https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb" || exit 1
+    wget -q --no-verbose --show-progress --progress=bar "${URL}" || exit 1
 else
-    wget "https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb" || exit 1
+    wget "${URL}" || exit 1
 fi
 
 # Extract the archive
@@ -43,8 +43,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-# https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb
-# DEB_URL="https://download.smartgit.dev/smartgit/${LATEST_VERSION}"
+# DEB_URL="https://download.smartgit.dev/smartgit/${DEB_VERSION}"
 DEB_URL="https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb"
 
 echo "Calculating checksum..."

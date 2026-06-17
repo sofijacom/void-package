@@ -9,7 +9,8 @@ echo "### Checking for smartgit updates..."
 
 # Detect the channel
 # https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb
-#LATEST_VERSION=$(curl -s https://download.smartgit.dev/smartgit/ | grep '"browser_download_url":' | grep 'amd64.deb' | grep -vE '(\.pem|\.sig)' | grep -o 'https://[^"]*')
+
+# LATEST_VERSION=$(curl -Ls "https://download.smartgit.dev/smartgit/" | tr '">< ' '\n' | grep ".*amd64.deb" | tail -1)
 #wait
 if wget --version | head -1 | grep -q ' 1.'; then
     wget -q --no-verbose --show-progress --progress=bar "https://download.smartgit.dev/smartgit/smartgit-26_1_038-linux_amd64.deb" || exit 1
@@ -20,6 +21,7 @@ fi
 # Extract the archive
 ar x ./*.deb
 tar xf ./control.tar.gz
+rm -f ./*tar.* && rm -f ./*deb || exit 1
 
 # Check the version
 VERSION=$(cat control | grep Version | cut -c 10-)

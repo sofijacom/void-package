@@ -13,7 +13,7 @@ echo "### Checking for smartgit updates..."
 LATEST_VERSION=$(curl -Ls "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=github-desktop-bin" | grep "^pkgver=" | cut -c 8-)
 LATEST_VER="${VERSION//_/-}"
 
-#VERSION=${LATEST_VERSION#"v"}
+VERSION=${LATEST_VER#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)
 CURRENT_VERSION=$(printf "%s-%s" "${CUR_VERSION}" "${CUR_TIMESTAMP}")

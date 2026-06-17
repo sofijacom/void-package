@@ -25,6 +25,7 @@ rm -f ./*tar.* && rm -f ./*deb || exit 1
 
 # Check the version
 VERSION=$(cat control | grep Version | cut -c 10-)
+CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0

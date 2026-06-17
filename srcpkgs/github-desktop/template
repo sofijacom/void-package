@@ -2,6 +2,7 @@
 pkgname=github-desktop
 version=3.4.13
 revision=1
+timestamp=linux1
 _channel=linux1
 archs="x86_64"
 hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"

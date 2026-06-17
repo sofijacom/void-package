@@ -2,19 +2,19 @@
 
 set -e
 
-TPL="srcpkgs/smartgit/template"
-APP="smartgit"
+TPL="srcpkgs/seamonkey/template"
+APP="seamonkey"
 
 echo "### Checking for smartgit updates..."
 
 # Detect the channel
-VERSION=$(curl -Ls "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=smartgit" | grep "^pkgver=" | cut -c 8-)
-LATEST_VERSION=$(echo "${VERSION//./_}" | cut -d_ -f -4)
+VERSION=$(curl -Ls "https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=seamonkey" | grep "^pkgver=" | cut -c 8-)
 
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+
 
 if [ -z "$VERSION" ]; then
     echo "Error: Failed to fetch latest version."
@@ -28,7 +28,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-DEB_URL="https://download.smartgit.dev/smartgit/smartgit-${LATEST_VERSION}-linux_amd64.deb"
+DEB_URL="https://archive.seamonkey-project.org/releases/${VERSION}/linux-x86_64/en-US/${APP}-${VERSION}.en-US.linux-x86_64.tar.bz2"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$DEB_URL" | sha256sum | awk '{print $1}')
@@ -44,4 +44,4 @@ sed -i "s/^version=.*/version=$VERSION/" "$TPL"
 sed -i "s/^checksum=.*/checksum=$CHK/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
-echo "### Done! smartgit updated to $VERSION"
+echo "### Done! seamonkey updated to $VERSION"

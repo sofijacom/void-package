@@ -1,6 +1,6 @@
 # Template file for 'brave-origin'
 pkgname=brave-origin
-version=1.91.175
+version=1.93.82
 revision=1
 archs="x86_64"
 makedepends="unzip"
@@ -10,7 +10,7 @@ license="Mozilla Public License Version 2.0"
 homepage="https://www.brave.com/"
 changelog="https://www.brave.com/latest/"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-${version}-linux-amd64.zip"
-checksum=a8d80abb74793d8548a8dde07e408da3e237af210fbf4d0296c37d45b2744fcf
+checksum="951b2bfb6b51794014e2af5a8868be3c8584caba49693f009ee67813f094c3fb"
 
 do_extract() {
   unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/brave-origin-${version}-linux-amd64.zip" -x "cron/*" -d ${wrksrc}

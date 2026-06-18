@@ -9,8 +9,8 @@ maintainer="Sofiya <Sofiya@v.org"
 license="Mozilla Public License Version 2.0"
 homepage="https://www.brave.com/"
 changelog="https://www.brave.com/latest/"
-distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-${version}-linux-amd64.zip"
-checksum=a8d80abb74793d8548a8dde07e408da3e237af210fbf4d0296c37d45b2744fcf
+distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-beta-${version}-linux-amd64.zip"
+checksum=da8090827ae14d5ef5595628e11e3ff2f264ef33882cc01301fec7700da7ef96
 
 do_extract() {
   unzip "${XBPS_SRCDISTDIR}/${pkgname}-${version}/brave-origin-${version}-linux-amd64.zip" -x "cron/*" -d ${wrksrc}

@@ -14,7 +14,7 @@ fi
 
 # Cari release yang punya aset brave-origin ZIP (exact match, bukan .sha256 dll)
 LATEST_VERSION=$(gh api "repos/$REPO/releases?per_page=50" \
-    --jq '[.[] | select(any(.assets[]; .name | test("brave-origin.*amd64\\.zip$")))] | first | .tag_name' \
+    --jq '[.[] | select(any(.assets[]; .name | test("brave-origin-beta.*amd64\\.zip$")))] | first | .tag_name' \
     | sed 's/^v//')
 
 if [ -z "$LATEST_VERSION" ]; then
@@ -40,7 +40,7 @@ echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
 
 # Ambil URL langsung dari API, hanya file .zip (bukan .sha256 atau .asc)
 URL=$(gh api "repos/$REPO/releases?per_page=50" \
-    --jq "[.[] | select(.tag_name == \"v${LATEST_VERSION}\")] | first | .assets[] | select(.name | test(\"brave-origin.*amd64\\\\.zip$\")) | .browser_download_url")
+    --jq "[.[] | select(.tag_name == \"v${LATEST_VERSION}\")] | first | .assets[] | select(.name | test(\"brave-origin-beta.*amd64\\\\.zip$\")) | .browser_download_url")
 
 if [ -z "$URL" ]; then
     echo "Error: RPM asset not found in release v${LATEST_VERSION}."

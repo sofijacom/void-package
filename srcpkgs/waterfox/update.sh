@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+
+set -euo pipefail
 
 REPO="BrowserWorks/waterfox"
 TPL="srcpkgs/waterfox/template"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 TPL="srcpkgs/seamonkey/template"
 APP="seamonkey"

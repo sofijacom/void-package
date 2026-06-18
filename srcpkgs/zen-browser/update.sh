@@ -38,3 +38,4 @@ sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
 
 echo "NEW_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
 echo "### Done! zen-browser updated to $LATEST_VERSION"
+

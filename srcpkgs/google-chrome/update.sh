@@ -6,7 +6,7 @@
 # site="https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions/all/releases?filter=endtime=none"
 # pattern="\"version\": *\"\K[\d.]+(?=\")"
 
-set -e
+set -euo pipefail
 
 TPL="srcpkgs/google-chrome/template"
 CHANNEL="stable"

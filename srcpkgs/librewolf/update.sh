@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+
+set -euo pipefail
 
 REPO="librewolf/source"
 TPL="srcpkgs/librewolf/template"

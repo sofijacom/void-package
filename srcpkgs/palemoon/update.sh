@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+
+set -euo pipefail
 
 TPL="srcpkgs/palemoon/template"
 APP="palemoon"

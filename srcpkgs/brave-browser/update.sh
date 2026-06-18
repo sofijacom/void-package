@@ -22,3 +22,4 @@ sed -i "s|^version=.*$|version=${VERSION}|" "${TEMPLATE}"
 sed -i "s|^checksum=.*$|checksum=${SHA256}|" "${TEMPLATE}"
 
 printf "Brave template updated\n"
+

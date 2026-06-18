@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+
+set -euo pipefail
 
 REPO="imputnet/helium-linux"
 TPL="srcpkgs/helium-browser/template"

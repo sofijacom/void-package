@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 TPL="srcpkgs/github-desktop/template"
 APP="github-desktop"

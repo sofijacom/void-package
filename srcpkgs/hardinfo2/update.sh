@@ -40,3 +40,4 @@ sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
 echo "### Done! hardinfo2 updated to $VERSION"
+

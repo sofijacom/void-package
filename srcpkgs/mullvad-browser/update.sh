@@ -25,7 +25,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
 
-URL_X86=https://github.com/$REPO/releases/download/${LATEST_VERSION}/mullvad-browser-linux-x86_64-${LATEST_VERSION}.tar.xz"
+URL_X86="https://github.com/$REPO/releases/download/${LATEST_VERSION}/mullvad-browser-linux-x86_64-${LATEST_VERSION}.tar.xz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

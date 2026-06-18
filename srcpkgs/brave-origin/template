@@ -1,6 +1,6 @@
 # Template file for 'brave-origin'
 pkgname=brave-origin
-version=1.91.175
+version=1.93.82
 revision=1
 archs="x86_64"
 makedepends="unzip"

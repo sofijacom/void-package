@@ -1,19 +1,45 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-printf "Checking latest version\n"
+set -euo pipefail
 
-__dir="$(dirname "${BASH_SOURCE[0]}")"
+REPO="mullvad/mullvad-browser"
+TPL="srcpkgs/mullvad-browser/template"
 
-LATEST_VERSION=$(gh release list --repo mullvad/mullvad-browser --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
-export VERSION=${LATEST_VERSION#"v"}
-CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
+echo "### Checking for mullvad-browser updates..."
 
-printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
-[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
+CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
-export SHA256=$(curl -sL https://github.com/mullvad/mullvad-browser/releases/download/${VERSION}/mullvad-browser-linux-x86_64-${VERSION}.tar.xz | sha256sum | awk '{print $1}')
-[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
+printf "Latest version is: %s\nLatest built version is: %s\n" "${LATEST_VERSION}" "${CURRENT_VERSION}"
+[ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ] && printf "No new version to release\n" && exit 0
 
-envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template
+if [ -z "$LATEST_VERSION" ]; then
+    echo "Error: Failed to fetch latest version."
+    exit 1
+fi
 
-printf "mullvad-browser template updated\n"
+if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
+    echo "No update required. Current version: $CURRENT_VERSION"
+    exit 0
+fi
+
+echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
+
+URL_X86=https://github.com/$REPO/releases/download/${LATEST_VERSION}/mullvad-browser-linux-x86_64-${LATEST_VERSION}.tar.xz"
+
+echo "Calculating checksum..."
+CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')
+
+if [ -z "$CHK_X86" ]; then
+    echo "Error: Failed to fetch checksum."
+    exit 1
+fi
+
+echo "Checksum: $CHK_X86"
+
+sed -i "s/^version=.*/version=$LATEST_VERSION/" "$TPL"
+sed -i "s/^revision=.*/revision=1/" "$TPL"
+sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
+
+echo "NEW_VERSION=$LATEST_VERSION" >> $GITHUB_ENV
+echo "### Done! mullvad-browser updated to $LATEST_VERSION"

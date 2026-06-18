@@ -1,6 +1,6 @@
 # 🤝 How to contribute
 
-I'm really glad you're reading this, I'm doing the best with want I got, but help is always wanted.
+I'm so glad you're reading this, I'm doing my best, but help is always needed.
 
 Want a package added, or spotted something broken?
 

@@ -23,6 +23,9 @@ fi
 LATEST_VERSION=$(cat ./${APP}/application.ini | grep "^Version=" | head -1 | cut -c 9-)
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
+printf "Latest version is: %s\nLatest built version is: %s\n" "${LATEST_VERSION}" "${CURRENT_VERSION}"
+[ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ] && printf "No new version to release\n" && exit 0
+
 if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
     echo "No update required. Current version: $CURRENT_VERSION"
     exit 0

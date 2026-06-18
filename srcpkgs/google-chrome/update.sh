@@ -20,6 +20,9 @@ CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 LATEST_VERSION=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1" \
     | grep -oP '"version":"\K[^"]+' | head -1)
 
+printf "Latest version is: %s\nLatest built version is: %s\n" "${LATEST_VERSION}" "${CURRENT_VERSION}"
+[ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ] && printf "No new version to release\n" && exit 0
+
 if [ -z "$LATEST_VERSION" ]; then
     echo "Error: Failed to fetch latest version."
     exit 1

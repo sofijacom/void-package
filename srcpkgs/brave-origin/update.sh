@@ -1,25 +1,68 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -euo pipefail
 
-printf "Checking latest version\n"
-
-__dir="$(dirname "${BASH_SOURCE[0]}")"
-TEMPLATE=${__dir}/template
 REPO="brave/brave-browser"
+TPL="srcpkgs/brave-origin/template"
 
-LATEST_VERSION=$(gh release list --repo ${REPO} --exclude-drafts --exclude-pre-releases --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
-export VERSION=${LATEST_VERSION#"v"}
-CURRENT_VERSION=$(grep -E '^version=' "${TEMPLATE}" | cut -d= -f2)
+echo "### Checking for brave-origin updates..."
 
-printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
-[ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
+if [ ! -f "$TPL" ]; then
+    echo "Error: Template file not found: $TPL"
+    exit 1
+fi
 
-export SHA256=$(curl -L https://github.com/${REPO}/releases/download/v${VERSION}/brave-origin-${VERSION}-linux-amd64.zip.sha256 | cut -d ' ' -f1 )
-[[ -n ${SHA256} && ${SHA256} =~ ^[A-Fa-f0-9]{64}$ ]] && printf "got junk instead of sha256\n" && exit 1
+# Cari release yang punya aset brave-origin ZIP (exact match, bukan .sha256 dll)
+LATEST_VERSION=$(gh api "repos/$REPO/releases?per_page=50" \
+    --jq '[.[] | select(any(.assets[]; .name | test("brave-origin.*amd64\\.zip$")))] | first | .tag_name' \
+    | sed 's/^v//')
 
-sed -i "s|^version=.*$|version=${VERSION}|" "${TEMPLATE}"
-sed -i "s|^checksum=.*$|checksum=${SHA256}|" "${TEMPLATE}"
+if [ -z "$LATEST_VERSION" ]; then
+    echo "Error: Failed to fetch latest version."
+    exit 1
+fi
 
-printf "Brave-origin template updated\n"
+CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
+if [ -z "$CURRENT_VERSION" ]; then
+    echo "Error: Failed to read current version from template."
+    exit 1
+fi
 
+echo "Current version : $CURRENT_VERSION"
+echo "Latest version  : $LATEST_VERSION"
+
+if [ "$LATEST_VERSION" = "$CURRENT_VERSION" ]; then
+    echo "No update required."
+    exit 0
+fi
+
+echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
+
+# Ambil URL langsung dari API, hanya file .zip (bukan .sha256 atau .asc)
+URL=$(gh api "repos/$REPO/releases?per_page=50" \
+    --jq "[.[] | select(.tag_name == \"v${LATEST_VERSION}\")] | first | .assets[] | select(.name | test(\"brave-origin.*amd64\\\\.zip$\")) | .browser_download_url")
+
+if [ -z "$URL" ]; then
+    echo "Error: RPM asset not found in release v${LATEST_VERSION}."
+    exit 1
+fi
+
+echo "Fetching checksum from: $URL"
+
+CHK=$(curl -fL --retry 3 --retry-delay 2 -s "$URL" | sha256sum | awk '{print $1}')
+if [ -z "$CHK" ]; then
+    echo "Error: Failed to calculate checksum."
+    exit 1
+fi
+
+echo "Checksum: $CHK"
+
+sed -i "s/^version=.*/version=$LATEST_VERSION/" "$TPL"
+sed -i "s/^revision=.*/revision=1/" "$TPL"
+sed -i "s/^checksum=.*/checksum=\"$CHK\"/" "$TPL"
+
+if [ -n "${GITHUB_ENV:-}" ]; then
+    echo "NEW_VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
+fi
+
+echo "### Done! brave-origin updated to $LATEST_VERSION"

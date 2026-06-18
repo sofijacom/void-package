@@ -1,22 +1,42 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-printf "Checking latest version\n"
+set -euo pipefail
+
+REPO="hardinfo2/hardinfo2"
+TPL="srcpkgs/hardinfo2/template"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
-LATEST_VERSION=$(gh release list --repo hardinfo2/hardinfo2 --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
+echo "### Checking for hardinfo2 updates..."
+
+LATEST_VERSION=$(gh release list --repo ${REPO} --json name,tagName,isLatest --jq '.[] | select(.isLatest)|.tagName')
 export VERSION=${LATEST_VERSION#"release-"}
 CURRENT_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-# No preprepped checksum files, need to download the binary and calculate it myself
-gh release download -R hardinfo2/hardinfo2 --archive=tar.gz --output "release-${VERSION}.tar.gz"
-export SHA256=$(sha256sum ./release-${VERSION}.tar.gz | cut -d ' ' -f1 )
-rm ./release-${VERSION}.tar.gz
-[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
+if [ "$VERSION" = "$CURRENT_VERSION" ]; then
+    echo "No update required. Current version: $CURRENT_VERSION"
+    exit 0
+fi
 
-envsubst '${SHA256} ${VERSION}' < ${__dir}/.template > ${__dir}/template
+echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-printf "hardinfo2 template updated\n"
+URL_X86="https://github.com/$REPO/archive/refs/tags/release-${VERSION}.tar.gz"
+
+echo "Calculating checksum..."
+CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')
+
+if [ -z "$CHK_X86" ]; then
+    echo "Error: Failed to fetch checksum."
+    exit 1
+fi
+
+echo "Checksum: $CHK_X86"
+
+sed -i "s/^version=.*/version=$VERSION/" "$TPL"
+sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
+
+echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
+echo "### Done! hardinfo2 updated to $VERSION"

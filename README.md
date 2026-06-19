@@ -49,6 +49,7 @@ sudo xbps-install -S
 |:--------|:-------|:-----------------|
 | Brave-browser ( stable )            | https://www.brave.com/                            | ✔️ |
 | Brave-origin ( stable )             | https://www.brave.com/                            | ✔️ |
+| Brave-origin ( beta )               | https://www.brave.com/                            | ✔️ |
 | Calamares ( Graphical installer )   | https://calamares.io                              | ✔️ |
 | Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 | 
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ✔️ |

@@ -1,11 +1,12 @@
 # Template file for 'brave-origin-beta'
+
 pkgname=brave-origin-beta
 version=1.92.126
 revision=1
 archs="x86_64"
 create_wrksrc=yes
 hostmakedepends="rpmextract"
-short_desc="Browser that rethinks the web (Beta channel)"
+short_desc="The minimalist browser from the makers of Brave (beta release)."
 maintainer="Sofiya <Sofiya@v.org"
 license="MPL-2.0"
 homepage="https://www.brave.com/"
@@ -14,8 +15,10 @@ distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/
 checksum="7e8ce9558f76d615377c2bc5fe04e6e63f1c59ddcf16c3503a9bfc16d9057952"
 
 do_install() {
+
 	rm -f etc/cron.daily/brave-origin-beta
 	vcopy "*" /
 	vmkdir usr/share/pixmaps
 	vinstall opt/brave.com/brave-origin-beta/product_logo_128_beta.png 644 usr/share/pixmaps brave-origin-beta.png
+
 }

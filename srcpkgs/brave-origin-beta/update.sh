@@ -3,18 +3,18 @@
 set -euo pipefail
 
 REPO="brave/brave-browser"
-TPL="srcpkgs/brave-origin/template"
+TPL="srcpkgs/brave-origin-beta/template"
 
-echo "### Checking for brave-origin updates..."
+echo "### Checking for brave-origin-beta updates..."
 
 if [ ! -f "$TPL" ]; then
     echo "Error: Template file not found: $TPL"
     exit 1
 fi
 
-# Cari release yang punya aset brave-origin ZIP (exact match, bukan .sha256 dll)
+# Look for releases that contain RPM archives created in Brave Origin (exact match, not .sha256, etc.).
 LATEST_VERSION=$(gh api "repos/$REPO/releases?per_page=50" \
-    --jq '[.[] | select(any(.assets[]; .name | test("brave-origin-beta.*amd64\\.zip$")))] | first | .tag_name' \
+    --jq '[.[] | select(any(.assets[]; .name | test("brave-origin-beta.*x86_64\\.rpm$")))] | first | .tag_name' \
     | sed 's/^v//')
 
 if [ -z "$LATEST_VERSION" ]; then
@@ -38,9 +38,9 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $LATEST_VERSION"
 
-# Ambil URL langsung dari API, hanya file .zip (bukan .sha256 atau .asc)
+# Get the URL directly from the API, only .rpm files (not .sha256 or .asc)
 URL=$(gh api "repos/$REPO/releases?per_page=50" \
-    --jq "[.[] | select(.tag_name == \"v${LATEST_VERSION}\")] | first | .assets[] | select(.name | test(\"brave-origin-beta.*amd64\\\\.zip$\")) | .browser_download_url")
+    --jq "[.[] | select(.tag_name == \"v${LATEST_VERSION}\")] | first | .assets[] | select(.name | test(\"brave-origin-beta.*x86_64\\\\.rpm$\")) | .browser_download_url")
 
 if [ -z "$URL" ]; then
     echo "Error: RPM asset not found in release v${LATEST_VERSION}."
@@ -65,4 +65,4 @@ if [ -n "${GITHUB_ENV:-}" ]; then
     echo "NEW_VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
 fi
 
-echo "### Done! brave-origin updated to $LATEST_VERSION"
+echo "### Done! brave-origin-beta updated to $LATEST_VERSION"

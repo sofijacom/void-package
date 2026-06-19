@@ -16,7 +16,7 @@ echo "### Checking for google-chrome updates..."
 
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
-# Ambil versi terbaru dari Chrome version API
+# Get the latest version of the Chrome API.
 LATEST_VERSION=$(curl -s "https://chromiumdash.appspot.com/fetch_releases?channel=Stable&platform=Linux&num=1" \
     | grep -oP '"version":"\K[^"]+' | head -1)
 

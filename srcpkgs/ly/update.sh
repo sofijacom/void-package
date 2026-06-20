@@ -21,7 +21,7 @@ printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CU
 gh release download -R ${REPO} --archive=tar.gz --output "v$VERSION.tar.gz"
 export SHA256=$(sha256sum ./v$VERSION.tar.gz | cut -d ' ' -f1 )
 rm ./v$VERSION.tar.gz
-[[ -n ${SHA256} && ${SHA256} =~ ^[A-Fa-f0-9]{64}$ ]] && printf "got junk instead of sha256\n" && exit 1
+[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
 
 sed -i "s/^version=.*/version=$VERSION/" "$TPL"
 sed -i "s/^checksum=.*/checksum=\"$SHA256\"/" "$TPL"

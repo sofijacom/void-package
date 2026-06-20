@@ -33,3 +33,4 @@ sed -i "s/^version=.*/version=$VERSION/" "$TEMPLATE"
 sed -i "s/^checksum=.*/checksum=$CHK/" "$TEMPLATE"
 
 printf "ly template updated\n"
+

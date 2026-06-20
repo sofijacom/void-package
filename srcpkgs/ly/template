@@ -4,7 +4,6 @@ version=1.4.1
 revision=1
 archs="i686 x86_64"
 build_style=zig-build
-#configure_args="--search-prefix=/usr"
 hostmakedepends="pkg-config"
 makedepends="pam-devel libxcb-devel git"
 depends="pam glibc libxcb util-linux xorg-server xauth brightnessctl"
@@ -23,9 +22,9 @@ conf_files="
  /etc/pam.d/ly
  /etc/pam.d/ly-autologin"
 
-#do_build() {
-#	zig build installexe -Dinit_system=runit
-#}
+do_build() {
+	zig build installexe -Dinit_system=runit
+}
 
 do_install() {
 	vbin zig-out/bin/ly

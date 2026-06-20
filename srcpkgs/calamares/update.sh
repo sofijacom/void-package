@@ -41,7 +41,7 @@ fi
 echo "Checksum: $CHK_X86"
 
 sed -i "s/^version=.*/version=$VERSION/" "$TPL"
-sed -i "s/^checksum=.*/checksum=$CHK/" "$TPL"
+sed -i "s/^checksum=.*/checksum=$CHK_X86/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
 echo "### Done! Calamares updated to $VERSION"

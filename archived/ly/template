@@ -4,7 +4,7 @@ version=1.4.1
 revision=1
 archs="x86_64"
 build_style=zig-build
-hostmakedepends="pkg-config git"
+hostmakedepends="pkg-config zig-0.16 git"
 makedepends="pam-devel libxcb-devel glibc-devel"
 depends="xorg-server xauth brightnessctl"
 short_desc="Ly is a lightweight TUI (ncurses-like) display manager for Linux and BSD."
@@ -13,6 +13,7 @@ license="WTFPL"
 homepage="https://codeberg.org/fairyglade/ly"
 distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
 checksum=16fe5f07cc7a23930880b14d905883644cdc4b574d1c146629f6b98ee8fbbab9
+
 conf_files="
  /etc/ly/config.ini
  /etc/pam.d/ly

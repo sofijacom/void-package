@@ -5,6 +5,7 @@ revision=1
 archs="i686 x86_64"
 build_style=zig-build
 conf_files="/etc/ly/config.ini"
+hostmakedepends="pkg-config zig"
 makedepends="pam-devel libxcb-devel"
 depends="pam util-linux"
 short_desc="Ly is a lightweight TUI (ncurses-like) display manager for Linux and BSD."

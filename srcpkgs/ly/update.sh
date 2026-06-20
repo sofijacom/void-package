@@ -1,47 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
+printf "Checking latest version\n"
+
+__dir="$(dirname "${BASH_SOURCE[0]}")"
+
 REPO="fairyglade/ly"
-TPL="srcpkgs/ly/template"
+TEMPLATE=${__dir}/template
 ID="9341631"
 
-echo "### Checking for ly updates..."
-
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/${REPO}/releases/${ID}" | jq -r ".tag_name")
-
-VERSION=${LATEST_VERSION#"v"}
-CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
+export VERSION=${LATEST_VERSION#"v"}
+CURRENT_VERSION=$(grep -E '^version=' "${TEMPLATE}" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-if [ -z "$VERSION" ]; then
-    echo "Error: Failed to fetch latest version."
-    exit 1
-fi
-
-if [ "$VERSION" = "$CURRENT_VERSION" ]; then
-    echo "No update required. Current version: $CURRENT_VERSION"
-    exit 0
-fi
-
-echo "Update found: $CURRENT_VERSION -> $VERSION"
-
-URL_X86="https://codeberg.org/fairyglade/ly/archive/v$VERSION.tar.gz"
-
-echo "Calculating checksum..."
-CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')
-
-if [ -z "$CHK_X86" ]; then
-    echo "Error: Failed to fetch checksum."
-    exit 1
-fi
-
-echo "Checksum: $CHK_X86"
+# No preprepped checksum files, need to download the binary and calculate it myself
+gh release download -R ${REPO} --archive=tar.gz --output "v$VERSION.tar.gz"
+export SHA256=$(sha256sum ./v$VERSION.tar.gz | cut -d ' ' -f1 )
+rm ./v$VERSION.tar.gz
+[[ -n ${SHA256} && ${SHA256} =~ ^[A-Fa-f0-9]{64}$ ]] && printf "got junk instead of sha256\n" && exit 1
 
 sed -i "s/^version=.*/version=$VERSION/" "$TPL"
-sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
+sed -i "s/^checksum=.*/checksum=\"$SHA256\"/" "$TPL"
 
-echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
-echo "### Done! ly updated to $VERSION"
+printf "ly template updated\n"
+

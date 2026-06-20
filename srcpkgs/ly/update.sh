@@ -3,7 +3,7 @@
 set -euo pipefail
 
 REPO="fairyglade/ly"
-TPL="srcpkgs/calamares/template"
+TPL="srcpkgs/ly/template"
 ID="7639303"
 
 echo "### Checking for Calamares updates..."
@@ -44,4 +44,4 @@ sed -i "s/^version=.*/version=$VERSION/" "$TPL"
 sed -i "s/^checksum=.*/checksum=\"$CHK_X86\"/" "$TPL"
 
 echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
-echo "### Done! Calamares updated to $VERSION"
+echo "### Done! ly updated to $VERSION"

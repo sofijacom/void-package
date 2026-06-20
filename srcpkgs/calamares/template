@@ -1,7 +1,7 @@
 # Template file for 'calamares'
 
 pkgname=calamares
-version=null
+version=3.4.2
 revision=2
 archs="x86_64"
 build_style=cmake
@@ -28,7 +28,7 @@ license="GPL-3.0-or-later"
 homepage="https://calamares.io"
 changelog="https://codeberg.org/Calamares/calamares"
 distfiles="https://codeberg.org/Calamares/calamares/releases/download/v${version}/calamares-${version}.tar.gz"
-checksum="7515bf959b73b956ceb967351c7e299cbb3668a53d35f9c770eb72e00d93ced6"
+checksum="733bbbb00dc9f84874bd5c22960952f317ea2537565431179fa2152b2fbfdccc"
 
 case ${XBPS_TARGET_MACHINE} in
 	*-musl)

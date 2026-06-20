@@ -17,13 +17,19 @@ CURRENT_VERSION=$(grep -E '^version=' "${TEMPLATE}" | cut -d= -f2)
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-# No preprepped checksum files, need to download the binary and calculate it myself
-gh release download -R ${REPO} --archive=tar.gz --output "v${VERSION}.tar.gz"
-export SHA256=$(sha256sum ./v${VERSION}.tar.gz | shasum -a 256 | cut -d " " -f 1 )
-rm ./v${VERSION}.tar.gz
-[[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
+URL_X86="https://codeberg.org/${REPO}/v${VERSION}.tar.gz"
+
+echo "Calculating checksum..."
+CHK=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')
+
+if [ -z "$CHK" ]; then
+    echo "Error: Failed to fetch checksum."
+    exit 1
+fi
+
+echo "Checksum: $CHK"
 
 sed -i "s/^version=.*/version=$VERSION/" "$TEMPLATE"
-sed -i "s/^checksum=.*/checksum=$SHA256/" "$TEMPLATE"
+sed -i "s/^checksum=.*/checksum=$CHK/" "$TEMPLATE"
 
 printf "ly template updated\n"

@@ -4,8 +4,7 @@ version=1.4.1
 revision=1
 archs="i686 x86_64"
 build_style=zig-build
-conf_files="/etc/ly/config.ini"
-hostmakedepends="pkg-config zig"
+hostmakedepends="pkg-config"
 makedepends="pam-devel libxcb-devel"
 depends="pam util-linux"
 short_desc="Ly is a lightweight TUI (ncurses-like) display manager for Linux and BSD."
@@ -16,6 +15,8 @@ changelog="https://codeberg.org/fairyglade/ly/releases/"
 distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
 checksum="16fe5f07cc7a23930880b14d905883644cdc4b574d1c146629f6b98ee8fbbab9"
 nopie_files=/usr/bin/ly
+
+conf_files="/etc/ly/config.ini"
 
 do_install() {
   vbin zig-out/usr/bin/ly

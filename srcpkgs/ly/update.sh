@@ -17,7 +17,7 @@ CURRENT_VERSION=$(grep -E '^version=' "${TEMPLATE}" | cut -d= -f2)
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"
 [ "${CURRENT_VERSION}" = "${VERSION}" ] && printf "No new version to release\n" && exit 0
 
-URL_X86="https://codeberg.org/${REPO}/${LATEST_VERSION}.tar.gz"
+URL_X86="https://codeberg.org/${REPO}/ly-${LATEST_VERSION}.tar.gz"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

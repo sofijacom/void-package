@@ -28,7 +28,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-URL_X86="https://codeberg.org/fairyglade/ly/releases/download/v${VERSION}/ly-v${VERSION}.tar.gz"
+URL_X86="https://codeberg.org/fairyglade/ly/archive/v$VERSION.tar.gz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

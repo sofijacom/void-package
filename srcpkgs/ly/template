@@ -17,7 +17,8 @@ conf_files="
  /etc/ly/config.ini
  /etc/pam.d/ly
  /etc/pam.d/ly-autologin"
-nopie=yes
+#nopie=yes
+nopie_files=/usr/bin/ly
 
 do_build() {
 	zig build installexe -Dinit_system=runit

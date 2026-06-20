@@ -11,7 +11,9 @@ TEMPLATE=${__dir}/template
 ID="9341631"
 
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/${REPO}/releases/${ID}" | jq -r ".tag_name")
-export VERSION=${LATEST_VERSION#"v"}
+
+VERSION=${LATEST_VERSION#"v"}
+
 CURRENT_VERSION=$(grep -E '^version=' "${TEMPLATE}" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CURRENT_VERSION}"

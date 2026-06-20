@@ -1,7 +1,7 @@
 <div align="center" markdown="1">
   <a>
   <!-- <img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.gif" /> -->
-  <img width="450" height="auto" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux-1.png?raw=true" />
+  <img width="250" height="auto" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux-1.png?raw=true" />
   </a>
 <!-- # 【 Void Linux Software Repository 】 -->
 <!-- # 【 Unofficial package repository for Void Linux 】 -->

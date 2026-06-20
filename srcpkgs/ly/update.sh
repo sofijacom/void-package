@@ -4,9 +4,9 @@ set -euo pipefail
 
 REPO="fairyglade/ly"
 TPL="srcpkgs/ly/template"
-ID="7639303"
+ID="9341631"
 
-echo "### Checking for Calamares updates..."
+echo "### Checking for ly updates..."
 
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/${REPO}/releases/${ID}" | jq -r ".tag_name")
 

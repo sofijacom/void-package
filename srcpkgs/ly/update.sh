@@ -23,8 +23,8 @@ export SHA256=$(sha256sum ./v$VERSION.tar.gz | cut -d ' ' -f1 )
 rm ./v$VERSION.tar.gz
 [[ ! ${SHA256} =~ ^[a-z0-9]+$ ]] && printf "got junk instead of sha256\n" && exit 1
 
-sed -i "s/^version=.*/version=$VERSION/" "$TPL"
-sed -i "s/^checksum=.*/checksum=\"$SHA256\"/" "$TPL"
+sed -i "s/^version=.*/version=$VERSION/" "$TEMPLATE"
+sed -i "s/^checksum=.*/checksum=\"$SHA256\"/" "$TEMPLATE"
 
 printf "ly template updated\n"
 

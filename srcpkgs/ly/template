@@ -2,25 +2,21 @@
 pkgname=ly
 version=1.4.1
 revision=1
-archs="i686 x86_64"
-build_style=zig-build
-hostmakedepends="pkg-config"
-makedepends="pam-devel libxcb-devel git"
-depends="pam glibc libxcb util-linux xorg-server xauth brightnessctl"
+archs="x86_64"
+hostmakedepends="pkg-config zig"
+makedepends="pam-devel libxcb-devel"
+depends="xorg-server xauth brightnessctl"
 short_desc="Ly is a lightweight TUI (ncurses-like) display manager for Linux and BSD."
 maintainer="Sofiya <sofiya@v.org>"
-license="WTFPL-2.0"
+license="WTFPL"
 homepage="https://codeberg.org/fairyglade/ly"
-changelog="https://codeberg.org/fairyglade/ly/releases/"
 distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
-checksum="16fe5f07cc7a23930880b14d905883644cdc4b574d1c146629f6b98ee8fbbab9"
-# nopie_files=/usr/bin/ly
-nopie=yes
-
+checksum=16fe5f07cc7a23930880b14d905883644cdc4b574d1c146629f6b98ee8fbbab9
 conf_files="
  /etc/ly/config.ini
  /etc/pam.d/ly
  /etc/pam.d/ly-autologin"
+nopie=yes
 
 do_build() {
 	zig build installexe -Dinit_system=runit

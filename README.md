@@ -57,7 +57,7 @@ sudo xbps-install -S
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
 | Helium-browser                      | https://helium.computer/                          | ✔️ |
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ✔️ |
-| Ly                                  | https://codeberg.org/fairyglade/ly                | ✔️ |
+| ly                                  | https://codeberg.org/fairyglade/ly                | ✔️ |
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |

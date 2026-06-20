@@ -4,9 +4,10 @@ version=1.4.1
 revision=1
 archs="i686 x86_64"
 build_style=zig-build
+configure_args="--search-prefix=/usr"
 hostmakedepends="pkg-config"
-makedepends="pam-devel libxcb-devel"
-depends="pam util-linux"
+makedepends="pam-devel libxcb-devel git"
+depends="pam glibc libxcb util-linux"
 short_desc="Ly is a lightweight TUI (ncurses-like) display manager for Linux and BSD."
 maintainer="Sofiya <sofiya@v.org>"
 license="WTFPL-2.0"

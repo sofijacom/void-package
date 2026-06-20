@@ -18,8 +18,8 @@ printf "Latest version is: %s\nLatest built version is: %s\n" "${VERSION}" "${CU
 export SHA256=$(curl -L https://github.com/${REPO}/releases/download/v${VERSION}/brave-origin-${VERSION}-linux-amd64.zip.sha256 | cut -d ' ' -f1 )
 [[ -n ${SHA256} && ${SHA256} =~ ^[A-Fa-f0-9]{64}$ ]] && printf "got junk instead of sha256\n" && exit 1
 
-sed -i "s|^version=.*$|version=${VERSION}|" "${TEMPLATE}"
-sed -i "s|^checksum=.*$|checksum=${SHA256}|" "${TEMPLATE}"
+sed -i "s/^version=.*/version=${VERSION}/" "${TEMPLATE}"
+sed -i "s/^checksum=.*/checksum=${SHA256}/" "${TEMPLATE}"
 
-printf "Brave-origin template updated\n"
-
+echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
+echo "## Done! Brave-origin updated to $VERSION"

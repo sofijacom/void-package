@@ -12,7 +12,8 @@ maintainer="Sofiya <sofiya@v.org>"
 license="WTFPL-2.0"
 homepage="https://codeberg.org/fairyglade/ly"
 changelog="https://codeberg.org/fairyglade/ly/releases/"
-distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
+#distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
+distfiles="https://codeberg.org/fairyglade/ly/releases/download/v${version}/ly-v${version}.tar.gz"
 checksum=9ee3acf3139db375f79f1ce19f97386ba017a4ed24f3bb6be9b90dc5a2c10bb4
 nopie_files=/usr/bin/ly
 

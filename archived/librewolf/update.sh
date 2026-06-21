@@ -4,6 +4,7 @@ set -euo pipefail
 
 REPO="librewolf/source"
 TPL="srcpkgs/librewolf/template"
+ID="9991091"
 
 __dir="$(dirname "${BASH_SOURCE[0]}")"
 
@@ -35,8 +36,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-# URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${LATEST_VERSION}/librewolf-${LATEST_VERSION}.source.tar.gz"
-URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf/${LATEST_VERSION}/librewolf-${LATEST_VERSION}-linux-x86_64-package.tar.xz"
+URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${LATEST_VERSION}/librewolf-${LATEST_VERSION}.source.tar.gz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

@@ -20,16 +20,16 @@ nostrip=yes
 
 do_install() {
 	install -dm755 \
-		"${DESTDIR}/lib/${pkgname}" \
+		"${DESTDIR}/usr/lib/${pkgname}" \
 		"${DESTDIR}/usr/bin" \
 		"${DESTDIR}/usr/share/applications" \
 		"${DESTDIR}/usr/share/pixmaps"
 
-	vcopy * "lib/${pkgname}"
+	vcopy * "usr/lib/${pkgname}"
 	vinstall "${FILESDIR}/librewolf.desktop" 644 usr/share/applications/
 
-	ln -sf "/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf"
-	ln -sf "/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf-wayland"
+	ln -sf "/usr/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf"
+	ln -sf "/usr/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf-wayland"
 
 	vinstall browser/chrome/icons/default/default48.png 644 usr/share/pixmaps librewolf.png
 	for size in 16 32 48 64 128; do
@@ -38,7 +38,7 @@ do_install() {
 			"usr/share/icons/hicolor/${size}x${size}/apps" librewolf.png
 	done
 
-	ln -Ts /usr/share/hunspell "${DESTDIR}/lib/${pkgname}/dictionaries"
-	ln -Ts /usr/share/hyphen "${DESTDIR}/lib/${pkgname}/hyphenation"
-	ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/lib/${pkgname}/libnssckbi.so"
+	ln -Ts /usr/share/hunspell "${DESTDIR}/usr/lib/${pkgname}/dictionaries"
+	ln -Ts /usr/share/hyphen "${DESTDIR}/usr/lib/${pkgname}/hyphenation"
+	ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/usr/lib/${pkgname}/libnssckbi.so"
 }

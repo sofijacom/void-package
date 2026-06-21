@@ -11,7 +11,8 @@ maintainer="sofiya <sofiya@v.org>"
 license="GPL-3.0-only AND LGPL-2.1-only AND LGPL-3.0-only AND MPL-2.0"
 homepage="https://codeberg.org/librewolf/source/releases"
 # distfiles="https://gitlab.com/api/v4/projects/32320088/packages/generic/librewolf-source/${version}-${revision}/${pkgname}-${version}-${revision}.source.tar.gz"
-distfiles="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${version}-${_rev}/${pkgname}-${version}-${_rev}.source.tar.gz"
+# https://codeberg.org/api/packages/librewolf/generic/librewolf-source/152.0.1-2/librewolf-152.0.1-2.source.tar.gz
+distfiles="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${version}-${timestamp}/${pkgname}-${version}-${timestamp}.source.tar.gz"
 checksum=c399f73e61158937d3484cc5d87f35c8266c3e707f1d42116650c4827bfc57cc
 
 lib32disabled=yes

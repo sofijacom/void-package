@@ -11,6 +11,7 @@ echo "### Checking for waterfox updates..."
 
 # LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 VERSION="$(wget https://www.waterfox.com/download/ -O - | sed 's/[()",{} ]/\n/g' | grep -o "https.*Linux.*bz2")"
+#wget "$VERSION" -O ./tar.bz2
 LATEST_VERSION=$(echo "$VERSION" | sed -n '1p' | awk '{print $2}')
 
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)

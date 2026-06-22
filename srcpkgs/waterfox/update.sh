@@ -7,8 +7,8 @@ TPL="srcpkgs/waterfox/template"
 
 echo "### Checking for waterfox updates..."
 
-#LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
-LATEST_VERSION=$(curl -s "https://api.waterfox.com/latest-version")
+# LATEST_VERSION=$(curl -s "https://api.waterfox.com/latest-version")
+LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${LATEST_VERSION}" "${CURRENT_VERSION}"

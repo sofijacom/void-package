@@ -3,7 +3,7 @@
 pkgname=calamares
 version=3.4.2
 revision=2
-archs="x86_64"
+archs="x86_64 x86_64-musl"
 build_style=cmake
 configure_args="
     -DWITH_PYTHON:BOOL=ON
@@ -31,7 +31,7 @@ distfiles="https://codeberg.org/Calamares/calamares/releases/download/v${version
 checksum="733bbbb00dc9f84874bd5c22960952f317ea2537565431179fa2152b2fbfdccc"
 
 case ${XBPS_TARGET_MACHINE} in
-	*-musl)
+	x86_64-musl)
 		depends+=" musl-locales" ;;
 esac
 

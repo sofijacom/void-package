@@ -1,6 +1,6 @@
 # Template file for 'waterfox'
 pkgname=waterfox
-version=
+version=6.6.14
 revision=1
 archs="x86_64"
 short_desc="Fast and Private Web Browser"

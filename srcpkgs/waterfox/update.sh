@@ -5,15 +5,9 @@ set -euo pipefail
 REPO="BrowserWorks/waterfox"
 TPL="srcpkgs/waterfox/template"
 
-#export ARCH=$(uname -m)
-
 echo "### Checking for waterfox updates..."
 
-# LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
-VERSION="$(wget https://www.waterfox.com/download/ -O - | sed 's/[()",{} ]/\n/g' | grep -o "https.*Linux.*bz2")"
-#wget "$VERSION" -O ./tar.bz2
-LATEST_VERSION=$(echo "$VERSION" | sed -n '1p' | awk '{print $2}')
-
+LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 
 printf "Latest version is: %s\nLatest built version is: %s\n" "${LATEST_VERSION}" "${CURRENT_VERSION}"

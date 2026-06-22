@@ -4,6 +4,7 @@ set -euo pipefail
 
 REPO="BrowserWorks/waterfox"
 TPL="srcpkgs/waterfox/template"
+export ARCH=$(uname -m)
 
 echo "### Checking for waterfox updates..."
 

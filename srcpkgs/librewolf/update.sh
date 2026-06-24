@@ -9,7 +9,6 @@ __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
 
-# $(curl -sL "https://codeberg.org/api/v1/repos/<your user/your repository>/releases/latest" | jq -r ".tag_name")
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/source/releases/latest" | jq -r ".tag_name")
 
 VERSION=${LATEST_VERSION#"v"}

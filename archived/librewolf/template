@@ -90,14 +90,14 @@ do_build() {
 	if [ "$build_option_clang" ]; then
 		export CC=clang
 		export CXX=clang++
-    export AS=clang
+		export AS=clang
 		export AR=llvm-ar
 		export NM=llvm-nm
 		export HOST_CC=clang
 		export HOST_CXX=clang++
 	fi
 
-    export ASFLAGS="--target=${XBPS_CROSS_TRIPLET:-${XBPS_TRIPLET}}"
+		export ASFLAGS="--target=${XBPS_CROSS_TRIPLET:-${XBPS_TRIPLET}}"
 	fi
 
 	disable_jemalloc() {

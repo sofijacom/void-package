@@ -44,8 +44,8 @@ do_install() {
     "${DESTDIR}"/usr/share/applications/ru.yandex.desktop.browser.desktop
 
 # Remove the Debian/Ubuntu crontab
-	rm -rf ${DESTDIR}/etc/cron.daily
-	rm -rf ${DESTDIR}/opt/yandex/browser/cron
+	 rm -rf ${DESTDIR}/etc/cron.daily
+	 rm -rf ${DESTDIR}/opt/yandex/browser/cron
 }
 
 post_install() {

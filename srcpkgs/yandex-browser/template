@@ -41,7 +41,7 @@ do_install() {
 	done
 
   sed -i '/^\[Desktop Entry\]/a NoDisplay=true' \
-      "${DESTDIR}"/usr/share/applications/ru.yandex.desktop.browser.desktop
+    "${DESTDIR}"/usr/share/applications/ru.yandex.desktop.browser.desktop
 
 # Remove the Debian/Ubuntu crontab
 	rm -rf ${DESTDIR}/etc/cron.daily

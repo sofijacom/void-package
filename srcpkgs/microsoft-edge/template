@@ -1,6 +1,6 @@
 # Template file for 'microsoft-edge-stable'
 pkgname=microsoft-edge
-version=149.0.4022.80
+version=149.0.4022.96
 timestamp=1
 revision=1
 _channel=stable
@@ -16,7 +16,7 @@ homepage="https://www.microsoft.com/en-us/edge"
 changelog="https://github.com/NDViet/microsoft-edge-stable/blob/main/README.md"
 # distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/${_pkgname}-${_channel}_${version}-1_amd64.deb"
 distfiles="https://github.com/NDViet/microsoft-edge-stable/releases/download/${version}-1/microsoft-edge-${_channel}_${version}-1_amd64.deb"
-checksum=e6b1d2317f47771bd0390d370e72c917b3531d8e586edeec494e4cadc1b34676
+checksum=1b37b014f098865e396d9e482cd247090d2c78a15fb0d85437d581b97cda0f23
 
 do_install() {
 	# Copy files

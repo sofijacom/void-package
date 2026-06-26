@@ -2,7 +2,7 @@
 pkgname=yandex-browser
 version=26.4.1.1110
 timestamp=1
-revision=4
+revision=1
 _channel=stable
 archs="x86_64"
 hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"

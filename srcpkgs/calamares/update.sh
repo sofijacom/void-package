@@ -4,11 +4,9 @@ set -euo pipefail
 
 REPO="Calamares/calamares"
 TPL="srcpkgs/calamares/template"
-ID="7639303"
 
 echo "### Checking for Calamares updates..."
 
-# https://codeberg.org/api/v1/repos/Calamares/calamares/releases/latest - Without hard ID
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/Calamares/calamares/releases/latest" | jq -r ".tag_name")
 
 VERSION=${LATEST_VERSION#"v"}

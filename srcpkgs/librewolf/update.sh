@@ -11,7 +11,7 @@ echo "### Checking for librewolf updates..."
 
 LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/source/releases/latest" | jq -r ".tag_name")
 
-VERSION=${LATEST_VERSION#"v"}
+export VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
 CUR_TIMESTAMP=$(grep -E '^timestamp=' ${__dir}/template | cut -d= -f2)
 CURRENT_VERSION=$(printf "%s-%s" "${CUR_VERSION}" "${CUR_TIMESTAMP}")

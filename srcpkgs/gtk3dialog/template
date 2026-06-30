@@ -6,7 +6,7 @@ timestamp=e
 build_style=meson
 configure_args="--prefix=/usr -Dgtkver=3"
 hostmakedepends="pkg-config"
-makedepends="glib-devel gtk+3-devel vte3-devel gtk-layer-shell-devel meson cmake ninja autoconf automake libtool subversion bison flex texinfo"
+makedepends="glib-devel gtk+3-devel libnotify-devel vte3-devel gtk-layer-shell-devel meson cmake ninja autoconf automake libtool subversion bison flex texinfo"
 short_desc="A small utility for fast and easy GUI building"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL"

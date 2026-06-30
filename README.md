@@ -54,7 +54,7 @@ sudo xbps-install -S
 | Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 | 
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ✔️ |
 | Google-chrome ( stable )            | https://www.google.com/chrome/                    | ✔️ |
-| Gtk3dialog ( GTK+ 3 )               | https://github.com/puppylinux-woof-CE             | ✔️ |
+| Gtk3dialog ( GTK+ 3 )               | https://github.com/puppylinux-woof-CE/gtkdialog   | ✔️ |
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
 | Helium-browser                      | https://helium.computer/                          | ✔️ |
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ✔️ |

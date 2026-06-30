@@ -1,0 +1,16 @@
+# Template file for 'gtkdialog'
+pkgname=gtk3dialog
+version=0.8.5
+revision=1
+timestamp=e
+build_style=meson
+configure_args="--prefix=/usr -Dgtkver=3"
+hostmakedepends="pkg-config"
+makedepends="glib-devel gtk+3-devel vte3-devel gtk-layer-shell-devel meson cmake ninja autoconf automake libtool subversion bison flex texinfo"
+short_desc="A small utility for fast and easy GUI building"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL"
+homepage="https://github.com/puppylinux-woof-CE"
+distfiles="https://github.com/puppylinux-woof-CE/gtkdialog/archive/0.8.5e.tar.gz"
+checksum=93561ed4042c113b85aa5550f51ae4e6980a5de6e083db5c358d6fc2fb2feb0a
+

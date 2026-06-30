@@ -1,0 +1,8 @@
+case "${ACTION}" in
+pre)
+	;;
+post)
+  ln -s /usr/bin/gtkdialog /usr/bin/gtkdialog3
+  ln -s /usr/bin/gtkdialog /usr/bin/gtkdialog4
+	;;
+esac

@@ -7,6 +7,7 @@ TPL="srcpkgs/helium-browser/template"
 
 echo "### Checking for helium-browser updates..."
 
+# LATEST_VERSION=$(curl -s https://api.github.com/repos/$REPO/releases/latest | jq -r .tag_name) # Latest release
 LATEST_VERSION=$(gh api repos/$REPO/releases/latest --jq .tag_name | sed 's/^v//')
 CURRENT_VERSION=$(grep '^version=' "$TPL" | cut -d= -f2)
 

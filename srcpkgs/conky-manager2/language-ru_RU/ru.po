@@ -28,7 +28,7 @@ msgstr "24 Часа"
 
 #: MainWindow.vala:423 MainWindow.vala:424
 msgid "About"
-msgstr "О"
+msgstr "О компании"
 
 #: SettingsWindow.vala:199
 msgid "Add"

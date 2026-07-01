@@ -1,4 +1,4 @@
-# French translation for conky-manager
+# Russian translation for conky-manager
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the conky-manager package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.

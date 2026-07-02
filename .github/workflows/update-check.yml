@@ -25,7 +25,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           chmod +x scripts/cleanup-old-artifacts.sh
-          ./scripts/cleanup-old-artifacts.sh
+          ./scripts/cleanup-old-artifacts.sh sofijacom/void-package
 
       - name: Commit and push
         #if: env.NEW_VERSION != ''

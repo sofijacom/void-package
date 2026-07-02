@@ -13,8 +13,8 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-REPO=$1  # sofijacom/void-package
-DAYS_OLD=2
+REPO=$1
+DAYS_OLD=5
 PAGE=1
 
 echo "Cleaning up artifacts older than $DAYS_OLD days for repository: $REPO"
@@ -45,7 +45,7 @@ while true; do
     fi
 
     # Calculate artifact age in days (macOS-compatible)
-    CREATED_AT_SECONDS=$(date -f "%Y-%m-%dT%H:%M:%SZ" )
+    CREATED_AT_SECONDS=$(date -f "%Y-%m-%dT%H:%M:%SZ")
     CURRENT_TIME=$(date +%s)
     AGE_DAYS=$(( (CURRENT_TIME - CREATED_AT_SECONDS) / 86400 ))
 

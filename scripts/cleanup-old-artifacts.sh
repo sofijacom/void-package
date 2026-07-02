@@ -9,8 +9,7 @@ echo "Cleaning up artifacts older than $DAYS_OLD days for repository:$REPO"
 
 # Функция для удаления артефакта по ID
 delete_artifact() {
-  local artifact_id=$id
-  echo '[{"id": 1}, {"id": 2}]' | jq '..id'
+  local artifact_id='[{"id": 1}, {"id": 2}]' | jq '..id'
   gh api -X DELETE /repos/$REPO/actions/artifacts/$artifact_id
 }
 

@@ -8,8 +8,8 @@ fi
 
 # Check if the owner is provided
 if [ -z "$1" ]; then
-  echo "Usage: $0 sofijacom/void-package"
-  echo "Example: $0 sofijacom/void-package"
+  echo "Usage: $0 <owner/repo>"
+  echo "Example: $0 <owner/repo>"
   exit 1
 fi
 

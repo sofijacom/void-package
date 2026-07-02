@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-REPO=sofijacom/void-package
+REPO=$1  # sofijacom/void-package
 DAYS_OLD=2
 PAGE=1
 

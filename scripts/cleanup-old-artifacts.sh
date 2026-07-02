@@ -8,13 +8,13 @@ fi
 
 # Check if the owner is provided
 if [ -z "$1" ]; then
-  echo "Usage: $0 sofijacom/void-package"
-  echo "Example: $0 sofijacom/void-package"
+  echo "Usage: $0 <owner/repo>"
+  echo "Example: $0 <owner/repo>"
   exit 1
 fi
 
 REPO=sofijacom/void-package
-DAYS_OLD=5
+DAYS_OLD=2
 PAGE=1
 
 echo "Cleaning up artifacts older than $DAYS_OLD days for repository: $REPO"

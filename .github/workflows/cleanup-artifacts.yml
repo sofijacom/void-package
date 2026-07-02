@@ -37,5 +37,5 @@ jobs:
       - name: Commit and push
         uses: EndBug/add-and-commit@v10
         with:
-          message: "cleanup-old-artifacts to ${{ env.NEW_VERSION }}"
+          message: "cleanup-old-artifacts"
           github_token: ${{ secrets.GH_TOKEN }}

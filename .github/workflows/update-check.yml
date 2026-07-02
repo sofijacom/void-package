@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.GH_TOKEN }}
 
-      - name: Run update script
+      - name: Run cleanup-old-artifacts script
         id: update
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -27,15 +27,8 @@ jobs:
           chmod +x scripts/cleanup-old-artifacts.sh
           ./scripts/cleanup-old-artifacts.sh
 
-      #- name: Pull latest changes
-      #  if: env.NEW_VERSION != ''
-      #  run: |
-      #    git stash
-      #    git pull --rebase origin main
-      #    git stash pop
-
       - name: Commit and push
-        if: env.NEW_VERSION != ''
+        #if: env.NEW_VERSION != ''
         uses: EndBug/add-and-commit@v9
         with:
           message: "cleanup-old-artifacts to ${{ env.NEW_VERSION }}"

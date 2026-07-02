@@ -18,7 +18,7 @@ permissions:
 jobs:
   # ==================== cleanup-old-artifacts ====================
   update-zen-browser-bin:
-    name: Check cleanup-old-artifacts updates
+    name: Cleanup-old-artifacts
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

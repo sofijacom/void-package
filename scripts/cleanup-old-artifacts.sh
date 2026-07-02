@@ -2,10 +2,10 @@
 
 # gh auth login
 # Замените <owner/repo> на ваш репозиторий (например, my-org/my-repo)
-REPO=$1  # sofijacom/void-package
+REPO=sofijacom/void-package
 DAYS_OLD=5  # Удаляем артефакты старше 5 дней
 
-echo "Cleaning up artifacts older than $DAYS_OLD days for repository: $REPO"
+echo "Cleaning up artifacts older than $DAYS_OLD days for repository:$REPO"
 
 # Функция для удаления артефакта по ID
 delete_artifact() {

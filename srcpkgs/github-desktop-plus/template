@@ -1,0 +1,32 @@
+# Template file for 'github-desktop-plus'
+pkgname=github-desktop-plus
+version=3.6.2.0
+revision=1
+_channel=linux-x86_64
+archs="x86_64"
+hostmakedepends="python3 python3-html2text python3-setuptools yarn tar xz zstd git"
+makedepends="gtk+3-devel"
+short_desc="GitHub Desktop fork with advanced functionality and improvements."
+maintainer="Sofiya <Sofiya@v.org>"
+license="custom:github-desktop-plus"
+homepage="https://github.com/desktop-plus/desktop-plus"
+conflicts="github-desktop"
+replaces="github-desktop>=0"
+nopie=yes
+
+_baseUrl="https://github.com/desktop-plus/desktop-plus/releases/latest/download/"
+_filename="DesktopPlus-v${version}-${_channel}.deb"
+_githubUrl="${_baseUrl}/${_filename}"
+
+distfiles="$_githubUrl"
+checksum=58dcd3e56b67f9c224a3ad304009b86c21476cc9cb3b86d8614ed5c3b9b30624
+
+
+do_extract() {
+	mkdir -p ${DESTDIR}
+	ar x ${XBPS_SRCDISTDIR}/github-desktop-plus-${version}/${_filename}
+}
+
+do_install() {
+	tar xf data.tar.zst -C ${DESTDIR}
+}

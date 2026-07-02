@@ -3,4 +3,4 @@ sudo ln -s /usr/lib/libcurl.so.4 /usr/lib/libcurl-gnutls.so.4
 sudo rm -f /usr/lib/libcurl-gnutls.so.4
 
 
-libcurl-gnutls.so.4
+libcurl-gnutls - libcurl-gnutls.so.4

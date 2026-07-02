@@ -6,11 +6,6 @@ on:
     branches:
       - main
 
-#on:
-#  schedule:
-#    - cron: '0 0 * * 1,4' # Runs daily at midnight UTC
-#  workflow_dispatch:    # Allows manual triggering from GitHub UI
-
 permissions:
   contents: write
 

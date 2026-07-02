@@ -8,8 +8,8 @@ fi
 
 # Check if the owner is provided
 if [ -z "$1" ]; then
-  echo "Usage: $0 <owner/repo>"
-  echo "Example: $0 <owner/repo>"
+  echo "Usage: $0 sofijacom/void-package"
+  echo "Example: $0 sofijacom/void-package"
   exit 1
 fi
 
@@ -45,7 +45,7 @@ while true; do
     fi
 
     # Calculate artifact age in days (macOS-compatible)
-    CREATED_AT_SECONDS=$(date -f "%Y-%m-%dT%H:%M:%SZ" "$CREATED_AT" +%s)
+    CREATED_AT_SECONDS=$(date -f "%Y-%m-%dT%H:%M:%SZ" )
     CURRENT_TIME=$(date +%s)
     AGE_DAYS=$(( (CURRENT_TIME - CREATED_AT_SECONDS) / 86400 ))
 

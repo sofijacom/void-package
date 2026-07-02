@@ -12,7 +12,7 @@ on:
 #    # Setiap Senin dan Kamis jam 07:00 WIB (00:00 UTC)
 #    - cron: '0 0 * * 1,4'
 
-#permissions:
+permissions:
   contents: write
 
 jobs:

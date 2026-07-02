@@ -1,1 +1,1 @@
-_Here you can place scripts for updating the template_
+_Here you can place scripts_

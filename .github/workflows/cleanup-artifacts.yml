@@ -15,7 +15,6 @@ permissions:
   contents: write
 
 jobs:
-  # ==================== cleanup-old-artifacts ====================
   update-zen-browser-bin:
     name: Cleanup-old-artifacts
     runs-on: ubuntu-latest

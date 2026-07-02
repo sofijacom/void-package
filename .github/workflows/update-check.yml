@@ -1,0 +1,42 @@
+name: cleanup old artifacts
+on:
+  workflow_dispatch:
+  schedule:
+    # Setiap Senin dan Kamis jam 07:00 WIB (00:00 UTC)
+    #- cron: '0 0 * * 1,4'
+
+permissions:
+  contents: write
+
+jobs:
+  # ==================== ZEN BROWSER ====================
+  update-zen-browser-bin:
+    name: Check cleanup-old-artifacts updates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Run update script
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/cleanup-old-artifacts.sh
+          ./scripts/cleanup-old-artifacts.sh
+
+      - name: Pull latest changes
+        if: env.NEW_VERSION != ''
+        run: |
+          git stash
+          git pull --rebase origin main
+          git stash pop
+
+      - name: Commit and push
+        if: env.NEW_VERSION != ''
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "cleanup-old-artifacts to ${{ env.NEW_VERSION }}"
+          github_token: ${{ secrets.GH_TOKEN }}

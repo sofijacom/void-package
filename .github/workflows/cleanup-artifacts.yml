@@ -6,15 +6,12 @@ on:
     branches:
       - main
 
-<<<<<<< Updated upstream
-=======
 #on:
 #  workflow_dispatch:
 #  schedule:
 #    # Setiap Senin dan Kamis jam 07:00 WIB (00:00 UTC)
 #    - cron: '0 0 * * 1,4'  # Каждый понедельник и четверг в 00:00 UTC
 
->>>>>>> Stashed changes
 permissions:
   contents: write
 

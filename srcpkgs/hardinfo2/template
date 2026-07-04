@@ -1,6 +1,6 @@
 # Template file for 'hardinfo2'
 pkgname=hardinfo2
-version=2.2.16
+version=2.3.1
 revision=1
 build_style=cmake
 configure_args="-DHARDINFO2_LIBSOUP3=1 -DHARDINFO2_QT6=1 -DHARDINFO2_VK=0"
@@ -13,5 +13,5 @@ maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/hardinfo2/hardinfo2"
 distfiles="https://github.com/hardinfo2/hardinfo2/archive/refs/tags/release-${version}.tar.gz"
-checksum=fffce133bcbc8fa45cd7b07c3b764ddbc0d96fcac1c45ba3b2ba7f41b6284612
+checksum="59b30378127dde8e0af92de1a23ebcee706820a862581a603543a99c357bcecb"
 lib32disabled=yes

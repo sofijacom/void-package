@@ -47,29 +47,29 @@ sudo xbps-install -S
 
 | package | source | automatic update |
 |:--------|:-------|:-----------------|
-| Brave-browser ( stable )            | https://www.brave.com/                            | ✔️ |
-| Brave-origin ( stable )             | https://www.brave.com/                            | ✔️ |
-| Brave-origin ( beta )               | https://www.brave.com/                            | ✔️ |
-| Calamares ( Graphical installer )   | https://calamares.io                              | ✔️ |
-| Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 | 
-| GitHub-desktop                      | https://github.com/shiftkey/desktop               | ✔️ |
-| Google-chrome ( stable )            | https://www.google.com/chrome/                    | ✔️ |
-| Gtk3dialog ( GTK+ 3, VTE )          | https://github.com/puppylinux-woof-CE/gtkdialog   | ✔️ |
-| Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
-| Helium-browser                      | https://helium.computer/                          | ✔️ |
-| LibreWolf ( Web browser )           | https://librewolf.net/                            | ✔️ |
-| ly                                  | https://codeberg.org/fairyglade/ly                | ✔️ |
-| Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
-| Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
-| Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
-| Palemoon ( browser )                | https://www.palemoon.org/                         | ✔️ |
-| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
-| Osmo + dependency ( libgringotts )  | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
-| SeaMonkey ( Web-browser )           | https://www.seamonkey-project.org/                | ✔️ |
-| SmartGit                            | https://www.smartgit.dev/                         | ✔️ |
-| Waterfox-browser                    | https://www.waterfox.net/                         | ✔️ |
-| Yandex-browser ( stable )           | https://repo.yandex.ru/                           | ✔️ |
-| Zen-browser ( stable )              | https://www.zen-browser.app/                      | ✔️ |
+| _Brave-browser ( stable )_            | https://www.brave.com/                            | ✔️ |
+| _Brave-origin ( stable )_             | https://www.brave.com/                            | ✔️ |
+| _Brave-origin ( beta )_               | https://www.brave.com/                            | ✔️ |
+| _Calamares ( Graphical installer )_   | https://calamares.io                              | ✔️ |
+| _Conky-manager2_                      | https://github.com/zcot/conky-manager2            | 🔐 | 
+| _GitHub-desktop_                      | https://github.com/shiftkey/desktop               | ✔️ |
+| _Google-chrome ( stable )_            | https://www.google.com/chrome/                    | ✔️ |
+| _Gtk3dialog ( GTK+ 3, VTE )_          | https://github.com/puppylinux-woof-CE/gtkdialog   | ✔️ |
+| _Hardinfo2_                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
+| _Helium-browser_                      | https://helium.computer/                          | ✔️ |
+| _LibreWolf ( Web browser )_           | https://librewolf.net/                            | ✔️ |
+| _ly_                                  | https://codeberg.org/fairyglade/ly                | ✔️ |
+| _Microsoft-edge ( Web browser )_      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
+| _Mullvad-browser_                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
+| _Mullvad VPN_                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
+| _Palemoon ( browser )_                | https://www.palemoon.org/                         | ✔️ |
+| _Pup-volume-monitor_                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
+| _Osmo + dependency ( libgringotts )_  | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
+| _SeaMonkey ( Web-browser )_           | https://www.seamonkey-project.org/                | ✔️ |
+| _SmartGit_                            | https://www.smartgit.dev/                         | ✔️ |
+| _Waterfox-browser_                    | https://www.waterfox.net/                         | ✔️ |
+| _Yandex-browser ( stable )_           | https://repo.yandex.ru/                           | ✔️ |
+| _Zen-browser ( stable )_              | https://www.zen-browser.app/                      | ✔️ |
 
 ### TODO
 

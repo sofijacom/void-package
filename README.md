@@ -33,7 +33,6 @@
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download/\n" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```
 
-
 > [!IMPORTANT]
 > 
 > _Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)_
@@ -41,7 +40,6 @@ printf "repository=https://github.com/sofijacom/void-package/releases/latest/dow
 ```shell
 sudo xbps-install -S
 ```
-
 
 # Available packages
 

@@ -17,7 +17,7 @@
 
 [![GitHub](https://img.shields.io/github/license/sofijacom/void-package?style=badge&label=License&colorA=363a4f&colorB=purple&logo=gitbook)](#)
 [![GitHub contributors](https://img.shields.io/github/contributors/sofijacom/void-package?style=badge&colorA=363a4f&colorB=purple&logo=github&label=Contributors)](#)
-[![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=badge&logo=github&label=Release&colorA=363a4f&colorB=purple)](#)
+[![GitHub release (with filter)](https://img.shields.io/github/v/release/sofijacom/void-package?style=badge&logo=github&label=Release&colorA=363a4f&colorB=purple)](https://github.com/sofijacom/void-package/releases/)
 [![GitHub issues](https://img.shields.io/github/issues-raw/sofijacom/void-package?style=badge&label=Open%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/sofijacom/void-package?style=badge&label=Closed%20Issues&logo=github&colorA=363a4f&colorB=purple)](#)
 [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sofijacom/void-package/main?style=badge&label=Last%20Commit&logo=github&colorA=363a4f&colorB=purple)](#)

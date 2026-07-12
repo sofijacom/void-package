@@ -4,7 +4,6 @@ set -euo pipefail
 
 REPO="fairyglade/ly"
 TPL="srcpkgs/ly/template"
-ID="9341631"
 
 echo "### Checking for ly updates..."
 

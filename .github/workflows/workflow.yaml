@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build📦${{ matrix.config.arch }}
+    name: Build📦 ${{ matrix.config.arch }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

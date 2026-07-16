@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build packages
+    name: Build📦 ${{ matrix.config.arch }}
     runs-on: ubuntu-latest
     permissions:
       contents: write   
@@ -107,6 +107,7 @@ jobs:
         run: |
           pkgs=$(cat /tmp/templates)
           for pkg in ${pkgs}; do
+            echo "🏗️ Building $pkg for $ARCH..."
             sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${{ matrix.config.arch }} -A ${{ matrix.config.arch }} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
 
@@ -138,7 +139,7 @@ jobs:
               sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
             done
           else
-            echo "No packages found to checksum."
+            echo "❌ No packages found to checksum."
           fi
 
       - name: Upload Artifact

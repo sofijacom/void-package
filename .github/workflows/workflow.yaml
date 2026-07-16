@@ -25,8 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { arch: x86_64,       libc: glibc }
-          # - { arch: x86_64-musl,  libc: musl  }
+          - { arch: x86_64, libc: glibc }
 
     container:
       image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250901R1
@@ -34,7 +33,7 @@ jobs:
       volumes:
         - /dev:/dev
       env:
-        PATH: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin:/tmp/bin'
+        TAG: ${{ env.TAG }}
         ARCH: ${{ matrix.config.arch }}
         XBPS_TARGET_ARCH: ${{ matrix.config.arch }}
         REPO_OWNER: ${{ github.repository_owner }}

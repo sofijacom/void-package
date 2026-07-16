@@ -34,7 +34,8 @@ jobs:
       volumes:
         - /dev:/dev
       env:
-        TAG: ${{ env.TAG }}
+        TAG: '${{ env.TAG }}'
+        SHA: '${{ env.SHA }}'
         ARCH: '${{ matrix.config.arch }}'
         XBPS_TARGET_ARCH: '${{ matrix.config.arch }}'
         REPO_OWNER: "${{ github.repository_owner }}"

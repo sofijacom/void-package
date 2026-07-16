@@ -29,7 +29,7 @@ jobs:
           - { arch: x86_64, libc: glibc }
           
     container:
-      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full
+      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250901R1
       options: --platform linux/amd64 --privileged
       volumes:
         - /dev:/dev

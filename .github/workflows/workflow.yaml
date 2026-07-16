@@ -72,13 +72,13 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
           git config --global --add safe.directory "*"
-          git remote add -f Kennel-Linux https://github.com/Kennel-Linux/void-package.git
-          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change Kennel-Linux/main
+          git remote add -f sofijacom https://github.com/Kennel-Linux/void-package.git
+          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change sofijacom/main
           mkdir -p hostdir/binpkgs
 
       - name: Download existing packages
         run: |
-          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo Kennel-Linux/void-package || true
+          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo sofijacom/void-package || true
           # Clean wrong arch
           if [ "$ARCH" = "x86_64" ]; then
             rm -f hostdir/binpkgs/*x86_64-musl*.xbps
@@ -90,13 +90,13 @@ jobs:
       - name: Identify changed packages
         run: |
           chown -R builder:builder .
-          latest_tag=$(gh release list --repo Kennel-Linux/void-package --limit 1 --json tagName --jq '.[0].tagName' || echo "")
+          latest_tag=$(gh release list --repo sofijacom/void-package --limit 1 --json tagName --jq '.[0].tagName' || echo "")
           latest_sha=""
           if [ -n "$latest_tag" ]; then
             latest_sha=$(git rev-parse "$latest_tag" 2>/dev/null || true)
           fi
           if [ -z "$latest_sha" ]; then
-            latest_sha=$(git rev-list --max-parents=0 Kennel-Linux/main 2>/dev/null || git rev-list --max-parents=0 HEAD~100)
+            latest_sha=$(git rev-list --max-parents=0 sofijacom/main 2>/dev/null || git rev-list --max-parents=0 HEAD~100)
           fi
           echo "Latest SHA: $latest_sha"
           git diff-tree -r --no-renames --name-only --diff-filter=AM "$latest_sha" "$SHA" -- 'srcpkgs/**' \

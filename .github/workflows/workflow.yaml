@@ -67,7 +67,7 @@ jobs:
           repository: void-linux/void-packages
           ref: master
 
-      - name: Merge xlibre srcpkgs
+      - name: Merge srcpkgs
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"

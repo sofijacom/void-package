@@ -11,7 +11,7 @@ license="custom:proprietary"
 homepage="https://www.syntevo.com/smartgit/"
 changelog="https://www.syntevo.com/smartgit/changelog.txt"
 distfiles="https://download.smartgit.dev/smartgit/smartgit-${_tarver}-linux_amd64.deb"
-checksum=ef7264f35cdd694fd6e80f2ffc68c5a8dab2d5cd7016750240f795746dc12a7f
+checksum=a50c9d1148f00f142fb1b5e66ea8dda218e1512239db2f75987c66fc6935ef06
 nopie=yes
 python_version=3
 

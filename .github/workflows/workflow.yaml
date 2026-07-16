@@ -120,7 +120,7 @@ jobs:
 
       - name: Build packages
         run: |
-          export PATH: '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin:/usr/local/bin:/tmp/bin'
+          export ${PATH}
           pkgs=$(cat /tmp/templates)
           if [ -z "$pkgs" ]; then
             echo "✅ No packages changed. Nothing to build."

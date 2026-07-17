@@ -12,7 +12,7 @@ maintainer="Sofiya <sofiya@v.org>"
 license="WTFPL"
 homepage="https://codeberg.org/fairyglade/ly"
 distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
-checksum=16fe5f07cc7a23930880b14d905883644cdc4b574d1c146629f6b98ee8fbbab9
+checksum=4d1c10422e6c5b8d5a795150e4c364c82404f900c1a04318b83fe8d81fade58b
 
 conf_files="
  /etc/ly/config.ini

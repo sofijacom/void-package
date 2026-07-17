@@ -56,10 +56,6 @@ jobs:
         with:
           repository: void-linux/void-packages
           ref: master
-
-      #- name: Fix sourcepkg.sh — replace awk with shell parameter expansion
-      #  run: |
-      #    sed -i 's@for var in $(awk .*;@for var in $(printenv | cut -d'"'"'='"'"' -f1);@' common/environment/setup/sourcepkg.sh
           
       - name: Merge this repository into void-linux/void-packages
         env:

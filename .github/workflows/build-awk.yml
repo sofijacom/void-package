@@ -1,0 +1,264 @@
+name: Build and Release Void Linux Packages
+
+env:
+  TAG: workflow-${{ github.run_number }}
+  SHA: ${{ github.sha }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - srcpkgs/**
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build📦 ${{ matrix.config.arch }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { arch: x86_64,       host: x86_64,      libc: glibc, platform: linux/amd64, test: 1 }
+          # - { arch: i686,         host: i686,        libc: glibc, platform: linux/386,   test: 1 }
+          # - { arch: aarch64,      host: x86_64,      libc: glibc, platform: linux/amd64, test: 0 }
+          # - { arch: armv7l,       host: x86_64,      libc: glibc, platform: linux/amd64, test: 0 }
+          # - { arch: x86_64-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 1 }
+          # - { arch: armv6l-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 0 }
+          # - { arch: aarch64-musl, host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 0 }
+          
+    container:
+      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250616R1
+      options: --platform ${{ matrix.config.platform }} --privileged
+      volumes:
+        - /dev:/dev
+      env:
+        TAG: '${{ env.TAG }}'
+        SHA: '${{ env.SHA }}'
+        ARCH: '${{ matrix.config.arch }}'
+        XBPS_TARGET_ARCH: '${{ matrix.config.arch }}'
+        REPO_OWNER: "${{ github.repository_owner }}"
+        REPO_NAME: "${{ github.event.repository.name }}"
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+      #- name: Cache masterdir
+      #  uses: actions/cache@v5
+      #  with:
+      #    path: void-packages/masterdir-${{ matrix.config.arch }}
+      #    key: masterdir-${{ matrix.config.arch }}-${{ hashFiles('void-packages/common/xbps-src/shlibs') }}
+      #    restore-keys: |
+      #      masterdir-${{ matrix.config.arch }}-
+         
+      - name: Prep container
+        run: |
+          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
+          sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
+          env -u XBPS_TARGET_ARCH xbps-install -Syu xbps
+          env -u XBPS_TARGET_ARCH xbps-install -yu
+          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils
+          useradd -G xbuilder -M builder -s $(which bash)
+          
+      - name: Checkout void-package
+        uses: actions/checkout@v6
+        with:
+          repository: void-linux/void-packages
+          ref: master
+          path: void-packages
+          
+      - name: Fix sourcepkg.sh — replace awk with shell parameter expansion
+        working-directory: void-packages
+        run: |
+          sed -i 's@for var in $(awk .*;@for var in $(printenv | cut -d'"'"'='"'"' -f1);@' common/environment/setup/sourcepkg.sh
+      #    sed -i 's@_soname=\$(\${OBJDUMP} -p "\$f" | awk '\''/SONAME/{print \$2}'\'')@_soname=\$(\${OBJDUMP} -p "\$f" | grep '\''SONAME'\'' | cut -d '\'' '\'' -f2)@' common/hooks/post-install/98-shlib-provides.sh
+          
+      - name: Merge this repository into void-linux/void-packages
+        working-directory: void-packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "*"
+          git remote add -f Kennel-Linux https://github.com/Kennel-Linux/void-package.git
+          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change Kennel-Linux/main
+          mkdir -p hostdir/binpkgs
+          
+          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo Kennel-Linux/void-package || true
+          
+          # Clean up mismatched architectures so repodata generates correctly
+          if [ "$ARCH" = "x86_64" ]; then
+            rm --force hostdir/binpkgs/*x86_64-musl*
+          elif [ "$ARCH" = "x86_64-musl" ]; then
+            rm --force hostdir/binpkgs/*x86_64.xbps
+          fi
+          rm --force hostdir/binpkgs/*.xbps.sig2
+
+      - name: Identify changes to build
+        working-directory: void-packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          latest_name=$(gh release view --json tagName --jq '.tagName' --repo Kennel-Linux/void-package || echo "Initial Commit")
+          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 Kennel-Linux/main)
+          echo "Latest Tag Name: ${latest_name}"
+          echo "Latest Tag SHA: ${latest_sha}"
+
+          chown -R builder:builder .
+          git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
+          | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
+
+      - name: Setup void-packages
+        working-directory: void-packages
+        run: |
+          chown -R builder:builder .
+          mkdir -p etc
+          echo XBPS_BUILD_ENVIRONMENT=void-packages-ci >> etc/conf
+          echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
+          echo XBPS_CHROOT_CMD=uchroot >> etc/conf
+          echo 'XBPS_REPOSITORY=$PWD/hostdir/binpkgs' >> etc/conf
+          echo 'XBPS_DISTDIR=$PWD/hostdir/distfiles' >> etc/conf
+          echo 'XBPS_MASTERDIR_PKGS="$PWD/hostdir/binpkgs"' >> etc/conf
+
+      - name: Prepare masterdir
+        working-directory: void-packages
+        run: |
+          chown -R builder:builder .
+          yes | sudo -Eu builder ./xbps-src -m masterdir-${{ matrix.config.arch }} -A ${{ matrix.config.arch }} binary-bootstrap
+
+      - name: ✅ Install gawk in chroot
+        working-directory: void-packages
+        run: |
+          MASTERDIR="masterdir-${{ matrix.config.arch }}"
+    
+          if [ ! -d "$MASTERDIR" ]; then
+          echo "❌ Error: $MASTERDIR does not exist"
+          exit 1
+          fi
+
+          # 🔧 Create a folder in masterdir
+          sudo mkdir -p "$MASTERDIR/etc/xbps.d"
+
+          # 🔍 Copy the configs from /usr/share/xbps.d/
+          if [ -d "/usr/share/xbps.d" ]; then
+          echo "📦 Copy /usr/share/xbps.d/*-repository-*.conf"
+          sudo cp /usr/share/xbps.d/*-repository-*.conf "$MASTERDIR/etc/xbps.d/"
+          else
+          echo "❌ Not found /usr/share/xbps.d/"
+          exit 1
+          fi
+
+          # 🧰 We are mounting /proc, /dev, /sys
+          echo "🔧 We are mounting /proc, /dev, /sys в $MASTERDIR"
+          sudo mount --bind /proc "$MASTERDIR/proc" || true
+          sudo mount --bind /dev "$MASTERDIR/dev" || true
+          sudo mount --bind /sys "$MASTERDIR/sys" || true
+
+          # 🛠️ Installing gawk
+          echo "🔧 Installing gawk in $MASTERDIR..."
+          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || {
+          echo "❌ gawk installation failed"
+          sudo umount "$MASTERDIR/proc" || true
+          sudo umount "$MASTERDIR/dev"  || true
+          sudo umount "$MASTERDIR/sys"  || true
+          exit 1
+          }
+
+          # ✅ Checking the presence of the file - NOT through chroot
+          if [ -f "$MASTERDIR/usr/bin/awk" ] || [ -f "$MASTERDIR/usr/bin/gawk" ]; then
+          echo "✅ awk installed"
+          else
+          echo "❌ awk not found in $MASTERDIR/usr/bin/"
+          sudo umount "$MASTERDIR/proc" || true
+          sudo umount "$MASTERDIR/dev"  || true
+          sudo umount "$MASTERDIR/sys"  || true
+          exit 1
+          fi
+
+          # 🧹 Let's dismantle it
+          echo "🧹 Unmount /proc, /dev, /sys"
+          sudo umount "$MASTERDIR/proc" || true
+          sudo umount "$MASTERDIR/dev"  || true
+          sudo umount "$MASTERDIR/sys"  || true
+     
+      #- name: 🔐 Fix hostdir permissions
+      #  working-directory: void-packages
+      #  run: |
+      #    set -eu
+      #    if [ ! -d "hostdir" ]; then
+      #     echo "⚠️ hostdir не существует — we skip chown"
+      #     exit 0
+      #    fi
+      #    sudo chown -R builder:builder hostdir/
+          
+      # -------------------- Packages to build --------------------
+
+      - name: build pkgs
+        working-directory: void-packages
+        run: |
+          chown -R builder:builder .
+          pkgs=$(cat /tmp/templates)
+          for pkg in ${pkgs}; do
+            echo "🏗️ Building $pkg for $ARCH..."
+            sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${{ matrix.config.arch }} -A ${{ matrix.config.arch }} "${pkg}" || printf "Failed building ${pkg}!\n"
+          done
+
+      # -----------------------------------------------------------
+
+      - name: Clean & sign
+        working-directory: void-packages/hostdir/binpkgs
+        env:
+          PRIVKEY: ${{ secrets.PRIV_KEY }}
+          XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+        run: |
+          sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
+          printf "%s\n" "${PRIVKEY}" > key.pem
+          sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
+          sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
+          sudo -Eu builder rm -f key.pem
+          sudo -Eu builder xbps-rindex --clean ${PWD}
+
+      - name: checksum
+        working-directory: void-packages/hostdir/binpkgs
+        run: |
+          rm -rf *.sha256sum *.sha512sum
+          
+          # Only run the loop if there are actually files ending in .xbps
+          count=$(ls -1 *.xbps 2>/dev/null | wc -l)
+          if [ "$count" != 0 ]; then
+            for file in *.xbps; do
+              sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
+              sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
+            done
+          else
+            echo "❌ No packages found to checksum."
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.config.arch }}-repodata
+          path: void-packages/hostdir/binpkgs
+
+      - name: short sha
+        run: |
+          printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
+
+      - name: release
+        uses: softprops/action-gh-release@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.SHORT_SHA }}
+          tag_name: ${{ env.TAG }}
+          files: |
+            void-packages/hostdir/binpkgs/*.xbps
+            void-packages/hostdir/binpkgs/*.sig2
+            void-packages/hostdir/binpkgs/*repodata

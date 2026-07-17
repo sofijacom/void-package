@@ -87,11 +87,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "*"
-          git remote add -f Kennel-Linux https://github.com/Kennel-Linux/void-package.git
-          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change Kennel-Linux/main
+          git remote add -f sofijacom https://github.com/sofijacom/void-package.git
+          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change sofijacom/main
           mkdir -p hostdir/binpkgs
           
-          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo Kennel-Linux/void-package || true
+          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo sofijacom/void-package || true
           
           # Clean up mismatched architectures so repodata generates correctly
           if [ "$ARCH" = "x86_64" ]; then
@@ -106,8 +106,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          latest_name=$(gh release view --json tagName --jq '.tagName' --repo Kennel-Linux/void-package || echo "Initial Commit")
-          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 Kennel-Linux/main)
+          latest_name=$(gh release view --json tagName --jq '.tagName' --repo sofijacom/void-package || echo "Initial Commit")
+          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 sofijacom/main)
           echo "Latest Tag Name: ${latest_name}"
           echo "Latest Tag SHA: ${latest_sha}"
 

@@ -59,7 +59,7 @@ jobs:
           
       - name: Merge this repository into void-linux/void-packages
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -80,7 +80,7 @@ jobs:
 
       - name: Identify changes to build
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           latest_name=$(gh release view --json tagName --jq '.tagName' --repo sofijacom/void-package || echo "Initial Commit")
           latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 sofijacom/main)

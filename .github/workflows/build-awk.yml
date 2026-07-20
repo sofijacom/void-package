@@ -186,17 +186,7 @@ jobs:
           sudo umount "$MASTERDIR/proc" || true
           sudo umount "$MASTERDIR/dev"  || true
           sudo umount "$MASTERDIR/sys"  || true
-     
-      #- name: 🔐 Fix hostdir permissions
-      #  working-directory: void-packages
-      #  run: |
-      #    set -eu
-      #    if [ ! -d "hostdir" ]; then
-      #     echo "⚠️ hostdir не существует — we skip chown"
-      #     exit 0
-      #    fi
-      #    sudo chown -R builder:builder hostdir/
-          
+        
       # -------------------- Packages to build --------------------
 
       - name: build pkgs

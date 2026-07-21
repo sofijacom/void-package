@@ -1,0 +1,68 @@
+# This script executes on the host OS during installation
+case "$ACTION" in
+post)
+    echo "Creating and configuring ZoneMinder system paths..."
+    
+    # 1. Dynamically create the state/log paths on the target system
+    mkdir -p /var/log/zoneminder
+    mkdir -p /var/cache/zoneminder/cache
+    mkdir -p /var/lib/zoneminder/events
+    mkdir -p /var/lib/zoneminder/images
+    mkdir -p /var/lib/zoneminder/temp
+    mkdir -p /run/zoneminder
+
+    # 2. Restrict ownership to the web server daemon group (www-data)
+    chown -R www-data:www-data /var/log/zoneminder
+    chown -R www-data:www-data /var/cache/zoneminder
+    chown -R www-data:www-data /var/lib/zoneminder/
+    chown -R www-data:www-data /var/lib/zoneminder/events
+    chown -R www-data:www-data /var/lib/zoneminder/images
+    chown -R www-data:www-data /var/lib/zoneminder/temp
+    chown -R www-data:www-data /run/zoneminder
+    
+    # 3. Apply write permissions for group execution
+    chmod -R 775 /var/log/zoneminder
+    chmod -R 775 /var/cache/zoneminder
+    chmod -R 775 /run/zoneminder
+    chmod -R 775 /var/lib/zoneminder/
+    chmod -R 775 /var/lib/zoneminder/events
+    chmod -R 775 /var/lib/zoneminder/images
+    chmod -R 775 /var/lib/zoneminder/temp
+    
+    ln -s /var/cache/zoneminder/cache /usr/share/zoneminder/www/cache
+
+    # 4. Automate MySQL / MariaDB Schema Initialization
+    echo "Checking for running MySQL/MariaDB database instance..."
+    if mysqladmin ping --silent >/dev/null 2>&1; then
+        # Check if the 'zm' database schema already exists to prevent data overwrite
+        if ! mysql -e "USE zm;" >/dev/null 2>&1; then
+            echo "Initializing fresh ZoneMinder database tables..."
+            
+            # Locate the compiled schema (Assumes default cmake /usr/share placement)
+            SCHEMA_FILE="usr/share/zoneminder/db/zm_create.sql"
+            
+            if [ -f "$SCHEMA_FILE" ]; then
+                # Import default tables
+                mysql < "$SCHEMA_FILE"
+                
+                # Apply standard system access authentication configurations
+                mysql -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost' IDENTIFIED BY 'zmpass';"
+                mysql -e "FLUSH PRIVILEGES;"
+                echo "Database initialization completed successfully."
+            else
+                echo "WARNING: Database schema file not found at $SCHEMA_FILE."
+                echo "You may need to run manual schema configuration downstream."
+            fi
+        else
+            echo "ZoneMinder 'zm' database already exists. Skipping recreation step."
+        fi
+    else
+        echo "--------------------------------------------------------"
+        echo " NOTICE: MySQL/MariaDB server is not currently running."
+        echo " Once your database service is started, run manually:"
+        echo " mysql < /usr/share/zoneminder/db/zm_create.sql"
+        echo "--------------------------------------------------------"
+    fi
+    ;;
+esac
+

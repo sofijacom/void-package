@@ -28,7 +28,7 @@ configure_args="
 
 # Add git so xbps-src can download the submodules
 
-hostmakedepends="git pkg-config cmake perl cmake-bootstrap ninja"
+hostmakedepends="git pkg-config cmake perl"
 makedepends="ffmpeg-devel libmysqlclient-devel libcurl-devel libjpeg-turbo-devel
  pcre-devel libgcrypt-devel gnutls-devel vlc-devel libvncserver-devel mariadb"
 depends="perl-DBD-mysql perl-Date-Manip perl-LWP  perl-DBI perl-LWP-Protocol-https"

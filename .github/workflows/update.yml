@@ -37,6 +37,7 @@ jobs:
     - run: bash ./srcpkgs/seamonkey/update.sh
     - run: bash ./srcpkgs/github-desktop/update.sh
     - run: bash ./srcpkgs/ly/update.sh
+    - run: bash ./srcpkgs/zoneminder/update.sh
     # - run: bash ./srcpkgs/github-desktop-plus/update.sh
     - name: Check for updates
       id: check-updates

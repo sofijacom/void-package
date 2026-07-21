@@ -30,7 +30,7 @@ configure_args="
 
 hostmakedepends="git pkg-config cmake perl"
 makedepends="ffmpeg-devel libmysqlclient-devel libcurl-devel libjpeg-turbo-devel
- pcre-devel libgcrypt-devel gnutls-devel vlc-devel libvncserver-devel mariadb"
+ pcre-devel libgcrypt-devel gnutls-devel vlc-devel libvncserver-devel libmariadbclient-devel"
 depends="perl-DBD-mysql perl-Date-Manip perl-LWP  perl-DBI perl-LWP-Protocol-https"
 short_desc="Complete video surveillance storage and monitoring solution"
 maintainer="Erik Schoepplenberg <erik@puppylinux.com>"

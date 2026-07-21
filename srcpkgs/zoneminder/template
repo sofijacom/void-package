@@ -1,6 +1,6 @@
 # Template file for 'zoneminder'
 pkgname=zoneminder
-version="1.38.3"
+version=1.38.3
 revision=1
 
 system_groups="www-data" # Ensures the target group exists on the user's host OS

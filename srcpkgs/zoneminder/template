@@ -1,0 +1,57 @@
+pkgname=zoneminder
+version=1.38.3
+revision=2
+build_style=cmake
+hostmakedepends="pkgconf perl git ninja"
+makedepends="mariadb apache-devel php-devel libjpeg-turbo-devel libpng-devel
+             ffmpeg-devel opencv-devel pcre2-devel"
+depends="mariadb apache httpd php libjpeg-turbo libpng ffmpeg opencv pcre2
+         perl-Net-WebSocket-Server perl-Net-MQTT-Simple perl-Sys-MemInfo
+         perl-Sys-Mmap perl-DBI"
+short_desc="Open-source video surveillance system"
+maintainer="Sofiya Sonya <sofiya@v.com>"
+license="GPL-2.0-or-later"
+homepage="https://zoneminder.com/"
+distfiles="https://github.com/ZoneMinder/ZoneMinder/archive/refs/tags/release-${version}.tar.gz"
+checksum=59ed8bcaa2376593873b613149ea299b9055443e6d925689b2bf69c56f2deb79
+
+webuser=apache
+webgroup=apache
+
+do_configure() {
+	cmake -B build -S . \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DZMDIR=/usr/share/zoneminder \
+		-DZM_WEB_USER=${webuser} \
+		-DZM_WEB_GROUP=${webgroup} \
+		-DWITH_FFMPEG=ON \
+		-DWITH_OPENCV=ON \
+		-DWITH_PCRE2=ON \
+		-DBUILD_TESTING=OFF
+}
+
+do_build() {
+	cmake --build build
+}
+
+do_install() {
+	cmake --install build --prefix ${DESTDIR}/usr
+
+	mkdir -p ${DESTDIR}/var/cache/zoneminder
+	mkdir -p ${DESTDIR}/var/log/zonminder
+	mkdir -p ${DESTDIR}/var/lib/zoneminder
+
+	chown -R ${webuser}:${webgroup} ${DESTDIR}/var/cache/zoneminder
+	chown -R ${webuser}:${webgroup} ${DESTDIR}/var/log/zoneminder
+}
+
+post_install() {
+	getent group zm || groupadd -r zm
+	getent passwd zm || useradd -r -g zm -s /usr/bin/nologin -M zm
+
+	if [ ! -f /etc/zm.conf ]; then
+		cp -f ${DESTDIR}/usr/share/zoneminder/conf/zm.conf.default /etc/zm.conf
+	fi
+
+	chown -R zm:zm /var/lib/zoneminder
+}

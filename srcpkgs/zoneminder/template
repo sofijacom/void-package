@@ -2,22 +2,44 @@
 pkgname=zoneminder
 version=1.38.3
 revision=2
+system_groups="www-data" # Ensures the target group exists on the user's host OS
 build_style=cmake
+configure_args="
+ -DCMAKE_INSTALL_PREFIX=/usr
+ -DZM_WEBDIR=/usr/share/zoneminder/www
+ -DZM_CGIDIR=/usr/libexec/zoneminder/cgi-bin
+ -DZM_RUNDIR=/run/zoneminder
+ -DZM_SOCKDIR=/run/zoneminder
+ -DZM_LOGDIR=/var/log/zoneminder
+ -DZM_CONFIG_DIR=/etc/zm
+ -DZM_CONFIG_SUBDIR=/etc/zm/conf.d
+ -DZM_PERL_SUBPREFIX=/usr/lib/perl5/vendor_perl
+ -DZM_SYSCONFDIR=/etc/zm
+ -DZM_POLKIT_DIR=/usr/share/polkit-1/actions
+ -DZM_SYSTEMD_UNITDIR=/usr/lib/systemd/system
+ -DZM_MANDIR=/usr/share/man
+ -DZM_INCLUDEDIR=/usr/include
+ -DZM_CACHEDIR=/var/cache/zoneminder/cache
+"
+
 hostmakedepends="
  pkgconf
  perl
  git
  ninja
+ cmake
  "
 makedepends="
  libmariadbclient-devel
- apache-devel php-devel
+ mariadb
+ apache-devel
+ php-devel
  libjpeg-turbo-devel
  libpng-devel
  ffmpeg-devel
- opencv pcre2-devel
+ opencv
+ pcre2-devel
  libcurl-devel
- libmysqlclient-devel
  pcre-devel
  libgcrypt-devel
  gnutls-devel
@@ -31,51 +53,88 @@ depends="
  perl-LWP-Protocol-https
  libmariadbclient
  "
-short_desc="Open-source video surveillance system"
-maintainer="Sofiya <sofiya@v.com>"
+short_desc="Complete video surveillance storage and monitoring solution"
+maintainer="Erik Schoepplenberg <erik@puppylinux.com>"
 license="GPL-2.0-or-later"
 homepage="https://zoneminder.com/"
-#distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"
-distfiles="https://github.com/ZoneMinder/zoneminder/releases/download/${version}/zoneminder-${version}.tar.gz"
-checksum=d4f2087a64e0423deadacd1353aaed3938e0b94426dee285ca8f94a6bee45386
+distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"
+checksum=59ed8bcaa2376593873b613149ea299b9055443e6d925689b2bf69c56f2deb79
 
-webuser=apache
-webgroup=apache
+# Allow xbps-src to connect to GitHub during the build phase
+allow_net=yes
 
-do_configure() {
-	cmake -B build -S . \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DZMDIR=/usr/share/zoneminder \
-		-DZM_WEB_USER=${webuser} \
-		-DZM_WEB_GROUP=${webgroup} \
-		-DWITH_FFMPEG=ON \
-		-DWITH_OPENCV=ON \
-		-DWITH_PCRE2=ON \
-		-DBUILD_TESTING=OFF
+post_extract() {
+    # 1. Initialize an empty Git repository layout over the current files
+    git init
+
+    # 2. Tell Git where upstream is so it can map out the submodules
+    git remote add origin https://github.com/ZoneMinder/zoneminder
+
+    # 3. Fetch ONLY the specific commit details for this version (no heavy history download)
+    git fetch --depth=1 origin "${version}"
+
+    # 4. Force Git to index the existing files matching this tag 
+    # instead of doing a destructive checkout
+    git reset --mixed FETCH_HEAD
+
+    # 5. Populate and build the missing submodules
+    git submodule update --init --recursive
 }
 
-do_build() {
-	cmake --build build
-}
-
-do_install() {
-	cmake --install build --prefix ${DESTDIR}/usr
-
-	mkdir -p ${DESTDIR}/var/cache/zoneminder
-	mkdir -p ${DESTDIR}/var/log/zonminder
-	mkdir -p ${DESTDIR}/var/lib/zoneminder
-
-	chown -R ${webuser}:${webgroup} ${DESTDIR}/var/cache/zoneminder
-	chown -R ${webuser}:${webgroup} ${DESTDIR}/var/log/zoneminder
-}
 
 post_install() {
-	getent group zm || groupadd -r zm
-	getent passwd zm || useradd -r -g zm -s /usr/bin/nologin -M zm
+    echo "Bootstrapping an independent cpanm instance inside the sandbox..."
+    
+    # Use Perl's native HTTP client instead of external curl
+    perl -e '
+        use HTTP::Tiny; 
+        my $response = HTTP::Tiny->new->get("https://cpanmin.us"); 
+        if ($response->{success}) { 
+            open(my $fh, ">", "cpanm"); 
+            print $fh $response->{content}; 
+            close($fh); 
+        } else { 
+            die "Download failed: $response->{reason}\n"; 
+        }
+    '
+    
+    # Ensure the downloaded bootstrap script can be executed
+    chmod +x cpanm
 
-	if [ ! -f /etc/zm.conf ]; then
-		cp -f ${DESTDIR}/usr/share/zoneminder/conf/zm.conf.default /etc/zm.conf
-	fi
+    echo "Running standalone cpanm installer layer..."
+    
+    # Force installation directly inside your targeted package directory
+    ./cpanm --notest --no-man-pages -l "${PKGDESTDIR}/usr" \
+        Net::WebSocket::Server \
+        Net::MQTT::Simple \
+        Sys::MemInfo \
+        Sys::Mmap \
+        DBI
 
-	chown -R zm:zm /var/lib/zoneminder
+
+# Force installation directly inside your targeted package directory
+#    ./cpanm -N --notest --no-man-pages -l "${PKGDESTDIR}/usr" \
+#        Net::WebSocket::Server \
+#        Net::MQTT::Simple \
+#        Sys::MemInfo \
+#        Sys::Mmap \
+#        Number::Bytes::Human \
+#        LWP::Protocol::https \
+#        Device::SerialPort \
+#        Crypt::Eksblowfish::Bcrypt \
+#        DBI
+
+    # Clean up the standalone script tool and artifacts
+    rm -f cpanm
+    rm -rf "${PKGDESTDIR}/usr/lib/perl5/client"
+    rm -f "${PKGDESTDIR}/usr/lib/perl5/"*.pod
+
+    # Runit service block
+    vmkdir etc/sv/zoneminder
+cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"
+#!/bin/sh
+exec zmpkg.pl start
+EOF
+    chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/run"
 }
+

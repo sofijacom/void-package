@@ -18,12 +18,12 @@ post)
     chown -R www-data:www-data /var/lib/zoneminder/events
     chown -R www-data:www-data /var/lib/zoneminder/images
     chown -R www-data:www-data /var/lib/zoneminder/temp
-#    chown -R www-data:www-data /run/zoneminder
+    chown -R www-data:www-data /run/zoneminder
     
     # 3. Apply write permissions for group execution
     chmod -R 775 /var/log/zoneminder
     chmod -R 775 /var/cache/zoneminder
-#    chmod -R 775 /run/zoneminder
+    chmod -R 775 /run/zoneminder
     chmod -R 775 /var/lib/zoneminder/
     chmod -R 775 /var/lib/zoneminder/events
     chmod -R 775 /var/lib/zoneminder/images

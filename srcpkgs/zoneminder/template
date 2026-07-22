@@ -21,7 +21,6 @@ configure_args="
  -DZM_INCLUDEDIR=/usr/include
  -DZM_CACHEDIR=/var/cache/zoneminder/cache
 "
-
 hostmakedepends="
  pkgconf
  perl
@@ -81,7 +80,6 @@ post_extract() {
     git submodule update --init --recursive
 }
 
-
 post_install() {
     echo "Bootstrapping an independent cpanm instance inside the sandbox..."
     
@@ -96,8 +94,8 @@ post_install() {
         } else { 
             die "Download failed: $response->{reason}\n"; 
         }
-    '
-    
+       '
+
     # Ensure the downloaded bootstrap script can be executed
     chmod +x cpanm
 
@@ -110,7 +108,6 @@ post_install() {
         Sys::MemInfo \
         Sys::Mmap \
         DBI
-
 
 # Force installation directly inside your targeted package directory
 #    ./cpanm -N --notest --no-man-pages -l "${PKGDESTDIR}/usr" \

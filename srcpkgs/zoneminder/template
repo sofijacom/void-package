@@ -11,7 +11,7 @@ short_desc="Open-source video surveillance system"
 maintainer="Sofiya <sofiya@v.com>"
 license="GPL-2.0-or-later"
 homepage="https://zoneminder.com/"
-distfiles="https://github.com/ZoneMinder/ZoneMinder/archive/refs/tags/release-${version}.tar.gz"
+distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"
 checksum=59ed8bcaa2376593873b613149ea299b9055443e6d925689b2bf69c56f2deb79
 
 webuser=apache

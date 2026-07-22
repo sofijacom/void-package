@@ -1,0 +1,14 @@
+# Template file for 'perl-Sys-MemInfo'
+pkgname=perl-Sys-MemInfo
+version=0.91
+revision=1
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="perl"
+depends="perl"
+short_desc="Query the total free and used physical memory and swap"
+maintainer="Your Name <your.email@example.com>"
+license="Artistic-1.0, GPL-1.0-or-later"
+homepage="https://metacpan.org/release/Sys-MemInfo"
+distfiles="${CPAN_SITE}/Sys/Sys-MemInfo-${version}.tar.gz"
+checksum=c15af4b9db68f86b182504823e4c9a36ee977d9142a2306f089b4dc1cd26c143

@@ -6,9 +6,7 @@ build_style=cmake
 hostmakedepends="pkgconf perl git ninja"
 makedepends="libmariadbclient-devel apache-devel php-devel libjpeg-turbo-devel
              libpng-devel ffmpeg-devel opencv pcre2-devel"
-depends="libmariadbclient apache php libjpeg-turbo libpng ffmpeg opencv pcre2
-         perl-Net-WebSocket-Server perl-Net-MQTT-Simple perl-Sys-MemInfo
-         perl-Sys-Mmap perl-DBI perl-DBD-mysql perl-Date-Manip perl-LWP perl-LWP-Protocol-https"
+depends="perl-DBD-mysql perl-Date-Manip perl-LWP perl-DBI perl-LWP-Protocol-https libmariadbclient"
 short_desc="Open-source video surveillance system"
 maintainer="Sofiya <sofiya@v.com>"
 license="GPL-2.0-or-later"

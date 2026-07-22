@@ -13,7 +13,7 @@ license="GPL-2.0-or-later"
 homepage="https://zoneminder.com/"
 #distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"
 distfiles="https://github.com/ZoneMinder/zoneminder/releases/download/${version}/zoneminder-${version}.tar.gz"
-checksum=59ed8bcaa2376593873b613149ea299b9055443e6d925689b2bf69c56f2deb79
+checksum=d4f2087a64e0423deadacd1353aaed3938e0b94426dee285ca8f94a6bee45386
 
 webuser=apache
 webgroup=apache

@@ -22,6 +22,7 @@ configure_args="
  -DZM_CACHEDIR=/var/cache/zoneminder/cache
 "
 hostmakedepends="
+ perl-Module-Build
  pkgconf
  perl
  git

@@ -22,7 +22,6 @@ configure_args="
  -DZM_CACHEDIR=/var/cache/zoneminder/cache
 "
 hostmakedepends="
- perl-Module-Build
  pkgconf
  perl
  git
@@ -80,6 +79,7 @@ post_extract() {
     git submodule update --init --recursive
 }
 
+
 post_install() {
     echo "Bootstrapping an independent cpanm instance inside the sandbox..."
     
@@ -94,8 +94,8 @@ post_install() {
         } else { 
             die "Download failed: $response->{reason}\n"; 
         }
-       '
-
+    '
+    
     # Ensure the downloaded bootstrap script can be executed
     chmod +x cpanm
 
@@ -124,4 +124,3 @@ exec zmpkg.pl start
 EOF
     chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/run"
 }
-

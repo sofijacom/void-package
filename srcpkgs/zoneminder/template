@@ -111,19 +111,6 @@ post_install() {
         Device::SerialPort \
         Number::Bytes::Human \
         LWP::Protocol::https \
-        DBI
-
-# Force installation directly inside your targeted package directory
-#    ./cpanm -N --notest --no-man-pages -l "${PKGDESTDIR}/usr" \
-#        Net::WebSocket::Server \
-#        Net::MQTT::Simple \
-#        Sys::MemInfo \
-#        Sys::Mmap \
-#        Number::Bytes::Human \
-#        LWP::Protocol::https \
-#        Device::SerialPort \
-#        Crypt::Eksblowfish::Bcrypt \
-#        DBI
 
     # Clean up the standalone script tool and artifacts
     rm -f cpanm

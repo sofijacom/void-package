@@ -108,6 +108,9 @@ post_install() {
         Net::MQTT::Simple \
         Sys::MemInfo \
         Sys::Mmap \
+        Device::SerialPort \
+        Number::Bytes::Human \
+        LWP::Protocol::https \
         DBI
 
 # Force installation directly inside your targeted package directory

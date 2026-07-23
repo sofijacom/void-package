@@ -51,7 +51,6 @@ depends="
  perl-Date-Manip
  perl-LWP perl-DBI
  perl-LWP-Protocol-https
- libmariadbclient
  "
 short_desc="Complete video surveillance storage and monitoring solution"
 maintainer="Erik Schoepplenberg <erik@puppylinux.com>"

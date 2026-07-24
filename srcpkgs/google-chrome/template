@@ -1,6 +1,6 @@
 # Template file for 'google-chrome'
 pkgname=google-chrome
-version=150.0.7871.181
+version=150.0.7871.186
 revision=1
 _channel=stable
 archs="x86_64"
@@ -11,7 +11,7 @@ maintainer="Sofiya <sofiya@v.org>"
 license="custom:chrome"
 homepage="https://www.google.com/chrome/"
 distfiles="https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-${_channel}_${version}-1_amd64.deb"
-checksum=fec50905f7b1235a440977a833476e0162874f5ca79e506cdf40b71af64d92f4
+checksum=4193e00b6d5d5969ee63f7a69596868f546aa0e8cb077b3e0bf9cc1e2c719d00
 
 
 skiprdeps="/opt/google/chrome/libqt5_shim.so /opt/google/chrome/libqt6_shim.so"

@@ -161,25 +161,31 @@ jobs:
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
+          ARCH: ${{ matrix.config.arch }}
         run: |
-          # Only run rindex if there are actually packages built (.xbps files exist)
-          if ls *.xbps 1> /dev/null 2>&1; then
-            sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
+          # Удаляем старый repodata, чтобы не было путаницы
+          rm -f "${ARCH}-repodata"
 
-            if [ -n "${PRIVKEY}" ]; then
-              printf "%s\n" "${PRIVKEY}" > key.pem
-              sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
-              sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
-              sudo -Eu builder rm -f key.pem
-            else
-              echo "No PRIV_KEY found. Skipping cryptographic signing (normal for forks)."
-            fi
+          # Создаём свежий repodata-файл с нужным именем
+          sudo -Eu builder xbps-rindex -r . -f "${ARCH}-repodata"
 
-            sudo -Eu builder xbps-rindex --clean ${PWD}
+          if [ -n "${PRIVKEY}" ]; then
+            printf "%s\n" "${PRIVKEY}" > key.pem
+            chmod 600 key.pem
+
+            # Подписываем репозиторий и пакеты
+            sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${GITHUB_REPOSITORY_OWNER}-github-actions" .
+            sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg *.xbps
+
+            rm key.pem
           else
-            echo "No packages were built. Skipping indexing."
+            echo "No PRIV_KEY found. Skipping cryptographic signing."
           fi
 
+          # Проверка: сразу видим, что файл создан
+          ls -lh "${ARCH}-repodata"
+          echo "Repodata size: $(stat -c%s "${ARCH}-repodata") bytes"
+          
       - name: 🔢 Checksum
         working-directory: void-packages/hostdir/binpkgs
         run: |
@@ -204,126 +210,73 @@ jobs:
         run: |
           printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
           
-      #- name: 💾 Fetch existing repo from Release
-      #  working-directory: /tmp
-      #  env:
-      #    GH_TOKEN: ${{ github.token }}
-      #    REPO_OWNER: ${{ github.repository_owner }}
-      #    REPO_NAME: ${{ github.event.repository.name }}
-      #    ARCH: ${{ matrix.config.arch }}
-      #  run: |
-      #    set -e
-      #    mkdir -p oldrepo
-      #    cd oldrepo
-
-      #    TAG="${ARCH}-repodata"
-      #    url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG}"
-      #    resp=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "$url") || true
-      #    code=$(echo "$resp" | tail -n1)
-      #    body=$(echo "$resp" | sed '$d')
-
-      #    if [ "$code" != "200" ]; then
-      #      echo "No existing release ${TAG} (HTTP ${code}), starting fresh."
-      #      exit 0
-      #    fi
-
-      #    echo "$body" | jq -r '.assets[] | "\(.name)|\(.url)"' | while IFS='|' read -r name url; do
-      #      [ -z "$name" ] && continue
-      #      echo "Downloading $name"
-      #      curl -sSL -o "$name" -H "Accept: application/octet-stream" -H "Authorization: Bearer ${GH_TOKEN}" "$url" || true
-      #    done
-      #    echo "Fetched $(ls -A 2>/dev/null | wc -l) files from release ${TAG}"
-
-      - name: 📤 Upload to Release (.xbps + .sig2 + repodata)
+      - name: 📤 Upload to Release
         working-directory: void-packages/hostdir/binpkgs
-        shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
-          REPO_OWNER: ${{ github.repository_owner }}
-          REPO_NAME: ${{ github.event.repository.name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ARCH: ${{ matrix.config.arch }}
         run: |
           set -e
-          AUTH="Authorization: Bearer ${GH_TOKEN}"
+
+          # Получаем ID релиза
+          release_id=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" \
+            | jq -r '.id')
+
+          echo "Using release ID: ${release_id}"
+
+          API="https://api.github.com"
+          UPLOADS="https://uploads.github.com"
+          AUTH="Authorization: token ${GITHUB_TOKEN}"
           ACCEPT="Accept: application/vnd.github+json"
 
-          TAG="${ARCH}-repodata"
-          API="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
-          UPLOADS="https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
+          # 1. Удаляем старый repodata из релиза, если есть
+          old_repodata_id=$(curl -s -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/${release_id}" \
+            | jq -r '.assets[] | select(.name == "'${ARCH}-repodata'") | .id')
 
-          # Obtaining a release ID
-          resp=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/tags/${TAG}")
-          release_id=$(echo "$resp" | jq -r '.id // empty')
-
-          if [ -z "$release_id" ]; then
-            body=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
-              -d "{\"tag_name\":\"${TAG}\",\"target_commitish\":\"${{ github.sha }}\",\"name\":\"Binary repo for ${TAG}\"}" \
-              "${API}/releases")
-            release_id=$(echo "$body" | jq -r '.id')
-          fi
-
-          echo "Using release ID: $release_id"
-
-          # We collect prefixes into a string (without arrays, so that it works in any shell)
-          prefixes=""
-          for file in *.xbps; do
-            [ -f "$file" ] || continue
-            pkg_prefix=$(echo "$file" | sed -E 's/^([^-]+).*/\1-/')
-            if [ -n "$pkg_prefix" ]; then
-              prefixes="$prefixes $pkg_prefix"
-            fi
-          done
-
-          if [ -n "$prefixes" ]; then
-            echo "Will clean old versions for prefixes:$prefixes"
+          if [ -n "${old_repodata_id}" ]; then
+            echo "Deleting old repodata asset (id=${old_repodata_id})..."
+            curl -s -X DELETE -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/assets/${old_repodata_id}"
           else
-            echo "No .xbps files found. Nothing to upload."
-            exit 0
+            echo "No old repodata found in release."
           fi
 
-          # Removing old assets by prefix
-          assets=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/${release_id}" | jq -c '.assets[] | {id: .id, name: .name}')
-          for asset in $assets; do
-            asset_id=$(echo "$asset" | jq -r '.id')
-            asset_name=$(echo "$asset" | jq -r '.name')
-
-            matched=false
-            for prefix in $prefixes; do
-              if [[ "$asset_name" == "$prefix"* ]]; then
-                matched=true
-                break
+          # 2. Удаляем старые пакеты по префиксам (оставляю твой старый блок, чтобы не ломать логику)
+          prefixes=("brave-")
+          for prefix in "${prefixes[@]}"; do
+            assets=$(curl -s -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/${release_id}" \
+              | jq -r --arg pfx "${prefix}" '.assets[] | select(.name | startswith($pfx)) | .id')
+            for id in $assets; do
+              if [ -n "$id" ]; then
+                echo "Deleting old asset: $id (prefix: ${prefix})"
+                curl -s -X DELETE -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/assets/${id}"
               fi
             done
-
-            if [ "$matched" = true ]; then
-              echo "Deleting old asset: $asset_name (id=$asset_id)"
-              curl -s -X DELETE -H "$AUTH" -H "$ACCEPT" "${API}/releases/assets/${asset_id}"
-            fi
           done
 
-          # Upload .xbps
-          for file in *.xbps; do
+          # 3. Загружаем новые пакеты
+          for file in *.xbps *.xbps.sig2; do
             [ -f "$file" ] || continue
-            filename="$file"
-            upload_url="${UPLOADS}/releases/${release_id}/assets?name=${filename}"
-            echo "Uploading $filename"
-            curl -L -H "$AUTH" -H "Content-Type: application/octet-stream" --data-binary "@${filename}" "${upload_url}"
+            echo "Uploading $file..."
+            curl -s -X POST \
+              -H "${AUTH}" \
+              -H "Accept: application/octet-stream" \
+              --data-binary "@${file}" \
+              "${UPLOADS}/releases/${release_id}/assets?name=${file}&label=${file}"
           done
 
-          # Upload .sig2
-          for file in *.sig2; do
-            [ -f "$file" ] || continue
-            filename="$file"
-            upload_url="${UPLOADS}/releases/${release_id}/assets?name=${filename}"
-            echo "Uploading $filename"
-            curl -L -H "$AUTH" -H "Content-Type: application/octet-stream" --data-binary "@${filename}" "${upload_url}"
-          done
-
-          # Upload *-repodata
-          for file in "${ARCH}-repodata"; do
-            [ -f "$file" ] || continue
-            filename="$file"
-            upload_url="${UPLOADS}/releases/${release_id}/assets?name=${filename}"
-            echo "Uploading $filename"
-            curl -L -H "$AUTH" -H "Content-Type: application/octet-stream" --data-binary "@${filename}" "${upload_url}"
-          done
+          # 4. Загружаем свежий repodata
+          repodata_file="${ARCH}-repodata"
+          if [ -f "${repodata_file}" ]; then
+            echo "Uploading repodata: ${repodata_file}..."
+            curl -s -X POST \
+              -H "${AUTH}" \
+              -H "Accept: application/octet-stream" \
+              --data-binary "@${repodata_file}" \
+              "${UPLOADS}/releases/${release_id}/assets?name=${repodata_file}&label=${repodata_file}"
+            echo "Repodata uploaded successfully."
+          else
+            echo "ERROR: Repodata file ${repodata_file} not found!"
+            exit 1
+          fi

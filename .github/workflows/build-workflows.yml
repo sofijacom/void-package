@@ -194,6 +194,16 @@ jobs:
             echo "No packages found to checksum."
           fi
 
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.config.arch }}-repodata
+          path: void-packages/hostdir/binpkgs
+
+      - name: 🏷️ short sha
+        run: |
+          printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
+          
       #- name: 💾 Fetch existing repo from Release
       #  working-directory: /tmp
       #  env:

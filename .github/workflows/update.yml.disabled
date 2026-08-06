@@ -1,0 +1,71 @@
+name: 🔁 Auto update
+run-name: "Automated update of ${{ github.ref_name }} by @${{ github.actor }}"
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+        token: ${{ secrets.PULL_PUSH }}
+    - run: sudo apt update -y && sudo apt install -y jq git curl
+    - run: bash ./srcpkgs/brave-browser/update.sh
+    - run: bash ./srcpkgs/brave-origin/update.sh
+    - run: bash ./srcpkgs/brave-origin-beta/update.sh
+    - run: bash ./srcpkgs/hardinfo2/update.sh
+    - run: bash ./srcpkgs/zen-browser/update.sh
+    - run: bash ./srcpkgs/google-chrome/update.sh
+    - run: bash ./srcpkgs/yandex-browser/update.sh
+    - run: bash ./srcpkgs/microsoft-edge/update.sh
+    - run: bash ./srcpkgs/mullvad-browser/update.sh
+    - run: bash ./srcpkgs/helium-browser/update.sh
+    - run: bash ./srcpkgs/waterfox/update.sh
+    - run: bash ./srcpkgs/librewolf/update.sh
+    - run: bash ./srcpkgs/calamares/update.sh
+    - run: bash ./srcpkgs/palemoon/update.sh
+    - run: bash ./srcpkgs/smartgit/update.sh
+    - run: bash ./srcpkgs/seamonkey/update.sh
+    - run: bash ./srcpkgs/github-desktop/update.sh
+    - run: bash ./srcpkgs/ly/update.sh
+    - run: bash ./srcpkgs/zoneminder/update.sh
+    - run: bash ./srcpkgs/perl-Class-Mix/update.sh
+    - run: bash ./srcpkgs/perl-Crypt-Eksblowfish/update.sh
+    - run: bash ./srcpkgs/perl-Device-SerialPort/update.sh
+    - run: bash ./srcpkgs/perl-Net-MQTT-Simple/update.sh
+    - run: bash ./srcpkgs/perl-Net-WebSocket-Server/update.sh
+    - run: bash ./srcpkgs/perl-Number-Bytes-Human/update.sh
+    - run: bash ./srcpkgs/perl-Sys-MemInfo/update.sh
+    - run: bash ./srcpkgs/perl-Sys-Mmap/update.sh
+    - run: bash ./srcpkgs/perl-Protocol-WebSocket/update.sh
+
+    - name: Check for updates
+      id: check-updates
+      run: |
+        if [[ -n "$(git diff --exit-code)" ]]; then
+          echo "has_updates=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "No new updates"
+          echo "has_updates=false" >> "$GITHUB_OUTPUT"
+        fi
+    - name: Commit updates
+      if: ${{ steps.check-updates.outputs.has_updates == 'true' }}
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git commit --all --message "Automated update"
+    - name: Push updates
+      if: ${{ steps.check-updates.outputs.has_updates == 'true' }}
+      uses: ad-m/github-push-action@v1.1.0
+      with:
+        github_token: ${{ secrets.PULL_PUSH }}
+        branch: ${{ github.ref }}

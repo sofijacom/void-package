@@ -1,0 +1,31 @@
+# Template file for 'microsoft-edge-stable'
+pkgname=microsoft-edge
+version=151.0.4129.59
+timestamp=1
+revision=1
+_channel=stable
+archs="x86_64"
+create_wrksrc=yes
+hostmakedepends="ImageMagick"
+# makedepends="ImageMagick"
+optdepends="libpipewire kdialog gnome-keyring kwallet liberation-fonts-ttf xdg-utils"
+short_desc="A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier"
+maintainer="Sofiya <sofiya@v.org>"
+license="custom:license"
+homepage="https://www.microsoft.com/en-us/edge"
+changelog="https://github.com/NDViet/microsoft-edge-stable/blob/main/README.md"
+# distfiles="https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/${_pkgname}-${_channel}_${version}-1_amd64.deb"
+distfiles="https://github.com/NDViet/microsoft-edge-stable/releases/download/${version}-1/microsoft-edge-${_channel}_${version}-1_amd64.deb"
+checksum=5e443a1c2385950faaf60ae21aac85cfd117bc05f7e40c965720c40d7d4c75af
+
+do_install() {
+	# Copy files
+	vcopy "*" /
+
+	# Remove cronjob
+	rm -f "${DESTDIR}/etc/cron.daily/microsoft-edge"
+
+	# Install the icon
+	vmkdir usr/share/pixmaps
+	vinstall opt/microsoft/msedge/product_logo_128.png 644 usr/share/pixmaps microsoft-edge.png
+}

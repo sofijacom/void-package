@@ -1,0 +1,16 @@
+# Template file for 'perl-Protocol-WebSocket'
+
+pkgname=perl-Protocol-WebSocket
+version=0.26
+revision=1
+archs="x86_64"
+build_style=perl-ModuleBuild
+hostmakedepends="perl perl-Module-Build"
+makedepends="perl-Module-Build-Tiny"
+depends="perl-Digest-SHA1"
+short_desc="Protocol::WebSocket"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/pod/Protocol::WebSocket"
+distfiles="https://cpan.metacpan.org/authors/id/V/VT/VTI/Protocol-WebSocket-${version}.tar.gz"
+checksum=5837d03711a7a3254f0afecb7e409e8b09376060c38a5b8295e8ee9af7575522

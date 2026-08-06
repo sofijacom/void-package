@@ -1,0 +1,22 @@
+# Template file for 'perl-Crypt-Eksblowfish'
+
+pkgname=perl-Crypt-Eksblowfish
+version=0.009
+revision=1
+archs="x86_64"
+build_style=perl-ModuleBuild
+hostmakedepends="perl make gcc perl-Module-Build"
+makedepends="${hostmakedepends}"
+depends="perl perl-Class-Mix perl-Module-Build"
+short_desc="Crypt::Eksblowfish Perl module (includes Bcrypt)"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/pod/Crypt::Eksblowfish"
+distfiles="https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Crypt-Eksblowfish-${version}.tar.gz"
+checksum=3cc7126d5841107237a9be2dc5c7fbc167cf3c4b4ce34678a8448b850757014c
+
+post_install() {
+	mkdir -p "${DESTDIR}/usr/share/doc/${pkgname}"
+	[ -f "${wrksrc}/README" ] && cp "${wrksrc}/README" "${DESTDIR}/usr/share/doc/${pkgname}/"
+	[ -f "${wrksrc}/Changes" ] && cp "${wrksrc}/Changes" "${DESTDIR}/usr/share/doc/${pkgname}/"
+}

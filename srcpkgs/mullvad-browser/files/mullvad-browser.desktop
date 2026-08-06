@@ -1,0 +1,22 @@
+[Desktop Entry]
+Name=Mullvad Browser
+Comment=Privacy-focused browser developed by Mullvad VPN and the Tor Project
+Exec=mullvad-browser %u
+Icon=mullvad-browser
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;application/x-xpinstall;application/pdf;application/json;
+StartupWMClass=Mullvad Browser
+Categories=Network;WebBrowser;
+StartupNotify=true
+Terminal=false
+X-MultipleArgs=false
+Keywords=Internet;WWW;Browser;Web;Explorer;Privacy;Mullvad;
+Actions=new-window;new-private-window;
+
+[Desktop Action new-window]
+Name=Open a New Window
+Exec=mullvad-browser %u
+
+[Desktop Action new-private-window]
+Name=Open a New Private Window
+Exec=mullvad-browser --private-window %u

@@ -1,0 +1,16 @@
+# Template file for 'perl-Net-WebSocket-Server'
+
+pkgname=perl-Net-WebSocket-Server
+version=0.004000
+revision=1
+archs="x86_64"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="perl-Protocol-WebSocket perl perl-YAML"
+short_desc="Net::WebSocket::Server — simple non-blocking WebSocket server"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/release/Net-WebSocket-Server"
+distfiles="https://cpan.metacpan.org/authors/id/T/TO/TOPAZ/Net-WebSocket-Server-${version}.tar.gz"
+checksum=11c9e9bc8494a3d65795d8f0e93cc3fd0051023bc8e6752f04917eefb1c917e3

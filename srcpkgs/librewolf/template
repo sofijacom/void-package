@@ -1,0 +1,44 @@
+# Template file for 'librewolf'
+pkgname=librewolf
+version=153.0.3
+timestamp=1
+revision=1
+archs="x86_64"
+_rev=2
+_tag="${version}-${_rev}"
+hostmakedepends="tar xz"
+depends="desktop-file-utils hicolor-icon-theme pciutils"
+short_desc="LibreWolf web browser (prebuilt binary)"
+maintainer="sofiya <sofiya@v.org>"
+license="MPL-2.0"
+homepage="https://librewolf.net/"
+changelog="https://codeberg.org/librewolf/-/packages/generic/librewolf/"
+distfiles="https://codeberg.org/api/packages/librewolf/generic/librewolf/${version}-${timestamp}/librewolf-${version}-${timestamp}-linux-x86_64-package.tar.xz"
+checksum=15d7ff2ac24cea0b5fe4519eafc874b2514ff619c7f1e192f08927c5ae1eb163
+wrksrc=librewolf
+nostrip=yes
+
+do_install() {
+	install -dm755 \
+		"${DESTDIR}/usr/lib/${pkgname}" \
+		"${DESTDIR}/usr/bin" \
+		"${DESTDIR}/usr/share/applications" \
+		"${DESTDIR}/usr/share/pixmaps"
+
+	vcopy * "usr/lib/${pkgname}"
+	vinstall "${FILESDIR}/librewolf.desktop" 644 usr/share/applications/
+
+	ln -sf "/usr/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf"
+	ln -sf "/usr/lib/${pkgname}/librewolf" "${DESTDIR}/usr/bin/librewolf-wayland"
+
+	vinstall browser/chrome/icons/default/default48.png 644 usr/share/pixmaps librewolf.png
+	for size in 16 32 48 64 128; do
+		install -dm755 "${DESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps"
+		vinstall "browser/chrome/icons/default/default${size}.png" 644 \
+			"usr/share/icons/hicolor/${size}x${size}/apps" librewolf.png
+	done
+
+	ln -Ts /usr/share/hunspell "${DESTDIR}/usr/lib/${pkgname}/dictionaries"
+	ln -Ts /usr/share/hyphen "${DESTDIR}/usr/lib/${pkgname}/hyphenation"
+	ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/usr/lib/${pkgname}/libnssckbi.so"
+}

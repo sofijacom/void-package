@@ -1,0 +1,22 @@
+# Template file for 'perl-Class-Mix'
+
+pkgname=perl-Class-Mix
+version=0.006
+revision=1
+archs="x86_64"
+build_style=perl-ModuleBuild
+hostmakedepends="perl make perl-Module-Build"
+makedepends="${hostmakedepends}"
+depends="perl-Params-Classify"
+short_desc="Class::Mix Perl module"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses"
+homepage="https://metacpan.org/pod/Class::Mix"
+distfiles="https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Class-Mix-${version}.tar.gz"
+checksum=8747f643893914f8c44979f1716d0c1ec8a41394796555447944e860f1ff7c0b
+
+post_install() {
+	mkdir -p "${DESTDIR}/usr/share/doc/${pkgname}"
+	[ -f "${wrksrc}/README" ] && cp "${wrksrc}/README" "${DESTDIR}/usr/share/doc/${pkgname}/"
+	[ -f "${wrksrc}/Changes" ] && cp "${wrksrc}/Changes" "${DESTDIR}/usr/share/doc/${pkgname}/"
+}

@@ -1,0 +1,16 @@
+# Template file for 'perl-Number-Bytes-Human'
+
+pkgname=perl-Number-Bytes-Human
+version=0.11
+revision=1
+archs="x86_64"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="${makedepends}"
+short_desc="Number::Bytes::Human — format bytes as human-readable strings"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/release/Number-Bytes-Human"
+distfiles="https://cpan.metacpan.org/authors/id/F/FE/FERREIRA/Number-Bytes-Human-${version}.tar.gz"
+checksum=5fc79c49b0b40df780479c43696381343e2b6ad1fe52859f60bc65b66ebe6f2c

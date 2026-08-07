@@ -216,34 +216,36 @@ jobs:
 
           echo "✅ Cleanup done. Kept $(wc -l < "$tmp_keep.files") packages."
           
-      # --- Подпись и индекс ---
-      - name: Sign & Index repo
+      - name: 📦 Sign & Index repo
+        working-directory: void-packages/hostdir/binpkgs
         env:
           PRIV_KEY: ${{ secrets.PRIV_KEY }}
-        working-directory: void-packages/hostdir/binpkgs/
+          ARCH: x86_64
         run: |
           set -e
           export PATH="/opt/xbps/usr/bin/:$PATH"
 
+          # 1. Сначала удаляем старые индексные файлы, чтобы не было путаницы
+          echo "🗑️ Removing old repodata files..."
+          rm -f "${ARCH}-repodata" "${ARCH}-repodata.meta"
+
+          # 2. Проверяем, что вообще есть пакеты для индексации
           count=$(ls -1 *.xbps 2>/dev/null | wc -l)
           if [ "$count" -eq 0 ]; then
-            echo "No packages found. Skipping signing."
+            echo "⚠️ No .xbps files found. Skipping indexing."
             exit 0
           fi
 
-          # ✅ Удаляем ТОЛЬКО x86_64-repodata, если есть
-          echo "🧹 Cleaning old x86_64-repodata..."
-          rm -f ${ARCH}-repodata
+          echo "✅ Found $count packages. Building new repodata..."
 
-          # ✅ Пересоздаём индекс
-          echo "🔄 Rebuilding repodata..."
-          xbps-rindex -a *.xbps || true
+          # 3. Строим НОВЫЙ индекс ТОЛЬКО по тем файлам, которые сейчас лежат в папке
+          xbps-rindex -a *.xbps
 
-          # ✅ Подписываем repodata и пакеты
           if [ -n "$PRIV_KEY" ]; then
             printf "%s\n" "$PRIV_KEY" > private.pem
             chmod 600 private.pem
 
+            # Подписываем репо и пакеты
             xbps-rindex -r "$PWD"
             xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
             xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
@@ -254,6 +256,8 @@ jobs:
             echo "⚠️ No PRIV_KEY — skipping signing."
           fi
 
+          echo "✅ Repodata rebuilt and signed."
+          
       # --- Контрольные суммы (опционально) ---
       - name: 🔢 Checksum
         working-directory: void-packages/hostdir/binpkgs

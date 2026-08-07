@@ -170,7 +170,7 @@ jobs:
         working-directory: void-packages/hostdir/binpkgs
         env:
           PRIV_KEY: ${{ secrets.PRIV_KEY }}
-          ARCH: x86_64
+          ARCH: ${ARCH}
         run: |
           set -e
           export PATH="/opt/xbps/usr/bin/:$PATH"

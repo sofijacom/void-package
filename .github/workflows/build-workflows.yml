@@ -157,8 +157,7 @@ jobs:
             echo "🏗️ Building $pkg for $ARCH..."
             sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
-
-      # --- Отчёт: сколько реально собрали ---
+          
       - name: 📊 Report what was built
         working-directory: void-packages/hostdir/binpkgs
         run: |
@@ -202,8 +201,7 @@ jobs:
           fi
 
           echo "✅ Repodata rebuilt and signed."
-
-      # --- Контрольные суммы (опционально) ---
+          
       - name: 🔢 Checksum
         working-directory: void-packages/hostdir/binpkgs
         run: |
@@ -212,16 +210,14 @@ jobs:
             sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
             sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
           done
-
-      # --- Артефакт (для проверки) ---
-      #- name: Upload Artifact
-      #  uses: actions/upload-artifact@v7
-      #  with:
-      #    name: ${{ matrix.config.arch }}-repodata
-      #    path: void-packages/hostdir/binpkgs
-      #    retention-days: 1
-
-      # --- Загрузка в релиз ---
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.config.arch }}-repodata
+          path: void-packages/hostdir/binpkgs
+          retention-days: 1
+          
       - name: 📤 Upload to Release
         working-directory: void-packages/hostdir/binpkgs
         shell: bash

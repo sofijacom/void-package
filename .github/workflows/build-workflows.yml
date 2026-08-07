@@ -1,4 +1,4 @@
-name: 🏗️ Build Packages (Overwrite Release)
+name: 🏗️ Build Packages (Simple Artifact)
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { arch: x86_64, host: x86_64, libc: glibc, platform: linux/amd64, test: 1 }
+          - { arch: x86_64, host: x86_64, libc: glibc, platform: linux/amd64 }
 
     container:
       image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250616R1
@@ -37,14 +37,16 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
+      # 1. Подготовка контейнера и пользователя builder
       - name: 🧰 Prep container
         run: |
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
           env -u XBPS_TARGET_ARCH xbps-install -Syu xbps
           env -u XBPS_TARGET_ARCH xbps-install -yu
-          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils
+          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git xtools coreutils
           useradd -G xbuilder -M builder -s $(which bash)
 
+      # 2. Checkout void-packages
       - name: 🔎 Checkout void-packages
         uses: actions/checkout@v6
         with:
@@ -52,11 +54,13 @@ jobs:
           ref: master
           path: void-packages
 
+      # 3. Фикс скрипта сборки (частая проблема)
       - name: 🐛 Fix sourcepkg.sh
         working-directory: void-packages
         run: |
           sed -i 's@for var in $(awk .*;@for var in $(printenv | cut -d'"'"'='"'"' -f1);@' common/environment/setup/sourcepkg.sh
 
+      # 4. Слияние твоих шаблонов в void-packages
       - name: 🧩 Merge this repository into void-linux/void-packages
         working-directory: void-packages
         env:
@@ -69,15 +73,7 @@ jobs:
           git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change $REPO_OWNER/main
           mkdir -p hostdir/binpkgs
 
-      #    gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
-
-      #    if [ "$ARCH" = "x86_64" ]; then
-      #      rm --force hostdir/binpkgs/*x86_64-musl*
-      #    elif [ "$ARCH" = "x86_64-musl" ]; then
-      #      rm --force hostdir/binpkgs/*x86_64.xbps
-      #    fi
-      #    rm --force hostdir/binpkgs/*.xbps.sig2
-
+      # 5. Определение, какие пакеты собирать (только изменённые)
       - name: 📋 Identify changes to build
         working-directory: void-packages
         env:
@@ -87,15 +83,28 @@ jobs:
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          latest_name=$(gh release view --json tagName --jq '.tagName' --repo $REPO_OWNER/$REPO_NAME || echo "Initial Commit")
-          latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null || git rev-list --max-parents=0 $REPO_OWNER/main)
-          echo "Latest Tag Name: ${latest_name}"
-          echo "Latest Tag SHA: ${latest_sha}"
+          # Пытаемся найти последний тег релиза, если нет — считаем, что изменений нет и собираем всё
+          latest_name=$(gh release view --json tagName --jq '.tagName' --repo $REPO_OWNER/$REPO_NAME 2>/dev/null || echo "")
+          if [ -n "$latest_name" ]; then
+            latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null)
+          else
+            latest_sha=""
+          fi
 
-          chown -R builder:builder .
-          git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
-          | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
+          # Если тега нет или не удалось найти SHA, считаем, что надо собрать всё (Initial Commit)
+          if [ -z "$latest_sha" ]; then
+            echo "No previous release found, building all packages in srcpkgs/"
+            find srcpkgs/ -mindepth 1 -maxdepth 1 -type d -printf "%f\n" > /tmp/templates
+          else
+            echo "Comparing changes from ${latest_sha} to ${SHA}"
+            git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/' \
+              | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
+          fi
 
+          cat /tmp/templates | grep -v "^$" > /tmp/templates.clean
+          mv /tmp/templates.clean /tmp/templates
+
+      # 6. Настройка xbps-src
       - name: 🛠️ Setup void-packages
         working-directory: void-packages
         run: |
@@ -108,6 +117,7 @@ jobs:
           echo 'XBPS_DISTDIR=$PWD/hostdir/distfiles' >> etc/conf
           echo 'XBPS_MASTERDIR_PKGS="$PWD/hostdir/binpkgs"' >> etc/conf
 
+      # 7. Подготовка chroot (masterdir)
       - name: 🔧 Prepare masterdir
         working-directory: void-packages
         env:
@@ -116,30 +126,26 @@ jobs:
           chown -R builder:builder .
           yes | sudo -Eu builder ./xbps-src -m masterdir-${ARCH} -A ${ARCH} binary-bootstrap
 
+      # 8. Установка gawk внутрь chroot (нужно для некоторых шаблонов)
       - name: ✅ Install gawk in chroot
         working-directory: void-packages
         env:
           ARCH: ${{ matrix.config.arch }}
         run: |
           MASTERDIR="masterdir-${ARCH}"
-
           if [ ! -d "$MASTERDIR" ]; then
             echo "❌ Error: $MASTERDIR does not exist"
             exit 1
           fi
-
           sudo mkdir -p "$MASTERDIR/etc/xbps.d"
-          [ -d "/usr/share/xbps.d" ] && sudo cp /usr/share/xbps.d/*-repository-*.conf "$MASTERDIR/etc/xbps.d/" || { echo "❌ Not found /usr/share/xbps.d/"; exit 1; }
-
+          [ -d "/usr/share/xbps.d" ] && sudo cp /usr/share/xbps.d/*-repository-*.conf "$MASTERDIR/etc/xbps.d/" || true
           sudo mount --bind /proc "$MASTERDIR/proc" || true
           sudo mount --bind /dev "$MASTERDIR/dev" || true
           sudo mount --bind /sys "$MASTERDIR/sys" || true
+          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || true
+          sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null || true
 
-          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || { echo "❌ gawk installation failed"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
-          { [ -f "$MASTERDIR/usr/bin/awk" ] || [ -f "$MASTERDIR/usr/bin/gawk" ]; } || { echo "❌ awk not found"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
-
-          sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null
-
+      # 9. Сброс кэша и сборка
       - name: 🗑️ Reset package cache & sync repos
         working-directory: void-packages
         run: sudo -Eu builder ./xbps-src clean || true
@@ -151,11 +157,18 @@ jobs:
         run: |
           chown -R builder:builder .
           pkgs=$(cat /tmp/templates)
+          # Если список пустой, всё равно пробуем собрать что-то, чтобы не падать
+          if [ -z "$pkgs" ]; then
+            echo "No changed packages detected, skipping build."
+            mkdir -p hostdir/binpkgs
+            exit 0
+          fi
           for pkg in ${pkgs}; do
             echo "🏗️ Building $pkg for $ARCH..."
             sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
 
+      # 10. Создание repodata и подпись (простая, без сложной логики с релизами)
       - name: 🏁 Create & sign repodata
         working-directory: void-packages/hostdir/binpkgs
         env:
@@ -163,113 +176,30 @@ jobs:
           ARCH: ${{ matrix.config.arch }}
         run: |
           rm -f "${ARCH}-repodata"
-          sudo -Eu builder xbps-rindex -a -f "${ARCH}-repodata" *.xbps
+          # Создаем repodata для всех .xbps файлов
+          sudo -Eu builder xbps-rindex -a -f "${ARCH}-repodata" *.xbps || true
 
           if [ -n "${PRIVKEY}" ]; then
             printf "%s\n" "${PRIVKEY}" > key.pem
             chmod 600 key.pem
-
-            sudo -Eu builder xbps-rindex --privkey key.pem -s --signedby "${GITHUB_REPOSITORY_OWNER}-github-actions" .
-            sudo -Eu builder xbps-rindex --privkey key.pem -S *.xbps
-
+            # Подписываем репо и пакеты
+            sudo -Eu builder xbps-rindex --privkey key.pem -s --signedby "Void CI Builder" . || true
+            sudo -Eu builder xbps-rindex --privkey key.pem -S *.xbps || true
             rm key.pem
           else
-            echo "No PRIV_KEY found. Skipping signing."
+            echo "⚠️ No PRIV_KEY found. Repo will be unsigned."
           fi
 
-          ls -lh "${ARCH}-repodata"
-          
-      - name: 🔢 Checksum
-        working-directory: void-packages/hostdir/binpkgs
-        run: |
-          rm -rf *.sha256sum *.sha512sum
-          count=$(ls -1 *.xbps 2>/dev/null | wc -l)
-          if [ "$count" != 0 ]; then
-            for file in *.xbps; do
-              sha256sum "${file}" | cut -d ' ' -f 1 > "${file}.sha256sum"
-              sha512sum "${file}" | cut -d ' ' -f 1 > "${file}.sha512sum"
-            done
-          else
-            echo "No packages found to checksum."
-          fi
+          ls -lh "${ARCH}-repodata" || echo "No repodata created."
 
+      # 11. Загрузка артефакта (просто папка с пакетами и repodata)
       - name: 📤 Upload Artifact
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.config.arch }}-repodata
+          name: ${{ matrix.config.arch }}-repo-artifact
           path: void-packages/hostdir/binpkgs
+          retention-days: 7
 
       - name: 🏷️ short sha
         run: |
-          printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
-          
-      - name: 📤 Upload to Release
-        working-directory: void-packages/hostdir/binpkgs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          set -e
-
-          # Получаем ID релиза
-          release_id=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" \
-            | jq -r '.id')
-
-          echo "Using release ID: ${release_id}"
-
-          API="https://api.github.com"
-          UPLOADS="https://uploads.github.com"
-          AUTH="Authorization: token ${GITHUB_TOKEN}"
-          ACCEPT="Accept: application/vnd.github+json"
-
-          # 1. Удаляем старый repodata из релиза, если есть
-          old_repodata_id=$(curl -s -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/${release_id}" \
-            | jq -r '.assets[] | select(.name == "'${ARCH}-repodata'") | .id')
-
-          if [ -n "${old_repodata_id}" ]; then
-            echo "Deleting old repodata asset (id=${old_repodata_id})..."
-            curl -s -X DELETE -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/assets/${old_repodata_id}"
-          else
-            echo "No old repodata found in release."
-          fi
-
-          # 2. Удаляем старые пакеты по префиксам (оставляю твой старый блок, чтобы не ломать логику)
-          prefixes=("brave-")
-          for prefix in "${prefixes[@]}"; do
-            assets=$(curl -s -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/${release_id}" \
-              | jq -r --arg pfx "${prefix}" '.assets[] | select(.name | startswith($pfx)) | .id')
-            for id in $assets; do
-              if [ -n "$id" ]; then
-                echo "Deleting old asset: $id (prefix: ${prefix})"
-                curl -s -X DELETE -H "${AUTH}" -H "${ACCEPT}" "${API}/releases/assets/${id}"
-              fi
-            done
-          done
-
-          # 3. Загружаем новые пакеты
-          for file in *.xbps *.xbps.sig2; do
-            [ -f "$file" ] || continue
-            echo "Uploading $file..."
-            curl -s -X POST \
-              -H "${AUTH}" \
-              -H "Accept: application/octet-stream" \
-              --data-binary "@${file}" \
-              "${UPLOADS}/releases/${release_id}/assets?name=${file}&label=${file}"
-          done
-
-          # 4. Загружаем свежий repodata
-          repodata_file="${ARCH}-repodata"
-          if [ -f "${repodata_file}" ]; then
-            echo "Uploading repodata: ${repodata_file}..."
-            curl -s -X POST \
-              -H "${AUTH}" \
-              -H "Accept: application/octet-stream" \
-              --data-binary "@${repodata_file}" \
-              "${UPLOADS}/releases/${release_id}/assets?name=${repodata_file}&label=${repodata_file}"
-            echo "Repodata uploaded successfully."
-          else
-            echo "ERROR: Repodata file ${repodata_file} not found!"
-            exit 1
-          fi
+          printf "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV

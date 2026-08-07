@@ -111,14 +111,12 @@ jobs:
             find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
 
             echo "🧹 Removing old $pkg packages as builder..."
-            sudo -Eu builder sh -c 'rm -fv "hostdir/binpkgs/${pkg}-*-*.xbps"'
-            sudo -Eu builder sh -c 'rm -fv "hostdir/binpkgs/${pkg}-*-*.sig2"'
-
+            sudo -Eu builder sh -c "rm -fv 'hostdir/binpkgs/${pkg}-*-*.xbps'"
+            sudo -Eu builder sh -c "rm -fv 'hostdir/binpkgs/${pkg}-*-*.sig2'"
 
             echo "✅ Check if removed:"
-            find hostdir/binpkgs -name "${pkg}-*.xbps" || echo "➡️ No files left — good!"
+            find hostdir/binpkgs -name "${pkg}-*.xbps" -ls || echo "➡️ No files left — good!"
           done
-
           
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages

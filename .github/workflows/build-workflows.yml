@@ -159,7 +159,7 @@ jobs:
           done
 
       # --- Отчёт: сколько реально собрали ---
-      - name: 📊 Report: what was built
+      - name: 📊 Report what was built
         working-directory: void-packages/hostdir/binpkgs
         run: |
           count=$(ls -1 *.xbps 2>/dev/null | wc -l)

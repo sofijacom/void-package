@@ -106,8 +106,8 @@ jobs:
             cp -rv extra/srcpkgs/* void-packages/srcpkgs/
 
             SHLIBS_FILE="void-packages/common/shlibs"
-            APPEND_FILE="extra/shlibs_append"
-            REMOVE_FILE="extra/shlibs_remove"
+            APPEND_FILE="extra/common/shlibs"
+            # REMOVE_FILE="extra/shlibs_remove"
 
             echo "==> updating common/shlibs..."
             if [ -f "$REMOVE_FILE" ]; then
@@ -128,11 +128,11 @@ jobs:
                 done < "$APPEND_FILE"
             fi
 
-            echo "=> applying inline edits..."
-            if [ -d "void-packages/srcpkgs/hyprutils/patches" ]; then
-                echo "   - removing void-packages/srcpkgs/hyprutils/patches"
-                rm -rf void-packages/srcpkgs/hyprutils/patches
-            fi
+            #echo "=> applying inline edits..."
+            #if [ -d "void-packages/srcpkgs/hyprutils/patches" ]; then
+            #    echo "   - removing void-packages/srcpkgs/hyprutils/patches"
+            #    rm -rf void-packages/srcpkgs/hyprutils/patches
+            #fi
 
       - name: Prepare masterdir
         run: |

@@ -71,14 +71,14 @@ jobs:
           git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change $REPO_OWNER/main
           mkdir -p hostdir/binpkgs
 
-          # Скачиваем старые пакеты только чтобы не терять их, если сборка частично упадёт
+          # Скачиваем старые пакеты, чтобы не терять их
           gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
 
+          # Удаляем пакеты другой архитектуры (на случай, если скачались)
           if [ "$ARCH" = "x86_64" ]; then
             rm --force hostdir/binpkgs/*x86_64-musl*
-          elif [ "$ARCH" = "x86_64-musl" ]; then
-            rm --force hostdir/binpkgs/*x86_64.xbps
           fi
+          # Удаляем старые подписи, чтобы не мешали
           rm --force hostdir/binpkgs/*.xbps.sig2
 
       # --- Определяем, какие пакеты строить ---
@@ -181,16 +181,28 @@ jobs:
             exit 0
           fi
 
-          printf "%s\n" "$PRIV_KEY" > private.pem
-          chmod 600 private.pem
+          # ✅ Удаляем ТОЛЬКО x86_64-repodata, если есть
+          echo "🧹 Cleaning old x86_64-repodata..."
+          rm -f ${ARCH}-repodata
 
+          # ✅ Пересоздаём индекс
+          echo "🔄 Rebuilding repodata..."
           xbps-rindex -a *.xbps || true
-          xbps-rindex -r "$PWD"
-          xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
-          xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
-          xbps-rindex -c "$PWD"
 
-          rm -f private.pem
+          # ✅ Подписываем repodata и пакеты
+          if [ -n "$PRIV_KEY" ]; then
+            printf "%s\n" "$PRIV_KEY" > private.pem
+            chmod 600 private.pem
+
+            xbps-rindex -r "$PWD"
+            xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
+            xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
+            xbps-rindex -c "$PWD"
+
+            rm -f private.pem
+          else
+            echo "⚠️ No PRIV_KEY — skipping signing."
+          fi
 
       # --- Контрольные суммы (опционально) ---
       - name: 🔢 Checksum
@@ -208,13 +220,13 @@ jobs:
         with:
           name: ${{ matrix.config.arch }}-repodata
           path: void-packages/hostdir/binpkgs
-          retention-days: 7
+          retention-days: 1
 
       - name: short sha
         run: |
           printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
 
-      # --- Загрузка в релиз (без удалений, просто кладём всё, что есть) ---
+      # --- Загрузка в релиз ---
       - name: 📤 Upload to Release
         working-directory: void-packages/hostdir/binpkgs
         shell: bash
@@ -244,7 +256,8 @@ jobs:
 
           echo "Using release ID: $release_id"
 
-          for file in *.xbps *.sig2 "${ARCH}-repodata"; do
+          # ✅ Загружаем ТОЛЬКО нужные файлы
+          for file in *.xbps *.sig2 ${ARCH}-repodata; do
             [ -f "$file" ] || continue
             filename="$file"
             upload_url="${UPLOADS}/releases/${release_id}/assets?name=${filename}"

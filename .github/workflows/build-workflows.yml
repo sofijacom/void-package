@@ -170,7 +170,7 @@ jobs:
         working-directory: void-packages/hostdir/binpkgs
         env:
           PRIV_KEY: ${{ secrets.PRIV_KEY }}
-          ARCH: ${ARCH}
+          ARCH: ${{ matrix.config.arch }}
         run: |
           set -e
           export PATH="/opt/xbps/usr/bin/:$PATH"

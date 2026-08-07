@@ -218,7 +218,7 @@ jobs:
           path: void-packages/hostdir/binpkgs
           retention-days: 1
           
-      - name: 📤 Upload to Release
+      - name: 📤 Upload to Release (fixed)
         working-directory: void-packages/hostdir/binpkgs
         shell: bash
         env:
@@ -230,22 +230,20 @@ jobs:
           set -e
           AUTH="Authorization: Bearer ${GH_TOKEN}"
           ACCEPT="Accept: application/vnd.github+json"
-
-          TAG="${ARCH}"
           API="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
           UPLOADS="https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
 
-          resp=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/tags/${TAG}")
-          release_id=$(echo "$resp" | jq -r '.id // empty')
+          # Уникальный тег: x86_64-<commit-short>
+          TAG="${ARCH}-$(echo ${GITHUB_SHA} | cut -c1-8)"
+          NAME="Binary repo for ${TAG}"
 
-          if [ -z "$release_id" ]; then
-            body=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
-              -d "{\"tag_name\":\"${TAG}\",\"target_commitish\":\"${{ github.sha }}\",\"name\":\"Binary repo for ${TAG}\"}" \
-              "${API}/releases")
-            release_id=$(echo "$body" | jq -r '.id')
-          fi
+          # Создаём новый релиз (GitHub не даст создать дубль тега, но тут тег всегда новый)
+          body=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
+            -d "{\"tag_name\":\"${TAG}\",\"target_commitish\":\"${{ github.sha }}\",\"name\":\"${NAME}\"}" \
+            "${API}/releases")
+          release_id=$(echo "$body" | jq -r '.id')
 
-          echo "Using release ID: $release_id"
+          echo "Created release ID: $release_id (tag: ${TAG})"
 
           for file in *.xbps *.sig2 ${ARCH}-repodata; do
             [ -f "$file" ] || continue
@@ -254,3 +252,4 @@ jobs:
             echo "Uploading $filename"
             curl -L -H "$AUTH" -H "Content-Type: application/octet-stream" --data-binary "@${filename}" "${upload_url}"
           done
+          

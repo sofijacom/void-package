@@ -157,7 +157,7 @@ jobs:
           done
 
       - name: Clean & sign
-        working-directory: ./hostdir/binpkgs
+        working-directory: void-packages/hostdir/binpkgs
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
@@ -168,14 +168,16 @@ jobs:
             
             if [ -n "${PRIVKEY}" ]; then
               printf "%s\n" "${PRIVKEY}" > key.pem
+              sudo -Eu builder xbps-rindex -r "$PWD"
               sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
               sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
+              sudo -Eu builder xbps-rindex -c "$PWD"
               sudo -Eu builder rm -f key.pem
             else
               echo "No PRIV_KEY found. Skipping cryptographic signing (normal for forks)."
             fi
             
-            #sudo -Eu builder xbps-rindex --clean ${PWD}
+            # sudo -Eu builder xbps-rindex --clean ${PWD}
           else
             echo "No packages were built. Skipping indexing."
           fi

@@ -196,35 +196,35 @@ jobs:
             echo "No packages found to checksum."
           fi
 
-      - name: 💾 Fetch existing repo from Release
-        working-directory: /tmp
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO_OWNER: ${{ github.repository_owner }}
-          REPO_NAME: ${{ github.event.repository.name }}
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          set -e
-          mkdir -p oldrepo
-          cd oldrepo
+      #- name: 💾 Fetch existing repo from Release
+      #  working-directory: /tmp
+      #  env:
+      #    GH_TOKEN: ${{ github.token }}
+      #    REPO_OWNER: ${{ github.repository_owner }}
+      #    REPO_NAME: ${{ github.event.repository.name }}
+      #    ARCH: ${{ matrix.config.arch }}
+      #  run: |
+      #    set -e
+      #    mkdir -p oldrepo
+      #    cd oldrepo
 
-          TAG="${ARCH}"
-          url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG}"
-          resp=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "$url") || true
-          code=$(echo "$resp" | tail -n1)
-          body=$(echo "$resp" | sed '$d')
+      #    TAG="${ARCH}"
+      #    url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG}"
+      #    resp=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "$url") || true
+      #    code=$(echo "$resp" | tail -n1)
+      #    body=$(echo "$resp" | sed '$d')
 
-          if [ "$code" != "200" ]; then
-            echo "No existing release ${TAG} (HTTP ${code}), starting fresh."
-            exit 0
-          fi
+      #    if [ "$code" != "200" ]; then
+      #      echo "No existing release ${TAG} (HTTP ${code}), starting fresh."
+      #      exit 0
+      #    fi
 
-          echo "$body" | jq -r '.assets[] | "\(.name)|\(.url)"' | while IFS='|' read -r name url; do
-            [ -z "$name" ] && continue
-            echo "Downloading $name"
-            curl -sSL -o "$name" -H "Accept: application/octet-stream" -H "Authorization: Bearer ${GH_TOKEN}" "$url" || true
-          done
-          echo "Fetched $(ls -A 2>/dev/null | wc -l) files from release ${TAG}"
+      #    echo "$body" | jq -r '.assets[] | "\(.name)|\(.url)"' | while IFS='|' read -r name url; do
+      #      [ -z "$name" ] && continue
+      #      echo "Downloading $name"
+      #      curl -sSL -o "$name" -H "Accept: application/octet-stream" -H "Authorization: Bearer ${GH_TOKEN}" "$url" || true
+      #    done
+      #    echo "Fetched $(ls -A 2>/dev/null | wc -l) files from release ${TAG}"
 
       - name: 📤 Upload to Release (.xbps + .sig2 + repodata)
         working-directory: void-packages/hostdir/binpkgs

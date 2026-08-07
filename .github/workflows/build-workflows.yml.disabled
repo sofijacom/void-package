@@ -217,39 +217,68 @@ jobs:
           name: ${{ matrix.config.arch }}-repodata
           path: void-packages/hostdir/binpkgs
           retention-days: 1
-          
-      - name: 📤 Upload to Release (fixed)
+
+      - name: 📤 Upload to Release (fully fixed)
+        if: github.ref == 'refs/heads/main'
         working-directory: void-packages/hostdir/binpkgs
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
           ARCH: ${{ matrix.config.arch }}
         run: |
-          set -e
-          AUTH="Authorization: Bearer ${GH_TOKEN}"
+          set -euo pipefail
+          AUTH="Authorization: Bearer $GH_TOKEN"
           ACCEPT="Accept: application/vnd.github+json"
-          API="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
-          UPLOADS="https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
+          API="https://api.github.com/repos/$REPO_OWNER/$REPO_NAME"
 
-          # Уникальный тег: x86_64-<commit-short>
-          TAG="${ARCH}"
-          NAME="Binary repo for ${TAG}"
+          # Уникальный тег, чтобы не было конфликтов
+          TAG="$ARCH-latest"
+          NAME="Binary repo for $ARCH Latest"
+          COMMIT_SHA="${{ github.sha }}"
 
-          # Создаём новый релиз (GitHub не даст создать дубль тега, но тут тег всегда новый)
-          body=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
-            -d "{\"tag_name\":\"${TAG}\",\"target_commitish\":\"${{ github.sha }}\",\"name\":\"${NAME}\"}" \
-            "${API}/releases")
-          release_id=$(echo "$body" | jq -r '.id')
+          # Удаляем старый релиз по тегу, если есть
+          echo "🔍 Checking for existing release with tag $TAG..."
+          EXISTING_RELEASE=$(curl -s -H "$AUTH" -H "$ACCEPT" "$API/releases/tags/$TAG" || echo "")
 
-          echo "Created release ID: $release_id (tag: ${TAG})"
+          if [ -n "$EXISTING_RELEASE" ] && echo "$EXISTING_RELEASE" | jq -e '.id' > /dev/null 2>&1; then
+            RELEASE_ID=$(echo "$EXISTING_RELEASE" | jq -r '.id')
+            echo "🗑️ Deleting old release ID $RELEASE_ID..."
+            curl -s -X DELETE -H "$AUTH" -H "$ACCEPT" "$API/releases/$RELEASE_ID" || true
+          fi
 
+          # Создаём новый релиз
+          echo "🆕 Creating new release for tag $TAG..."
+          CREATE_BODY=$(jq -n --arg tag "$TAG" --arg commit "$COMMIT_SHA" --arg name "$NAME" '
+            { tag_name: $tag, target_commitish: $commit, name: $name, draft: false, prerelease: false }
+          ')
+          NEW_RELEASE=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
+            -d "$CREATE_BODY" "$API/releases")
+
+          RELEASE_ID=$(echo "$NEW_RELEASE" | jq -r '.id')
+          if [ -z "$RELEASE_ID" ] || [ "$RELEASE_ID" = "null" ]; then
+            echo "❌ Failed to create release"
+            echo "$NEW_RELEASE"
+            exit 1
+          fi
+
+          echo "✅ Release created: ID $RELEASE_ID"
+
+          # Загружаем все файлы
           for file in *.xbps *.sig2 ${ARCH}-repodata; do
-            [ -f "$file" ] || continue
-            filename="$file"
-            upload_url="${UPLOADS}/releases/${release_id}/assets?name=${filename}"
-            echo "Uploading $filename"
-            curl -L -H "$AUTH" -H "Content-Type: application/octet-stream" --data-binary "@${filename}" "${upload_url}"
+            if [ -f "$file" ]; then
+              echo "📤 Uploading $file..."
+              curl -s -L \
+                -X POST \
+                -H "$AUTH" \
+                -H "Content-Type: application/octet-stream" \
+                --data-binary "@$file" \
+                "https://uploads.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/$RELEASE_ID/assets?name=$file" \
+                --fail
+            fi
           done
+
+          echo "🎉 All files uploaded successfully."
+
           

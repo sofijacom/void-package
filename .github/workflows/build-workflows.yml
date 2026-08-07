@@ -156,35 +156,28 @@ jobs:
             sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
 
-      - name: Clean & sign
+      - name: 🏁 Create & sign repodata
         working-directory: void-packages/hostdir/binpkgs
         env:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
-          XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
           ARCH: ${{ matrix.config.arch }}
         run: |
-          # Удаляем старый repodata
           rm -f "${ARCH}-repodata"
-
-          # Генерируем repodata: указываем путь к папке с пакетами (текущая)
-          # -r тут вообще не нужен, он ломает логику
-          sudo -Eu builder xbps-rindex -f "${ARCH}-repodata" .
+          sudo -Eu builder xbps-rindex -a -f "${ARCH}-repodata" *.xbps
 
           if [ -n "${PRIVKEY}" ]; then
             printf "%s\n" "${PRIVKEY}" > key.pem
             chmod 600 key.pem
 
-            # Подписываем репозиторий и пакеты — тоже из текущей папки
-            sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${GITHUB_REPOSITORY_OWNER}-github-actions" .
-            sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg *.xbps
+            sudo -Eu builder xbps-rindex --privkey key.pem -s --signedby "${GITHUB_REPOSITORY_OWNER}-github-actions" .
+            sudo -Eu builder xbps-rindex --privkey key.pem -S *.xbps
 
             rm key.pem
           else
-            echo "No PRIV_KEY found. Skipping cryptographic signing."
+            echo "No PRIV_KEY found. Skipping signing."
           fi
 
           ls -lh "${ARCH}-repodata"
-          echo "Repodata size: $(stat -c%s "${ARCH}-repodata") bytes"
           
       - name: 🔢 Checksum
         working-directory: void-packages/hostdir/binpkgs

@@ -157,7 +157,7 @@ jobs:
           done
 
       - name: Fetch existing release assets
-        #if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
+        if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
           REPO_OWNER: ${{ github.repository_owner }}
@@ -187,7 +187,7 @@ jobs:
             echo "Fetched $(ls -A /tmp/oldrepo 2>/dev/null | wc -l) files from release ${TAG}"
 
       - name: Sign
-        #if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
+        if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
         env:
           PRIV_KEY: ${{ secrets.PRIV_KEY }}
           XBPS_ARCH: ${{ matrix.config.arch }}

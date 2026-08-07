@@ -1,4 +1,5 @@
 # Template file for 'palemoon'
+
 pkgname=palemoon
 version=34.3.2
 revision=1
@@ -24,5 +25,4 @@ do_install() {
 "${DESTDIR}/usr/share/icons/palemoon.png"
 	vmkdir usr/share/applications
 	cp "${FILESDIR}/palemoon.desktop" "${DESTDIR}/usr/share/applications/"
-
 }

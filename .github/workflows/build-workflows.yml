@@ -234,7 +234,7 @@ jobs:
           UPLOADS="https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}"
 
           # Уникальный тег: x86_64-<commit-short>
-          TAG="${ARCH}-$(echo ${GITHUB_SHA} | cut -c1-8)"
+          TAG="${ARCH}"
           NAME="Binary repo for ${TAG}"
 
           # Создаём новый релиз (GitHub не даст создать дубль тега, но тут тег всегда новый)

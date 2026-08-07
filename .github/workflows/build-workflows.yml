@@ -166,50 +166,55 @@ jobs:
           echo "=== Built $count packages ==="
           ls -1 *.xbps | sort
 
-      - name: 🧹 Keep only latest versions per package (sh-compatible)
+      - name: 🧹 Keep only latest versions per package (100% POSIX)
         working-directory: void-packages/hostdir/binpkgs
+        shell: bash
         run: |
           set -e
-
-          # Создаём временный файл для списка "имя пакета|версия|файл"
+          
           tmp_list=$(mktemp)
-          trap "rm -f '$tmp_list'" EXIT
+          tmp_sorted=$(mktemp)
+          tmp_keep=$(mktemp)
+          
+          trap "rm -f '$tmp_list' '$tmp_sorted' '$tmp_keep'" EXIT
 
-          # 1. Собираем список: имя|версия|файл
+          # 1. Формируем список: имя|версия|файл
           for file in *.xbps; do
-            # Получаем имя: всё до последнего '-' перед версией
-            # Пример: yandex-browser-26.6.1.1003_1.x86_64.xbps -> yandex-browser
             name=$(echo "$file" | sed -E 's/\.x86_64\.xbps$//' | sed -E 's/(.*)-([0-9].*)/\1/')
-            
-            # Получаем версию: после последнего '-' до .x86_64
             version=$(echo "$file" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
-
-            echo "${name}|${version}|${file}" >> "$tmp_list"
+            printf '%s|%s|%s\n' "$name" "$version" "$file" >> "$tmp_list"
           done
 
-          # 2. Сортируем: сначала по имени, потом по версии (лексикографически)
-          # sort -t'|' -k1,1 -k2,2r  -> reverse по версии, чтобы свежая была первой
-          sorted=$(mktemp)
-          sort -t'|' -k1,1 -k2,2r "$tmp_list" > "$sorted"
+          # Если файлов нет — выходим
+          if [ ! -s "$tmp_list" ]; then
+            echo "No .xbps files found. Skipping cleanup."
+            exit 0
+          fi
 
-          # 3. Проходим по отсортированному списку и помечаем, какие файлы оставить
-          # Оставляем ПЕРВЫЙ встреченный для каждого имени (он самый свежий из-за reverse-сортировки)
-          keep_list=$(mktemp)
-          awk -F'|' '!seen[$1]++ {print $3}' "$sorted" > "$keep_list"
+          # 2. Сортировка: по имени (asc), по версии (desc)
+          # -k1,1 — сортируем по первому полю (имя)
+          # -k2,2r — по второму полю (версия) в обратном порядке (свежая сверху)
+          sort -t'|' -k1,1 -k2,2r "$tmp_list" > "$tmp_sorted"
 
-          # 4. Удаляем всё, что не в keep_list
-          while IFS= read -r keep_file; do
-            keep_files["$keep_file"]=1
-          done < "$keep_list"
+          # 3. Оставляем только первую строку для каждого имени
+          # awk: если имя ($1) ещё не встречалось (!seen[$1]++), печатаем имя и файл ($3)
+          awk -F'|' '!seen[$1]++ {print $1 "|" $3}' "$tmp_sorted" > "$tmp_keep"
 
+          # 4. Собираем список файлов, которые нужно УДАЛИТЬ
+          # Читаем все файлы, проверяем, есть ли они в списке "оставить"
+          while IFS='|' read -r name keep_file; do
+            echo "$keep_file"
+          done < "$tmp_keep" > "$tmp_keep.files"
+
+          # Удаляем все .xbps и .sig2, которых нет в списке keep
           for file in *.xbps *.sig2; do
-            if [ -z "${keep_files[$file]}" ]; then
+            if ! grep -qx "$file" "$tmp_keep.files"; then
               echo "🗑️ Removing old: $file"
               rm -f "$file"
             fi
           done
 
-          echo "✅ Cleanup done."
+          echo "✅ Cleanup done. Kept $(wc -l < "$tmp_keep.files") packages."
           
       # --- Подпись и индекс ---
       - name: Sign & Index repo

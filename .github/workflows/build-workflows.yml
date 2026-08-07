@@ -166,42 +166,49 @@ jobs:
           echo "=== Built $count packages ==="
           ls -1 *.xbps | sort
 
-      - name: 🧹 Keep only latest versions per package
+      - name: 🧹 Keep only latest versions per package (sh-compatible)
         working-directory: void-packages/hostdir/binpkgs
         run: |
           set -e
-          declare -A latest_file
 
-          # Сначала находим самую свежую версию для каждого имени пакета
+          # Создаём временный файл для списка "имя пакета|версия|файл"
+          tmp_list=$(mktemp)
+          trap "rm -f '$tmp_list'" EXIT
+
+          # 1. Собираем список: имя|версия|файл
           for file in *.xbps; do
-            # Пример: palemoon-34.3.2_2.x86_64.xbps
-            # Вырезаем имя: palemoon
-            name=$(echo "$file" | sed -E 's/^([^-]+)-[^.]+\..*$/\1/')
-            # Вырезаем версию целиком: 34.3.2_2
+            # Получаем имя: всё до последнего '-' перед версией
+            # Пример: yandex-browser-26.6.1.1003_1.x86_64.xbps -> yandex-browser
+            name=$(echo "$file" | sed -E 's/\.x86_64\.xbps$//' | sed -E 's/(.*)-([0-9].*)/\1/')
+            
+            # Получаем версию: после последнего '-' до .x86_64
             version=$(echo "$file" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
 
-            if [[ -z "${latest_file[$name]}" ]]; then
-              latest_file["$name"]="$file"
-            else
-              # Сравниваем версии: лексикографически это обычно работает для номеров вида X.Y.Z_N
-              current_ver=$(echo "${latest_file[$name]}" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
-              if [[ "$version" > "$current_ver" ]]; then
-                latest_file["$name"]="$file"
-              fi
-            fi
+            echo "${name}|${version}|${file}" >> "$tmp_list"
           done
 
-          # Удаляем все .xbps и .sig2, кроме самых свежих
+          # 2. Сортируем: сначала по имени, потом по версии (лексикографически)
+          # sort -t'|' -k1,1 -k2,2r  -> reverse по версии, чтобы свежая была первой
+          sorted=$(mktemp)
+          sort -t'|' -k1,1 -k2,2r "$tmp_list" > "$sorted"
+
+          # 3. Проходим по отсортированному списку и помечаем, какие файлы оставить
+          # Оставляем ПЕРВЫЙ встреченный для каждого имени (он самый свежий из-за reverse-сортировки)
+          keep_list=$(mktemp)
+          awk -F'|' '!seen[$1]++ {print $3}' "$sorted" > "$keep_list"
+
+          # 4. Удаляем всё, что не в keep_list
+          while IFS= read -r keep_file; do
+            keep_files["$keep_file"]=1
+          done < "$keep_list"
+
           for file in *.xbps *.sig2; do
-            base=${file%.xbps}
-            base=${base%.sig2}
-            name=$(echo "$base" | sed -E 's/^([^-]+)-[^.]+\..*$/\1/')
-            keep="${latest_file[$name]}"
-            if [[ "$file" != "$keep" && "$file" != "${keep}.sig2" ]]; then
+            if [ -z "${keep_files[$file]}" ]; then
               echo "🗑️ Removing old: $file"
               rm -f "$file"
             fi
           done
+
           echo "✅ Cleanup done."
           
       # --- Подпись и индекс ---

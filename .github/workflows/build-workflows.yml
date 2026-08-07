@@ -100,6 +100,21 @@ jobs:
           git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/**' \
           | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
 
+      - name: 🧹 Clean outdated .xbps for changed packages
+        working-directory: void-packages
+        run: |
+          # Читаем список пакетов, которые нужно собрать
+          if [ ! -f /tmp/templates ]; then
+            echo "❌ No packages to build"
+            exit 0
+          fi
+
+          for pkg in $(cat /tmp/templates); do
+            echo "🧹 Removing old $pkg packages from hostdir/binpkgs..."
+            rm -f hostdir/binpkgs/${pkg}-*-*.xbps
+            rm -f hostdir/binpkgs/${pkg}-*-*.sig2
+          done
+
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages
         working-directory: void-packages

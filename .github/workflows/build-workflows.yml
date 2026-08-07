@@ -103,23 +103,23 @@ jobs:
       - name: 🧹 Clean outdated .xbps for changed packages
         working-directory: void-packages
         run: |
-          echo "📋 Packages to build:"
+          echo "📋 Пакеты для сборки:"
           cat /tmp/templates
 
           for pkg in $(cat /tmp/templates); do
-            echo "🔍 Searching for old packages for $pkg..."
+            echo "🔍 Поиск старых посылок для $pkg..."
             sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
 
-            echo "🧹 Deleting old $pkg .xbps files as builder..."
-            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -delete || echo "➡️ No files to delete or already gone"
+            echo "🧹 Удаление старых файлов $pkg .xbps из конструктора..."
+            sudo -Eu builder sh -c "find hostdir/binpkgs -name '${pkg}-*.xbps' -print0 | xargs -0 rm -fv"
 
-            echo "🧹 Deleting old $pkg .sig2 files as builder..."
-            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.sig2" -delete || echo "➡️ No sig2 files to delete"
+            echo "🧹 Удаление старых файлов $pkg .sig2 из конструктора..."
+            sudo -Eu builder sh -c "find hostdir/binpkgs -name '${pkg}-*.sig2' -print0 | xargs -0 rm -fv"
 
-            echo "✅ Final check — any leftover .xbps files?"
-            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls || echo "➡️ All cleared — good!"
+            echo "✅ Последняя проверка — остались ли файлы .xbps?"
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls || echo "➡️ Нет файлов — отлично!"
           done
-  
+          
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages
         working-directory: void-packages

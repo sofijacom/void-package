@@ -107,17 +107,19 @@ jobs:
           cat /tmp/templates
 
           for pkg in $(cat /tmp/templates); do
-            echo "🔍 Found old packages for $pkg:"
-            find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
+            echo "🔍 Searching for old packages for $pkg..."
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
 
-            echo "🧹 Removing old $pkg packages as builder..."
-            sudo -Eu builder sh -c "rm -fv 'hostdir/binpkgs/${pkg}-*-*.xbps'"
-            sudo -Eu builder sh -c "rm -fv 'hostdir/binpkgs/${pkg}-*-*.sig2'"
+            echo "🧹 Deleting old $pkg .xbps files as builder..."
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -delete || echo "➡️ No files to delete or already gone"
 
-            echo "✅ Check if removed:"
-            find hostdir/binpkgs -name "${pkg}-*.xbps" -ls || echo "➡️ No files left — good!"
+            echo "🧹 Deleting old $pkg .sig2 files as builder..."
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.sig2" -delete || echo "➡️ No sig2 files to delete"
+
+            echo "✅ Final check — any leftover .xbps files?"
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls || echo "➡️ All cleared — good!"
           done
-          
+  
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages
         working-directory: void-packages

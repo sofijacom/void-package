@@ -72,10 +72,10 @@ jobs:
           mkdir -p hostdir/binpkgs
 
           # Скачиваем старые пакеты, чтобы не терять их
-          # gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
+          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
 
           # Самое важное: выметаем ВСЁ из папки, чтобы не было старых repodata и пакетов
-          rm -rf hostdir/binpkgs/*
+          # rm -rf hostdir/binpkgs/*
           
           # Удаляем пакеты другой архитектуры (на случай, если скачались)
           if [ "$ARCH" = "x86_64" ]; then
@@ -169,56 +169,8 @@ jobs:
           echo "=== Built $count packages ==="
           ls -1 *.xbps | sort
 
-      - name: 🧹 Keep only latest versions per package (100% POSIX)
-        working-directory: void-packages/hostdir/binpkgs
-        shell: bash
-        run: |
-          set -e
-          
-          tmp_list=$(mktemp)
-          tmp_sorted=$(mktemp)
-          tmp_keep=$(mktemp)
-          
-          trap "rm -f '$tmp_list' '$tmp_sorted' '$tmp_keep'" EXIT
+      # ❌ ШАГ ОЧИСТКИ УДАЛЁН — теперь в папке остаются все пакеты
 
-          # 1. Формируем список: имя|версия|файл
-          for file in *.xbps; do
-            name=$(echo "$file" | sed -E 's/\.x86_64\.xbps$//' | sed -E 's/(.*)-([0-9].*)/\1/')
-            version=$(echo "$file" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
-            printf '%s|%s|%s\n' "$name" "$version" "$file" >> "$tmp_list"
-          done
-
-          # Если файлов нет — выходим
-          if [ ! -s "$tmp_list" ]; then
-            echo "No .xbps files found. Skipping cleanup."
-            exit 0
-          fi
-
-          # 2. Сортировка: по имени (asc), по версии (desc)
-          # -k1,1 — сортируем по первому полю (имя)
-          # -k2,2r — по второму полю (версия) в обратном порядке (свежая сверху)
-          sort -t'|' -k1,1 -k2,2r "$tmp_list" > "$tmp_sorted"
-
-          # 3. Оставляем только первую строку для каждого имени
-          # awk: если имя ($1) ещё не встречалось (!seen[$1]++), печатаем имя и файл ($3)
-          awk -F'|' '!seen[$1]++ {print $1 "|" $3}' "$tmp_sorted" > "$tmp_keep"
-
-          # 4. Собираем список файлов, которые нужно УДАЛИТЬ
-          # Читаем все файлы, проверяем, есть ли они в списке "оставить"
-          while IFS='|' read -r name keep_file; do
-            echo "$keep_file"
-          done < "$tmp_keep" > "$tmp_keep.files"
-
-          # Удаляем все .xbps и .sig2, которых нет в списке keep
-          for file in *.xbps *.sig2; do
-            if ! grep -qx "$file" "$tmp_keep.files"; then
-              echo "🗑️ Removing old: $file"
-              rm -f "$file"
-            fi
-          done
-
-          echo "✅ Cleanup done. Kept $(wc -l < "$tmp_keep.files") packages."
-          
       - name: 📦 Sign & Index repo
         working-directory: void-packages/hostdir/binpkgs
         env:
@@ -228,11 +180,9 @@ jobs:
           set -e
           export PATH="/opt/xbps/usr/bin/:$PATH"
 
-          # 1. Сначала удаляем старые индексные файлы, чтобы не было путаницы
           echo "🗑️ Removing old repodata files..."
-          rm -f "${ARCH}-repodata" "${ARCH}-repodata.meta"
+          rm -f "${ARCH}-repodata"
 
-          # 2. Проверяем, что вообще есть пакеты для индексации
           count=$(ls -1 *.xbps 2>/dev/null | wc -l)
           if [ "$count" -eq 0 ]; then
             echo "⚠️ No .xbps files found. Skipping indexing."
@@ -240,15 +190,12 @@ jobs:
           fi
 
           echo "✅ Found $count packages. Building new repodata..."
-
-          # 3. Строим НОВЫЙ индекс ТОЛЬКО по тем файлам, которые сейчас лежат в папке
           xbps-rindex -a *.xbps
 
           if [ -n "$PRIV_KEY" ]; then
             printf "%s\n" "$PRIV_KEY" > private.pem
             chmod 600 private.pem
 
-            # Подписываем репо и пакеты
             xbps-rindex -r "$PWD"
             xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
             xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
@@ -260,7 +207,7 @@ jobs:
           fi
 
           echo "✅ Repodata rebuilt and signed."
-          
+
       # --- Контрольные суммы (опционально) ---
       - name: 🔢 Checksum
         working-directory: void-packages/hostdir/binpkgs
@@ -278,10 +225,6 @@ jobs:
           name: ${{ matrix.config.arch }}-repodata
           path: void-packages/hostdir/binpkgs
           retention-days: 1
-
-      - name: short sha
-        run: |
-          printf "SHORT_SHA=$(git rev-parse --short ${SHA})" >> $GITHUB_ENV
 
       # --- Загрузка в релиз ---
       - name: 📤 Upload to Release
@@ -313,7 +256,6 @@ jobs:
 
           echo "Using release ID: $release_id"
 
-          # ✅ Загружаем ТОЛЬКО нужные файлы
           for file in *.xbps *.sig2 ${ARCH}-repodata; do
             [ -f "$file" ] || continue
             filename="$file"

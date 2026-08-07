@@ -74,9 +74,6 @@ jobs:
           # Скачиваем старые пакеты, чтобы не терять их
           gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
 
-          # Самое важное: выметаем ВСЁ из папки, чтобы не было старых repodata и пакетов
-          # rm -rf hostdir/binpkgs/*
-          
           # Удаляем пакеты другой архитектуры (на случай, если скачались)
           if [ "$ARCH" = "x86_64" ]; then
             rm --force hostdir/binpkgs/*x86_64-musl*
@@ -168,9 +165,7 @@ jobs:
           count=$(ls -1 *.xbps 2>/dev/null | wc -l)
           echo "=== Built $count packages ==="
           ls -1 *.xbps | sort
-
-      # ❌ ШАГ ОЧИСТКИ УДАЛЁН — теперь в папке остаются все пакеты
-
+          
       - name: 📦 Sign & Index repo
         working-directory: void-packages/hostdir/binpkgs
         env:
@@ -219,12 +214,12 @@ jobs:
           done
 
       # --- Артефакт (для проверки) ---
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ matrix.config.arch }}-repodata
-          path: void-packages/hostdir/binpkgs
-          retention-days: 1
+      #- name: Upload Artifact
+      #  uses: actions/upload-artifact@v7
+      #  with:
+      #    name: ${{ matrix.config.arch }}-repodata
+      #    path: void-packages/hostdir/binpkgs
+      #    retention-days: 1
 
       # --- Загрузка в релиз ---
       - name: 📤 Upload to Release

@@ -168,10 +168,8 @@ jobs:
             
             if [ -n "${PRIVKEY}" ]; then
               printf "%s\n" "${PRIVKEY}" > key.pem
-              sudo -Eu builder xbps-rindex -r "$PWD"
               sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
               sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
-              sudo -Eu builder xbps-rindex -c "$PWD"
               sudo -Eu builder rm -f key.pem
             else
               echo "No PRIV_KEY found. Skipping cryptographic signing (normal for forks)."

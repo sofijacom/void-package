@@ -103,18 +103,21 @@ jobs:
       - name: 🧹 Clean outdated .xbps for changed packages
         working-directory: void-packages
         run: |
-          # Читаем список пакетов, которые нужно собрать
-          if [ ! -f /tmp/templates ]; then
-            echo "❌ No packages to build"
-            exit 0
-          fi
+          echo "📋 Packages to build:"
+          cat /tmp/templates
 
           for pkg in $(cat /tmp/templates); do
-            echo "🧹 Removing old $pkg packages from hostdir/binpkgs..."
+            echo "🔍 Found old packages for $pkg:"
+            find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
+
+            echo "🧹 Removing old $pkg packages..."
             rm -f hostdir/binpkgs/${pkg}-*-*.xbps
             rm -f hostdir/binpkgs/${pkg}-*-*.sig2
-          done
 
+            echo "✅ Check if removed:"
+            find hostdir/binpkgs -name "${pkg}-*.xbps" || echo "➡️ No files left — good!"
+          done
+          
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages
         working-directory: void-packages
@@ -170,7 +173,7 @@ jobs:
           pkgs=$(cat /tmp/templates)
           for pkg in ${pkgs}; do
             echo "🏗️ Building $pkg for $ARCH..."
-            sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
+            sudo -Eu builder ./xbps-src -f pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
           done
           
       - name: 📊 Report what was built

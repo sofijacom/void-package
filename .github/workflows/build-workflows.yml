@@ -166,6 +166,44 @@ jobs:
           echo "=== Built $count packages ==="
           ls -1 *.xbps | sort
 
+      - name: 🧹 Keep only latest versions per package
+        working-directory: void-packages/hostdir/binpkgs
+        run: |
+          set -e
+          declare -A latest_file
+
+          # Сначала находим самую свежую версию для каждого имени пакета
+          for file in *.xbps; do
+            # Пример: palemoon-34.3.2_2.x86_64.xbps
+            # Вырезаем имя: palemoon
+            name=$(echo "$file" | sed -E 's/^([^-]+)-[^.]+\..*$/\1/')
+            # Вырезаем версию целиком: 34.3.2_2
+            version=$(echo "$file" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
+
+            if [[ -z "${latest_file[$name]}" ]]; then
+              latest_file["$name"]="$file"
+            else
+              # Сравниваем версии: лексикографически это обычно работает для номеров вида X.Y.Z_N
+              current_ver=$(echo "${latest_file[$name]}" | sed -E 's/.*-([0-9].*)\.x86_64\.xbps$/\1/')
+              if [[ "$version" > "$current_ver" ]]; then
+                latest_file["$name"]="$file"
+              fi
+            fi
+          done
+
+          # Удаляем все .xbps и .sig2, кроме самых свежих
+          for file in *.xbps *.sig2; do
+            base=${file%.xbps}
+            base=${base%.sig2}
+            name=$(echo "$base" | sed -E 's/^([^-]+)-[^.]+\..*$/\1/')
+            keep="${latest_file[$name]}"
+            if [[ "$file" != "$keep" && "$file" != "${keep}.sig2" ]]; then
+              echo "🗑️ Removing old: $file"
+              rm -f "$file"
+            fi
+          done
+          echo "✅ Cleanup done."
+          
       # --- Подпись и индекс ---
       - name: Sign & Index repo
         env:

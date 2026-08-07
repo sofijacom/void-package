@@ -1,205 +1,354 @@
-name: 🏗️ Build Packages (Simple Artifact)
+name: Build-releases
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - main
+        - main
     paths:
-      - srcpkgs/**
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+        - 'srcpkgs/**'
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build 📦 ${{ matrix.config.arch }}
+    name: Build packages
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - { arch: x86_64, host: x86_64, libc: glibc, platform: linux/amd64 }
-
     container:
       image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250616R1
       options: --platform ${{ matrix.config.platform }} --privileged
       volumes:
         - /dev:/dev
       env:
-        ARCH: ${{ matrix.config.arch }}
-        XBPS_TARGET_ARCH: ${{ matrix.config.arch }}
-        REPO_OWNER: ${{ github.repository_owner }}
-        REPO_NAME: ${{ github.event.repository.name }}
-    if: ${{ github.ref == 'refs/heads/main' }}
+        ARCH: '${{ matrix.config.arch }}'
+        BOOTSTRAP: '${{ matrix.config.host }}'
+        TEST: '${{ matrix.config.test }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        config: &build_matrix
+          - { arch: x86_64,       host: x86_64,      libc: glibc, platform: linux/amd64, test: 1 }
+          # - { arch: aarch64,      host: x86_64,      libc: glibc, platform: linux/amd64, test: 0 }
+          # - { arch: x86_64-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 1 }
+          # - { arch: aarch64-musl, host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 0 }
+
+    permissions:
+      contents: write
 
     steps:
-      # 1. Подготовка контейнера и пользователя builder
-      - name: 🧰 Prep container
+      - name: Prepare container
         run: |
-          mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
-          env -u XBPS_TARGET_ARCH xbps-install -Syu xbps
-          env -u XBPS_TARGET_ARCH xbps-install -yu
-          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git xtools coreutils
-          useradd -G xbuilder -M builder -s $(which bash)
+            # switch to repo-ci mirror
+            mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
+            sed -i 's|repo-default|repo-ci|g' /etc/xbps.d/*-repository-*.conf
+            # install dependencies
+            xbps-install -Syu xbps && xbps-install -yu && xbps-install -y sudo bash curl git jq
+            # create non-root user
+            useradd -G xbuilder -M builder
 
-      # 2. Checkout void-packages
-      - name: 🔎 Checkout void-packages
-        uses: actions/checkout@v6
-        with:
-          repository: void-linux/void-packages
-          ref: master
-          path: void-packages
-
-      # 3. Фикс скрипта сборки (частая проблема)
-      - name: 🐛 Fix sourcepkg.sh
-        working-directory: void-packages
+      - name: Checkout this repo
         run: |
-          sed -i 's@for var in $(awk .*;@for var in $(printenv | cut -d'"'"'='"'"' -f1);@' common/environment/setup/sourcepkg.sh
+            git clone --depth 1 "https://github.com/${{ github.repository }}.git" extra
+            cd extra
+            # we need the previous revision to diff against
+            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+                git fetch --no-tags origin "${{ github.event.before }}" --depth 1 || true
+            fi
+            git fetch --no-tags origin "${{ github.sha }}" --depth 1
+            git checkout --detach "${{ github.sha }}"
 
-      # 4. Слияние твоих шаблонов в void-packages
-      - name: 🧩 Merge this repository into void-linux/void-packages
-        working-directory: void-packages
+      - name: Determine changed templates
+        id: changed
+        run: |
+            cd extra
+
+            base="${{ github.event.before }}"
+            tip="${{ github.sha }}"
+
+            if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+                changed_pkgs=$(find srcpkgs -maxdepth 1 -mindepth 1 -type d -printf "%f\n" \
+                  | tr '\n' ' ')
+                removed_pkgs=""
+            else
+                changed_pkgs=$(git diff --name-only "$base" "$tip" --diff-filter=AM -- 'srcpkgs/*/template' \
+                    | cut -d/ -f2 \
+                    | sort -u \
+                    | tr '\n' ' ')
+                
+                removed_pkgs=$(git diff --name-status "$base" "$tip" -- 'srcpkgs/*/template' \
+                    | awk '$1=="D"{print $2}' \
+                    | cut -d/ -f2 \
+                    | sort -u \
+                    | tr '\n' ' ')
+            fi
+
+            changed_pkgs="${changed_pkgs%% }"
+            removed_pkgs="${removed_pkgs%% }"
+
+            echo "Changed templates: ${changed_pkgs:-<none>}"
+            echo "Removed templates: ${removed_pkgs:-<none>}"
+
+            echo "pkgs=$changed_pkgs" >> "$GITHUB_OUTPUT"
+            echo "removed=$removed_pkgs" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout void-packages
+        run: |
+            git clone --depth 1 https://github.com/void-linux/void-packages.git void-packages
+            cd void-packages
+            git checkout --detach master
+
+      - name: Merge templates and edit shlibs
+        run: |
+            echo "==> copying templates..."
+            cp -rv extra/srcpkgs/* void-packages/srcpkgs/
+
+            SHLIBS_FILE="void-packages/common/shlibs"
+            APPEND_FILE="extra/shlibs_append"
+            REMOVE_FILE="extra/shlibs_remove"
+
+            echo "==> updating common/shlibs..."
+            if [ -f "$REMOVE_FILE" ]; then
+                while IFS= read -r line; do
+                    [ -z "$line" ] && continue
+                    grep -vF "$line" "$SHLIBS_FILE" > "$SHLIBS_FILE.tmp" && mv "$SHLIBS_FILE.tmp" "$SHLIBS_FILE"
+                    echo "   - removed: $line"
+                done < "$REMOVE_FILE"
+            fi
+
+            if [ -f "$APPEND_FILE" ]; then
+                while IFS= read -r line; do
+                    [ -z "$line" ] && continue
+                    if ! grep -qF "$line" "$SHLIBS_FILE"; then
+                        echo "$line" >> "$SHLIBS_FILE"
+                        echo "   + added: $line"
+                    fi
+                done < "$APPEND_FILE"
+            fi
+
+            echo "=> applying inline edits..."
+            if [ -d "void-packages/srcpkgs/hyprutils/patches" ]; then
+                echo "   - removing void-packages/srcpkgs/hyprutils/patches"
+                rm -rf void-packages/srcpkgs/hyprutils/patches
+            fi
+
+      - name: Prepare masterdir
+        run: |
+            cd void-packages
+            chown -R builder:builder . &&
+            sudo -Eu builder common/travis/set_mirror.sh &&
+            sudo -Eu builder common/travis/prepare.sh &&
+            common/travis/fetch-xtools.sh
+
+      - name: Build
+        id: build_step
+        run: |
+            export PATH="/opt/xbps/usr/bin/:$PATH"
+            cd void-packages
+
+            changed="${{ steps.changed.outputs.pkgs }}"
+            removed="${{ steps.changed.outputs.removed }}"
+
+            if [ -z "$changed" ]; then
+                echo "No changed templates, skipping build."
+                echo "built=" >> "$GITHUB_OUTPUT"
+                echo "failed=" >> "$GITHUB_OUTPUT"
+                exit 0
+            fi
+
+            if [ "$BOOTSTRAP" != "$ARCH" ]; then
+                arch="-a $ARCH"
+            fi
+
+            if [ "$TEST" = 1 ]; then
+                test="-Q"
+            fi
+
+            PKGS=$(sudo -Eu builder ./xbps-src $test sort-dependencies $changed)
+            built=""
+            failed=""
+
+            for pkg in ${PKGS}; do
+                if sudo -Eu builder ./xbps-src -j"$(nproc)" -s $arch $test pkg "${pkg}"; then
+                    built="$built $pkg"
+                else
+                    echo "!! build failed for ${pkg}"
+                    failed="$failed $pkg"
+                fi
+            done
+
+            built="${built%% }"
+            failed="${failed%% }"
+
+            echo "Built packages: ${built:-<none>}"
+            echo "Failed packages: ${failed:-<none>}"
+
+            echo "built=$built" >> "$GITHUB_OUTPUT"
+            echo "failed=$failed" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch existing release assets
+        if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global --add safe.directory "*"
-          git remote add -f $REPO_OWNER https://github.com/$REPO_OWNER/$REPO_NAME.git
-          git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change $REPO_OWNER/main
-          mkdir -p hostdir/binpkgs
-
-      # 5. Определение, какие пакеты собирать (только изменённые)
-      - name: 📋 Identify changes to build
-        working-directory: void-packages
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ARCH: ${{ matrix.config.arch }}
-          SHA: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
+          RESULT_NAME: ${{ matrix.config.arch }}
         run: |
-          # Пытаемся найти последний тег релиза, если нет — считаем, что изменений нет и собираем всё
-          latest_name=$(gh release view --json tagName --jq '.tagName' --repo $REPO_OWNER/$REPO_NAME 2>/dev/null || echo "")
-          if [ -n "$latest_name" ]; then
-            latest_sha=$(git rev-list --max-count=1 ${latest_name} 2>/dev/null)
+            set -e
+            TAG="repository-${RESULT_NAME}"
+            API_URL="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${TAG}"
+            mkdir -p /tmp/oldrepo
+            cd /tmp/oldrepo
+
+            resp=$(curl -s -w "\n%{http_code}" -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" "$API_URL") || true
+            http_code=$(echo "$resp" | tail -n1)
+            body=$(echo "$resp" | sed '$d')
+
+            if [ "$http_code" != "200" ]; then
+                echo "No existing release ${TAG} (HTTP ${http_code}), starting fresh."
+                exit 0
+            fi
+
+            echo "$body" | jq -r '.assets[] | "\(.name)|\(.url)"' | while IFS='|' read -r name url; do
+                [ -z "$name" ] && continue
+                echo "Downloading $name"
+                curl -sSL -o "$name" -H "Accept: application/octet-stream" -H "Authorization: Bearer ${GH_TOKEN}" "$url" || true
+            done
+            echo "Fetched $(ls -A /tmp/oldrepo 2>/dev/null | wc -l) files from release ${TAG}"
+
+      - name: Sign
+        if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
+        env:
+          PRIV_KEY: ${{ secrets.PRIV_KEY }}
+          XBPS_ARCH: ${{ matrix.config.arch }}
+          RESULT_NAME: ${{ matrix.config.arch }}
+        working-directory: void-packages/hostdir/binpkgs/
+        run: |
+            set -e
+            export PATH="/opt/xbps/usr/bin/:$PATH"
+
+            # Only ship packages that have a template in this repo (no dependency-only packages)
+            OUR_PKGS=$(find ../../../extra/srcpkgs -maxdepth 1 -mindepth 1 -type d -printf "%f\n" | sort -u | tr '\n' ' ')
+            echo "Only including packages with templates in repo: ${OUR_PKGS}"
+
+            # 1. stash newly built packages away
+            mkdir -p /tmp/newpkgs
+            cp -v ./*.xbps /tmp/newpkgs/ 2>/dev/null || true
+            cp -v ./*.xbps.sig /tmp/newpkgs/ 2>/dev/null || true
+            cp -v ./*.xbps.sig2 /tmp/newpkgs/ 2>/dev/null || true
+
+            # 2. use existing repo from release: repodata, index, and only our template packages
+            rm -f ./*
+            if [ -d /tmp/oldrepo ] && [ -n "$(ls -A /tmp/oldrepo 2>/dev/null)" ]; then
+                cp -v /tmp/oldrepo/*-repodata . 2>/dev/null || true
+                cp -v /tmp/oldrepo/index* . 2>/dev/null || true
+                for pkg in $OUR_PKGS; do
+                    cp -v /tmp/oldrepo/"${pkg}"-* . 2>/dev/null || true
+                done
+            else
+                echo "No existing repo from release, starting fresh."
+            fi
+
+            # 3. delete packages we just rebuilt (so we can replace with new versions)
+            for f in /tmp/newpkgs/*.xbps; do
+                [ -e "$f" ] || continue
+                base=$(basename "$f")
+                pkgname=$(printf "%s\n" "$base" | sed -E 's/-[0-9].*$//')
+                rm -f "${pkgname}-"*.xbps "${pkgname}-"*.xbps.sig "${pkgname}-"*.xbps.sig2 2>/dev/null || true
+            done
+
+            # 4. also delete packages for templates that were removed
+            removed="${{ steps.changed.outputs.removed }}"
+            if [ -n "$removed" ]; then
+                echo "==> removing packages for deleted templates..."
+                for pkg in $removed; do
+                    rm -f "${pkg}-"*.xbps "${pkg}-"*.xbps.sig "${pkg}-"*.xbps.sig2 2>/dev/null || true
+                    rm -f "${pkg}.xbps" "${pkg}.xbps.sig" "${pkg}.xbps.sig2" 2>/dev/null || true
+                done
+            fi
+
+            # 5. copy back only our newly built packages (exclude dependency-only packages)
+            for pkg in $OUR_PKGS; do
+                cp -v /tmp/newpkgs/"${pkg}"-* . 2>/dev/null || true
+            done
+
+            # 6. sign + reindex
+            printf "%s\n" "$PRIV_KEY" > private.pem
+            chmod 600 private.pem
+
+            xbps-rindex -a *.xbps || true
+            xbps-rindex -r "$PWD"
+            xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
+            xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
+            xbps-rindex -c "$PWD"
+
+            rm -f private.pem
+
+      - name: Update GitHub Release
+        if: ${{ steps.changed.outputs.pkgs != '' || steps.changed.outputs.removed != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          TAG: repository-${{ matrix.config.arch }}
+          ARCH: ${{ matrix.config.arch }}
+          API: https://api.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          UPLOADS: https://uploads.github.com/repos/${{ github.repository_owner }}/${{ github.event.repository.name }}
+          SHA: ${{ github.sha }}
+        working-directory: void-packages/hostdir/binpkgs/
+        run: |
+          set -e
+          AUTH="Authorization: Bearer ${GH_TOKEN}"
+          ACCEPT="Accept: application/vnd.github+json"
+
+          # Get or create release
+          resp=$(curl -s -w "\n%{http_code}" -H "$AUTH" -H "$ACCEPT" "${API}/releases/tags/${TAG}" || true)
+          code=$(echo "$resp" | tail -n1)
+          body=$(echo "$resp" | sed '$d')
+
+          if [ "$code" = "404" ]; then
+            echo "Creating release ${TAG}..."
+            body=$(curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
+              -d "{\"tag_name\":\"${TAG}\",\"target_commitish\":\"${SHA}\",\"name\":\"Binary repo for ${ARCH}\",\"body\":\"Add with: repository=https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/latest/download/"}" \
+              "${API}/releases")
           else
-            latest_sha=""
+            # Point release at latest commit
+            release_id=$(echo "$body" | jq -r '.id')
+            curl -s -X PATCH -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/json" \
+              -d "{\"target_commitish\":\"${SHA}\"}" \
+              "${API}/releases/${release_id}" >/dev/null || true
           fi
 
-          # Если тега нет или не удалось найти SHA, считаем, что надо собрать всё (Initial Commit)
-          if [ -z "$latest_sha" ]; then
-            echo "No previous release found, building all packages in srcpkgs/"
-            find srcpkgs/ -mindepth 1 -maxdepth 1 -type d -printf "%f\n" > /tmp/templates
-          else
-            echo "Comparing changes from ${latest_sha} to ${SHA}"
-            git diff-tree -r --no-renames --name-only --diff-filter=AM ${latest_sha} ${SHA} -- 'srcpkgs/' \
-              | cut -d/ -f 2 | uniq | xargs sudo -Eu builder ./xbps-src sort-dependencies | tee /tmp/templates
-          fi
+          release_id=$(echo "$body" | jq -r '.id')
+          [ "$release_id" = "null" ] && release_id=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/tags/${TAG}" | jq -r '.id')
 
-          cat /tmp/templates | grep -v "^$" > /tmp/templates.clean
-          mv /tmp/templates.clean /tmp/templates
+          # List current repo files (what we want on the release)
+          ls -1 > /tmp/current_files.txt
 
-      # 6. Настройка xbps-src
-      - name: 🛠️ Setup void-packages
-        working-directory: void-packages
-        run: |
-          chown -R builder:builder .
-          mkdir -p etc
-          echo XBPS_BUILD_ENVIRONMENT=void-packages-ci >> etc/conf
-          echo XBPS_ALLOW_RESTRICTED=yes >> etc/conf
-          echo XBPS_CHROOT_CMD=uchroot >> etc/conf
-          echo 'XBPS_REPOSITORY=$PWD/hostdir/binpkgs' >> etc/conf
-          echo 'XBPS_DISTDIR=$PWD/hostdir/distfiles' >> etc/conf
-          echo 'XBPS_MASTERDIR_PKGS="$PWD/hostdir/binpkgs"' >> etc/conf
+          # Get existing asset ids by name
+          existing_assets=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/${release_id}" | jq -c '.assets[] | {id: .id, name: .name}')
 
-      # 7. Подготовка chroot (masterdir)
-      - name: 🔧 Prepare masterdir
-        working-directory: void-packages
-        env:
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          chown -R builder:builder .
-          yes | sudo -Eu builder ./xbps-src -m masterdir-${ARCH} -A ${ARCH} binary-bootstrap
-
-      # 8. Установка gawk внутрь chroot (нужно для некоторых шаблонов)
-      - name: ✅ Install gawk in chroot
-        working-directory: void-packages
-        env:
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          MASTERDIR="masterdir-${ARCH}"
-          if [ ! -d "$MASTERDIR" ]; then
-            echo "❌ Error: $MASTERDIR does not exist"
-            exit 1
-          fi
-          sudo mkdir -p "$MASTERDIR/etc/xbps.d"
-          [ -d "/usr/share/xbps.d" ] && sudo cp /usr/share/xbps.d/*-repository-*.conf "$MASTERDIR/etc/xbps.d/" || true
-          sudo mount --bind /proc "$MASTERDIR/proc" || true
-          sudo mount --bind /dev "$MASTERDIR/dev" || true
-          sudo mount --bind /sys "$MASTERDIR/sys" || true
-          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || true
-          sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null || true
-
-      # 9. Сброс кэша и сборка
-      - name: 🗑️ Reset package cache & sync repos
-        working-directory: void-packages
-        run: sudo -Eu builder ./xbps-src clean || true
-
-      - name: 📦 Build pkgs
-        working-directory: void-packages
-        env:
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          chown -R builder:builder .
-          pkgs=$(cat /tmp/templates)
-          # Если список пустой, всё равно пробуем собрать что-то, чтобы не падать
-          if [ -z "$pkgs" ]; then
-            echo "No changed packages detected, skipping build."
-            mkdir -p hostdir/binpkgs
-            exit 0
-          fi
-          for pkg in ${pkgs}; do
-            echo "🏗️ Building $pkg for $ARCH..."
-            sudo -Eu builder ./xbps-src pkg -j$(nproc) -m masterdir-${ARCH} -A ${ARCH} "${pkg}" || printf "Failed building ${pkg}!\n"
+          # Upload each file: delete existing asset with same name (API doesn't allow overwrite), then upload
+          echo "Uploading current packages and index..."
+          for f in *; do
+            [ -f "$f" ] || continue
+            name=$(basename "$f")
+            asset_id=$(echo "$existing_assets" | jq -r --arg n "$name" 'select(.name == $n) | .id' | head -1)
+            if [ -n "$asset_id" ] && [ "$asset_id" != "null" ]; then
+              curl -s -X DELETE -H "$AUTH" -H "$ACCEPT" "${API}/releases/assets/${asset_id}" >/dev/null || true
+            fi
+            echo "  Uploading $name"
+            curl -s -X POST -H "$AUTH" -H "$ACCEPT" -H "Content-Type: application/octet-stream" \
+              --data-binary "@${f}" \
+              "${UPLOADS}/releases/${release_id}/assets?name=${name}" >/dev/null || true
           done
 
-      # 10. Создание repodata и подпись (простая, без сложной логики с релизами)
-      - name: 🏁 Create & sign repodata
-        working-directory: void-packages/hostdir/binpkgs
-        env:
-          PRIVKEY: ${{ secrets.PRIV_KEY }}
-          ARCH: ${{ matrix.config.arch }}
-        run: |
-          rm -f "${ARCH}-repodata"
-          # Создаем repodata для всех .xbps файлов
-          sudo -Eu builder xbps-rindex -a -f "${ARCH}-repodata" *.xbps || true
+          # Remove orphan assets (old package versions, removed templates) - get fresh asset list after uploads
+          echo "Removing obsolete release assets..."
+          release_after=$(curl -s -H "$AUTH" -H "$ACCEPT" "${API}/releases/${release_id}")
+          echo "$release_after" | jq -r '.assets[] | "\(.name)|\(.id)"' | while IFS='|' read -r name asset_id; do
+            [ -z "$name" ] && continue
+            if ! grep -qxF "$name" /tmp/current_files.txt; then
+              echo "  Deleting obsolete: $name"
+              curl -s -X DELETE -H "$AUTH" -H "$ACCEPT" "${API}/releases/assets/${asset_id}" >/dev/null || true
+            fi
+          done
 
-          if [ -n "${PRIVKEY}" ]; then
-            printf "%s\n" "${PRIVKEY}" > key.pem
-            chmod 600 key.pem
-            # Подписываем репо и пакеты
-            sudo -Eu builder xbps-rindex --privkey key.pem -s --signedby "Void CI Builder" . || true
-            sudo -Eu builder xbps-rindex --privkey key.pem -S *.xbps || true
-            rm key.pem
-          else
-            echo "⚠️ No PRIV_KEY found. Repo will be unsigned."
-          fi
-
-          ls -lh "${ARCH}-repodata" || echo "No repodata created."
-
-      # 11. Загрузка артефакта (просто папка с пакетами и repodata)
-      - name: 📤 Upload Artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: ${{ matrix.config.arch }}-repo-artifact
-          path: void-packages/hostdir/binpkgs
-          retention-days: 7
-
-      - name: 🏷️ short sha
-        run: |
-          printf "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+          echo "Release ${TAG} updated."

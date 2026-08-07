@@ -1,4 +1,4 @@
-name: 🏗️ Build Packages (Safe & Clear)
+name: 🏗️ Build Packages (xbps)
 
 on:
   workflow_dispatch:

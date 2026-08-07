@@ -74,13 +74,13 @@ jobs:
           # Скачиваем старые пакеты, чтобы не терять их
           gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
 
-          # Удаляем пакеты другой архитектуры (на случай, если скачались)
           if [ "$ARCH" = "x86_64" ]; then
             rm --force hostdir/binpkgs/*x86_64-musl*
+          elif [ "$ARCH" = "x86_64-musl" ]; then
+            rm --force hostdir/binpkgs/*x86_64.xbps
           fi
-          # Удаляем старые подписи, чтобы не мешали
           rm --force hostdir/binpkgs/*.xbps.sig2
-
+          
       # --- Определяем, какие пакеты строить ---
       - name: 📋 Identify changes to build
         working-directory: void-packages

@@ -163,17 +163,18 @@ jobs:
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
           ARCH: ${{ matrix.config.arch }}
         run: |
-          # Удаляем старый repodata, чтобы не было путаницы
+          # Удаляем старый repodata
           rm -f "${ARCH}-repodata"
 
-          # Создаём свежий repodata-файл с нужным именем
-          sudo -Eu builder xbps-rindex -r . -f "${ARCH}-repodata"
+          # Генерируем repodata: указываем путь к папке с пакетами (текущая)
+          # -r тут вообще не нужен, он ломает логику
+          sudo -Eu builder xbps-rindex -f "${ARCH}-repodata" .
 
           if [ -n "${PRIVKEY}" ]; then
             printf "%s\n" "${PRIVKEY}" > key.pem
             chmod 600 key.pem
 
-            # Подписываем репозиторий и пакеты
+            # Подписываем репозиторий и пакеты — тоже из текущей папки
             sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${GITHUB_REPOSITORY_OWNER}-github-actions" .
             sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg *.xbps
 
@@ -182,7 +183,6 @@ jobs:
             echo "No PRIV_KEY found. Skipping cryptographic signing."
           fi
 
-          # Проверка: сразу видим, что файл создан
           ls -lh "${ARCH}-repodata"
           echo "Repodata size: $(stat -c%s "${ARCH}-repodata") bytes"
           

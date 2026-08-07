@@ -119,12 +119,23 @@ jobs:
           PRIVKEY: ${{ secrets.PRIV_KEY }}
           XBPS_PASSPHRASE: ${{ secrets.SIGN_PASS }}
         run: |
-          sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
-          printf "%s\n" "${PRIVKEY}" > key.pem
-          sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
-          sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
-          sudo -Eu builder rm -f key.pem
-          sudo -Eu builder xbps-rindex --clean ${PWD}
+          # Only run rindex if there are actually packages built (.xbps files exist)
+          if ls *.xbps 1> /dev/null 2>&1; then
+            sudo -Eu builder xbps-rindex --remove-obsoletes ${PWD}
+            
+            if [ -n "${PRIVKEY}" ]; then
+              printf "%s\n" "${PRIVKEY}" > key.pem
+              sudo -Eu builder xbps-rindex --privkey key.pem --sign --signedby "${REPO_NAME}-github-actions" --verbose ${PWD}
+              sudo -Eu builder xbps-rindex --privkey key.pem --sign-pkg --verbose ${PWD}/*.xbps
+              sudo -Eu builder rm -f key.pem
+            else
+              echo "No PRIV_KEY found. Skipping cryptographic signing (normal for forks)."
+            fi
+            
+            sudo -Eu builder xbps-rindex --clean ${PWD}
+          else
+            echo "No packages were built. Skipping indexing."
+          fi
 
       - name: checksum
         working-directory: ./hostdir/binpkgs

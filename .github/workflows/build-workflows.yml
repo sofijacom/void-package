@@ -72,8 +72,11 @@ jobs:
           mkdir -p hostdir/binpkgs
 
           # Скачиваем старые пакеты, чтобы не терять их
-          gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
+          # gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo $REPO_OWNER/$REPO_NAME || true
 
+          # Самое важное: выметаем ВСЁ из папки, чтобы не было старых repodata и пакетов
+          rm -rf hostdir/binpkgs/*
+          
           # Удаляем пакеты другой архитектуры (на случай, если скачались)
           if [ "$ARCH" = "x86_64" ]; then
             rm --force hostdir/binpkgs/*x86_64-musl*

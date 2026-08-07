@@ -2,7 +2,7 @@
 
 pkgname=brave-origin-beta
 version=1.94.102
-revision=2
+revision=1
 archs="x86_64"
 create_wrksrc=yes
 hostmakedepends="rpmextract"

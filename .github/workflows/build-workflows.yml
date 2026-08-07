@@ -1,4 +1,4 @@
-name: Build-releases
+name: 🏗️ Build Packages (Overwrite Release)
 
 on:
   push:

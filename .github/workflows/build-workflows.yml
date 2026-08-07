@@ -95,6 +95,11 @@ jobs:
             cd void-packages
             git checkout --detach master
 
+      - name: 🐛 Fix sourcepkg.sh
+        working-directory: void-packages
+        run: |
+          sed -i 's@for var in $(awk .*;@for var in $(printenv | cut -d'"'"'='"'"' -f1);@' common/environment/setup/sourcepkg.sh
+          
       - name: Merge templates and edit shlibs
         run: |
             echo "==> copying templates..."
@@ -137,6 +142,30 @@ jobs:
             sudo -Eu builder common/travis/prepare.sh &&
             common/travis/fetch-xtools.sh
 
+      - name: ✅ Install gawk in chroot
+        working-directory: void-packages
+        env:
+          ARCH: ${{ matrix.config.arch }}
+        run: |
+          MASTERDIR="masterdir-${ARCH}"
+
+          if [ ! -d "$MASTERDIR" ]; then
+            echo "❌ Error: $MASTERDIR does not exist"
+            exit 1
+          fi
+
+          sudo mkdir -p "$MASTERDIR/etc/xbps.d"
+          [ -d "/usr/share/xbps.d" ] && sudo cp /usr/share/xbps.d/*-repository-*.conf "$MASTERDIR/etc/xbps.d/" || { echo "❌ Not found /usr/share/xbps.d/"; exit 1; }
+
+          sudo mount --bind /proc "$MASTERDIR/proc" || true
+          sudo mount --bind /dev "$MASTERDIR/dev" || true
+          sudo mount --bind /sys "$MASTERDIR/sys" || true
+
+          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || { echo "❌ gawk installation failed"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
+          { [ -f "$MASTERDIR/usr/bin/awk" ] || [ -f "$MASTERDIR/usr/bin/gawk" ]; } || { echo "❌ awk not found"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
+
+          sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null
+          
       - name: Build
         id: build_step
         run: |

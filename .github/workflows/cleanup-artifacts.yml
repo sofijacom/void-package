@@ -18,10 +18,16 @@ permissions:
 
 jobs:
   cleanup-old-artifacts:
-    name: Cleanup old artifacts
+    name: Cleanup-old-artifacts
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
       - name: Run cleanup-old-artifacts script
+        id: update
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

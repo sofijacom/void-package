@@ -19,19 +19,27 @@ jobs:
           sudo apt update
           sudo apt install -y wget
 
-      - name: Download xbps-static (REAL existing version)
+      - name: Extract only bin/ from xbps-static
         run: |
           cd /tmp
-          # Используем ТОЛЬКО то, что реально есть на сервере
-          wget --no-check-certificate -q --show-progress \
-            https://repo-default.voidlinux.org/static/xbps-static-0.59.1_5.x86_64-musl.tar.gz \
-            -O xbps-static-0.59.1_5.x86_64-musl.tar.gz || { echo "❌ Failed to download xbps-static"; exit 1; }
+          FILE="xbps-static-0.59.1_5.x86_64-musl.tar.gz"
+          URL="https://repo-default.voidlinux.org/static/$FILE"
 
-          # Распакуем .tar.gz
-          tar -xzf xbps-static-0.59.1_5.x86_64-musl.tar.gz -C /tmp
+          wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
+          { echo "❌ Failed to download $URL"; exit 1; }
+
+          # Создадим папку /tmp/bin
+          mkdir -p /tmp/bin
+
+          # Извлечём ТОЛЬКО бинарники, убрав лишнюю директорию
+          tar -xzf "$FILE" --strip-components=1 -C /tmp/bin bin/xbps-uhelper bin/xbps-install
+
+          # Проверим
+          /tmp/bin/xbps-uhelper --help
+
           # Добавим в PATH
           echo "/tmp/bin" >> $GITHUB_PATH
-
+          
       - name: Download xlint.sh
         run: |
           wget https://raw.githubusercontent.com/void-linux/void-packages/master/common/travis/xlint.sh -O xlint.sh

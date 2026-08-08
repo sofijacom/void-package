@@ -18,12 +18,22 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y xbps
-          # xlint — это просто скрипт, можно взять из void-packages
           wget https://raw.githubusercontent.com/void-linux/void-packages/master/common/travis/xlint.sh -O xlint.sh
           chmod +x xlint.sh
 
-      - name: Run xlint on changed templates
+      - name: Find changed templates
+        id: find_templates
         run: |
-          # Найдём все изменённые/новые шаблоны
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' || true
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' | xargs -r ./xlint.sh
+          templates=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' || echo "")
+          if [ -n "$templates" ]; then
+            echo "templates=$templates" >> $GITHUB_OUTPUT
+            echo "Found templates to check:"
+            echo "$templates"
+          else
+            echo "No template files changed."
+          fi
+
+      - name: Run xlint on changed templates
+        if: steps.find_templates.outputs.templates != ''
+        run: |
+          echo "${{ steps.find_templates.outputs.templates }}" | xargs ./xlint.sh

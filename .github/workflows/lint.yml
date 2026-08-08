@@ -28,7 +28,7 @@ jobs:
             -O xbps-static.tar.gz || { echo "❌ Failed to download xbps-static"; exit 1; }
 
           # Распакуем .tar.gz
-          tar -xzf xbps-static.tar.gz -C /tmp
+          tar -xzf xbps-static-0.59.1_5.x86_64-musl.tar.gz -C /tmp
           # Добавим в PATH
           echo "/tmp/bin" >> $GITHUB_PATH
 

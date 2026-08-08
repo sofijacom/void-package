@@ -14,26 +14,38 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install xbps and xlint
+      - name: Install dependencies and xbps
         run: |
+          # Установим зависимости
           sudo apt update
-          sudo apt install -y xbps
+          sudo apt install -y wget xz-utils
+
+          # Создадим временную папку
+          mkdir -p /tmp/xbps-install
+          cd /tmp/xbps-install
+
+          # Скачаем xbps (статическая сборка для x86_64)
+          wget https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz
+          tar -xf xbps-static-*.tar.xz
+
+          # Добавим в PATH
+          export PATH="/tmp/xbps-install/bin:$PATH"
+
+          # Проверим, что xbps работает
+          xbps-uhelper --help
+
+      - name: Download xlint.sh
+        run: |
           wget https://raw.githubusercontent.com/void-linux/void-packages/master/common/travis/xlint.sh -O xlint.sh
           chmod +x xlint.sh
 
-      - name: Find changed templates
-        id: find_templates
+      - name: Run xlint on changed templates
         run: |
           templates=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' || echo "")
           if [ -n "$templates" ]; then
-            echo "templates=$templates" >> $GITHUB_OUTPUT
-            echo "Found templates to check:"
+            echo "Checking templates:"
             echo "$templates"
+            echo "$templates" | xargs ./xlint.sh
           else
             echo "No template files changed."
           fi
-
-      - name: Run xlint on changed templates
-        if: steps.find_templates.outputs.templates != ''
-        run: |
-          echo "${{ steps.find_templates.outputs.templates }}" | xargs ./xlint.sh

@@ -1,4 +1,5 @@
 # Template file for 'brave-origin-beta'
+
 pkgname=brave-origin-beta
 version=1.94.105
 revision=1

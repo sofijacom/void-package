@@ -111,19 +111,21 @@ jobs:
             sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls
 
             echo "🧹 Deleting old $pkg .xbps files as builder..."
-            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -exec rm -fv {} + || echo "➡️ No .xbps files to delete"
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -exec rm -fv {} + || true
 
             echo "🧹 Deleting old $pkg .sig2 files as builder..."
-            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.sig2" -exec rm -fv {} + || echo "➡️ No .sig2 files to delete"
+            sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.sig2" -exec rm -fv {} + || true
 
-            echo "✅ Final check — any leftover .xbps files?"
-            if sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps" -ls; then
-              echo "❌ Oops: files still exist!"
+            echo "✅ Final check — leftover .xbps files for $pkg:"
+            leftovers=$(sudo -Eu builder find hostdir/binpkgs -name "${pkg}-*.xbps")
+            if [ -n "$leftovers" ]; then
+              echo "❌ Leftover files found:"
+              echo "$leftovers"
             else
               echo "➡️ All cleared — good!"
             fi
           done
-          
+            
       # --- Настройка xbps-src ---
       - name: 🛠️ Setup void-packages
         working-directory: void-packages

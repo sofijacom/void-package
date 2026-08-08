@@ -28,13 +28,13 @@ jobs:
           wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
             { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Extract the archive (it contains a top-level directory)
-          tar -xzf "$FILE"
+          # Extract without failing on timestamp/permissions errors
+          tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions
 
-          # Copy binaries to /tmp/bin
+          # Ensure /tmp/bin exists and copy binaries
           mkdir -p /tmp/bin
           cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-uhelper /tmp/bin/
-          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install /tmp/bin/  # optional, for safety
+          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install /tmp/bin/ 2>/dev/null || true
 
           # Add to PATH
           echo "/tmp/bin" >> $GITHUB_PATH

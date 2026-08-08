@@ -14,25 +14,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install dependencies and xbps
+      - name: Install dependencies
         run: |
-          # Установим зависимости
           sudo apt update
           sudo apt install -y wget xz-utils
 
-          # Создадим временную папку
-          mkdir -p /tmp/xbps-install
-          cd /tmp/xbps-install
+      - name: Download xbps-static (bypass SSL if needed)
+        run: |
+          cd /tmp
+          # Попробуем сначала с проверкой сертификата
+          if wget -q --show-progress https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz -O xbps.tar.xz; then
+            echo "✅ xbps-static downloaded securely"
+          else
+            echo "⚠️ SSL failed, retrying with --no-check-certificate..."
+            rm -f xbps.tar.xz
+            wget --no-check-certificate -q --show-progress https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz -O xbps.tar.xz || \
+            { echo "❌ Failed to download xbps-static"; exit 1; }
+          fi
 
-          # Скачаем xbps (статическая сборка для x86_64)
-          wget https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz
-          tar -xf xbps-static-*.tar.xz
-
-          # Добавим в PATH
-          export PATH="/tmp/xbps-install/bin:$PATH"
-
-          # Проверим, что xbps работает
-          xbps-uhelper --help
+          # Распакуем
+          tar -xf xbps.tar.xz -C /tmp
+          export PATH="/tmp/bin:$PATH"
+          echo "PATH=/tmp/bin:$PATH" >> $GITHUB_ENV
 
       - name: Download xlint.sh
         run: |
@@ -43,9 +46,9 @@ jobs:
         run: |
           templates=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' || echo "")
           if [ -n "$templates" ]; then
-            echo "Checking templates:"
+            echo "🔍 Checking templates:"
             echo "$templates"
             echo "$templates" | xargs ./xlint.sh
           else
-            echo "No template files changed."
+            echo "✅ No template files changed."
           fi

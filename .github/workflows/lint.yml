@@ -19,7 +19,7 @@ jobs:
           sudo apt update
           sudo apt install -y wget
 
-      - name: Download and extract xbps-static
+      - name: Download xbps-static
         run: |
           cd /tmp
           FILE="xbps-static-0.59.1_5.x86_64-musl.tar.gz"
@@ -28,23 +28,25 @@ jobs:
           wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
             { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Extract — ignore tar errors on . (common in CI)
+          # Extract — suppress tar warnings on . (CI-safe)
           tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions 2>/dev/null || true
 
-          # Check if the binary exists
-          if [ ! -f "xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install.static" ]; then
-            echo "❌ xbps-install.static not found in archive!"
+      - name: Verify xbps-uhelper.static exists in archive
+        run: |
+          if [ ! -f "/tmp/usr/bin/xbps-uhelper.static" ]; then
+            echo "❌ xbps-uhelper.static not found in /tmp/usr/bin/"
+            ls -la /tmp/usr/bin/ 2>/dev/null || echo "No files in /tmp/usr/bin/"
             exit 1
           fi
 
-          # Create /tmp/bin and copy as xbps-uhelper
+      - name: Create /tmp/bin and link xbps-uhelper.static as xbps-uhelper
+        run: |
           mkdir -p /tmp/bin
-          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install.static /tmp/bin/xbps-uhelper
-
-          # Add to PATH
+          cp /tmp/usr/bin/xbps-uhelper.static /tmp/bin/xbps-uhelper
           echo "/tmp/bin" >> $GITHUB_PATH
 
-          # Verify
+      - name: Verify xbps-uhelper works
+        run: |
           /tmp/bin/xbps-uhelper --version
 
       - name: Download xlint.sh

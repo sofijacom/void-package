@@ -242,7 +242,7 @@ jobs:
         with:
           name: ${{ matrix.config.arch }}-repodata
           path: void-packages/hostdir/binpkgs
-          retention-days: 1
+          retention-days: 5
 
       - name: 📤 Upload to Release (fully fixed)
         if: github.ref == 'refs/heads/main'

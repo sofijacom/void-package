@@ -28,18 +28,17 @@ jobs:
           wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
             { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Extract without failing on timestamp/permissions errors
+          # Extract, suppress tar warnings
           tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions
 
-          # Ensure /tmp/bin exists and copy binaries
+          # Create bin and copy xbps-install.static as xbps-uhelper
           mkdir -p /tmp/bin
-          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-uhelper /tmp/bin/
-          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install /tmp/bin/ 2>/dev/null || true
+          cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install.static /tmp/bin/xbps-uhelper
 
           # Add to PATH
           echo "/tmp/bin" >> $GITHUB_PATH
 
-          # Verify it works
+          # Verify
           /tmp/bin/xbps-uhelper --version
 
       - name: Download xlint.sh

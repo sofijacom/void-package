@@ -1,0 +1,29 @@
+name: 🧹 Lint Templates
+
+on:
+  pull_request:
+    paths:
+      - 'srcpkgs/**'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Check template syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install xbps and xlint
+        run: |
+          sudo apt update
+          sudo apt install -y xbps
+          # xlint — это просто скрипт, можно взять из void-packages
+          wget https://raw.githubusercontent.com/void-linux/void-packages/master/common/travis/xlint.sh -O xlint.sh
+          chmod +x xlint.sh
+
+      - name: Run xlint on changed templates
+        run: |
+          # Найдём все изменённые/новые шаблоны
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' || true
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep 'srcpkgs/.*/template' | xargs -r ./xlint.sh

@@ -17,25 +17,20 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y wget xz-utils
+          sudo apt install -y wget
 
-      - name: Download xbps-static (bypass SSL if needed)
+      - name: Download xbps-static (REAL existing version)
         run: |
           cd /tmp
-          # Попробуем сначала с проверкой сертификата
-          if wget -q --show-progress https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz -O xbps.tar.xz; then
-            echo "✅ xbps-static downloaded securely"
-          else
-            echo "⚠️ SSL failed, retrying with --no-check-certificate..."
-            rm -f xbps.tar.xz
-            wget --no-check-certificate -q --show-progress https://alpha.de.repo.voidlinux.org/static/xbps-static-0.64_1.x86_64-musl.tar.xz -O xbps.tar.xz || \
-            { echo "❌ Failed to download xbps-static"; exit 1; }
-          fi
+          # Используем ТОЛЬКО то, что реально есть на сервере
+          wget --no-check-certificate -q --show-progress \
+            https://repo-default.voidlinux.org/static/xbps-static-0.59.1_5.x86_64-musl.tar.gz \
+            -O xbps-static.tar.gz || { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Распакуем
-          tar -xf xbps.tar.xz -C /tmp
-          export PATH="/tmp/bin:$PATH"
-          echo "PATH=/tmp/bin:$PATH" >> $GITHUB_ENV
+          # Распакуем .tar.gz
+          tar -xzf xbps-static.tar.gz -C /tmp
+          # Добавим в PATH
+          echo "/tmp/bin" >> $GITHUB_PATH
 
       - name: Download xlint.sh
         run: |

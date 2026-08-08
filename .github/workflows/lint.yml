@@ -28,10 +28,10 @@ jobs:
           wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
             { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Extract — suppress tar warnings on . (CI-safe)
+          # Extract with suppressed warnings
           tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions 2>/dev/null || true
 
-      - name: Verify xbps-uhelper.static exists in archive
+      - name: Verify xbps-uhelper.static exists
         run: |
           if [ ! -f "/tmp/usr/bin/xbps-uhelper.static" ]; then
             echo "❌ xbps-uhelper.static not found in /tmp/usr/bin/"
@@ -39,7 +39,7 @@ jobs:
             exit 1
           fi
 
-      - name: Create /tmp/bin and link xbps-uhelper.static as xbps-uhelper
+      - name: Create /tmp/bin and copy xbps-uhelper.static as xbps-uhelper
         run: |
           mkdir -p /tmp/bin
           cp /tmp/usr/bin/xbps-uhelper.static /tmp/bin/xbps-uhelper
@@ -47,7 +47,7 @@ jobs:
 
       - name: Verify xbps-uhelper works
         run: |
-          /tmp/bin/xbps-uhelper --version
+          /tmp/bin/xbps-uhelper -V
 
       - name: Download xlint.sh
         run: |

@@ -1,4 +1,4 @@
-name: cleanup old artifacts
+name: 🗑️ cleanup old artifacts
 
 on:
   workflow_dispatch:

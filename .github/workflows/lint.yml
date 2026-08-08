@@ -28,10 +28,16 @@ jobs:
           wget --no-check-certificate -q --show-progress "$URL" -O "$FILE" || \
             { echo "❌ Failed to download xbps-static"; exit 1; }
 
-          # Extract, suppress tar warnings
-          tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions
+          # Extract — ignore tar errors on . (common in CI)
+          tar -xzf "$FILE" --warning=no-timestamp --no-same-owner --no-same-permissions 2>/dev/null || true
 
-          # Create bin and copy xbps-install.static as xbps-uhelper
+          # Check if the binary exists
+          if [ ! -f "xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install.static" ]; then
+            echo "❌ xbps-install.static not found in archive!"
+            exit 1
+          fi
+
+          # Create /tmp/bin and copy as xbps-uhelper
           mkdir -p /tmp/bin
           cp xbps-static-0.59.1_5.x86_64-musl/bin/xbps-install.static /tmp/bin/xbps-uhelper
 

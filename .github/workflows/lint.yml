@@ -25,7 +25,7 @@ jobs:
           # Используем ТОЛЬКО то, что реально есть на сервере
           wget --no-check-certificate -q --show-progress \
             https://repo-default.voidlinux.org/static/xbps-static-0.59.1_5.x86_64-musl.tar.gz \
-            -O xbps-static.tar.gz || { echo "❌ Failed to download xbps-static"; exit 1; }
+            -O xbps-static-0.59.1_5.x86_64-musl.tar.gz || { echo "❌ Failed to download xbps-static"; exit 1; }
 
           # Распакуем .tar.gz
           tar -xzf xbps-static-0.59.1_5.x86_64-musl.tar.gz -C /tmp

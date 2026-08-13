@@ -250,7 +250,7 @@ jobs:
           path: void-packages/hostdir/binpkgs
           retention-days: 5
 
-      - name: 📤 Upload to Release (fully fixed)
+      - name: 📤 Upload to Release
         if: github.ref == 'refs/heads/main'
         working-directory: void-packages/hostdir/binpkgs
         shell: bash

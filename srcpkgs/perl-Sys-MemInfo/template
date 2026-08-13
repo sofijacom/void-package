@@ -1,0 +1,15 @@
+# Template file for 'perl-Sys-MemInfo'
+
+pkgname=perl-Sys-MemInfo
+version=0.99
+revision=1
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="${makedepends}"
+short_desc="Perl module to get memory information from the OS"
+maintainer="Sofiya <sofiya@v.com>"
+license="GPL"
+homepage="https://metacpan.org/pod/Sys::MemInfo"
+distfiles="https://cpan.metacpan.org/authors/id/S/SC/SCRESTO/Sys-MemInfo-${version}.tar.gz"
+checksum=0786319d3a3a8bae5d727939244bf17e140b714f52734d5e9f627203e4cf3e3b

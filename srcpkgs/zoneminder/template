@@ -1,0 +1,141 @@
+# Template file for 'zoneminder'
+
+pkgname=zoneminder
+version=1.38.4
+revision=2
+system_groups="www-data" # Ensures the target group exists on the user's host OS
+build_style=cmake
+configure_args="
+	-DCMAKE_INSTALL_PREFIX=/usr
+	-DZM_WEBDIR=/usr/share/zoneminder/www
+	-DZM_CGIDIR=/usr/libexec/zoneminder/cgi-bin
+	-DZM_RUNDIR=/run/zoneminder
+	-DZM_SOCKDIR=/run/zoneminder
+	-DZM_LOGDIR=/var/log/zoneminder
+	-DZM_CONFIG_DIR=/etc/zm
+	-DZM_CONFIG_SUBDIR=/etc/zm/conf.d
+	-DZM_PERL_SUBPREFIX=/usr/lib/perl5/vendor_perl
+	-DZM_SYSCONFDIR=/etc/zm
+	-DZM_POLKIT_DIR=/usr/share/polkit-1/actions
+	-DZM_SYSTEMD_UNITDIR=/usr/lib/systemd/system
+	-DZM_MANDIR=/usr/share/man
+	-DZM_INCLUDEDIR=/usr/include
+	-DZM_CACHEDIR=/var/cache/zoneminder/cache
+	-DZM_WEB_USER=www-data
+	-DZM_WEB_GROUP=www-data
+	-DZM_PATH_UNAME=/usr/bin/uname
+	-DZM_PATH_SHUTDOWN=/usr/bin/shutdown
+	-DZM_PATH_ARP=/usr/bin/arp
+	-DZM_PATH_ARP_SCAN=/usr/bin/arp-scan
+	-DFFMPEG_EXECUTABLE=
+"
+hostmakedepends="
+	pkg-config
+	pkgconf
+	perl
+	git
+	ninja
+	cmake
+	gcc
+"
+makedepends="
+	libmariadbclient-devel
+	mariadb
+	apache-devel
+	php-devel
+	libjpeg-turbo-devel
+	libpng-devel
+	ffmpeg-devel
+	opencv
+	iproute2
+	net-tools
+	pcre2-devel
+	libcurl-devel
+	pcre-devel
+	libgcrypt-devel
+	gnutls-devel
+	vlc-devel
+	libvncserver-devel
+"
+depends="
+	perl-DBD-mysql
+	perl-Date-Manip
+	perl-LWP
+	perl-DBI
+	perl-LWP-Protocol-https
+	perl-Net-WebSocket-Server
+	perl-Net-MQTT-Simple
+	perl-Sys-MemInfo
+	perl-Sys-Mmap
+	perl-Device-SerialPort
+	perl-Number-Bytes-Human
+	perl-Crypt-Eksblowfish
+"
+short_desc="Complete video surveillance storage and monitoring solution"
+maintainer="Erik Schoepplenberg <erik@puppylinux.com>"
+license="GPL-2.0-or-later"
+homepage="https://zoneminder.com/"
+distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"
+checksum=d0e0cab5008a75cb8547533c2e1f673a9d8f9e19e32aeb1ae8e15e0b7c09a02a
+
+# Allow xbps-src to connect to GitHub during the build phase
+allow_net=yes
+
+post_extract() {
+	git config --global init.defaultBranch main
+	git init
+	git remote add origin https://github.com/ZoneMinder/zoneminder
+	git fetch --depth=1 origin "${version}"
+	git reset --mixed FETCH_HEAD
+	git submodule update --init --recursive
+}
+
+post_install() {
+	# echo "Bootstrapping an independent cpanm instance inside the sandbox..."
+	
+	# Use Perl's native HTTP client instead of external curl
+	# perl -e '
+	#	use HTTP::Tiny;
+	#	my $response = HTTP::Tiny->new->get("https://cpanmin.us");
+	#	if ($response->{success}) {
+	#		open(my $fh, ">", "cpanm");
+	#		print $fh $response->{content};
+	#		close($fh);
+	#	} else {
+	#		die "Download failed: $response->{reason}\n";
+	#	}
+	#'
+	
+	# Ensure the downloaded bootstrap script can be executed
+	# chmod +x cpanm
+
+	# echo "Running standalone cpanm installer layer..."
+	
+	# Force installation directly inside your targeted package directory
+	#./cpanm --notest --no-man-pages -l "${DESTDIR}/usr" \
+	#	Net::WebSocket::Server \
+	#	Net::MQTT::Simple \
+	#	Sys::MemInfo \
+	#	Sys::Mmap \
+	#	Device::SerialPort \
+	#	Number::Bytes::Human \
+	#	Crypt::Eksblowfish \
+
+	# Clean up the standalone script tool and artifacts
+	# rm -f cpanm
+	# rm -rf "${DESTDIR}/usr/lib/perl5/client"
+	# rm -f "${DESTDIR}/usr/lib/perl5/"*.pod
+
+	# Move the contents of x86_64-linux to vendor_perl
+	# mkdir -p "${DESTDIR}/usr/lib/perl5/vendor_perl"
+	# mv ${DESTDIR}/usr/lib/perl5/x86_64-linux/* ${DESTDIR}/usr/lib/perl5/vendor_perl/
+	# rm -rf "${DESTDIR}/usr/lib/perl5/x86_64-linux"
+
+	# Runit service block
+	mkdir -p "${PKGDESTDIR}/etc/sv/zoneminder"
+	cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"
+#!/bin/sh
+exec /usr/bin/zmpkg.pl start
+EOF
+	chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/run"
+}

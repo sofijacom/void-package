@@ -1,0 +1,17 @@
+# Template file for 'perl-Net-MQTT-Simple'
+
+pkgname=perl-Net-MQTT-Simple
+version=1.33
+revision=1
+archs="x86_64"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="perl perl-Net-WebSocket-Server"
+short_desc="Net::MQTT::Simple — simple MQTT client with WebSocket support"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/release/Net-MQTT-Simple"
+distfiles="https://cpan.metacpan.org/authors/id/J/JU/JUERD/Net-MQTT-Simple-${version}.tar.gz"
+checksum=58539c1c2794d25872652d78a26c9fd26b627bdad1b9134a159869c1b2822aa7
+

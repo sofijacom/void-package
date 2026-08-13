@@ -1,0 +1,35 @@
+name: 🗑️ cleanup old artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      
+#on:
+#  workflow_dispatch:
+#  schedule:
+#    # Каждый понедельник и четверг в 00:00 UTC (07:00 WIB)
+#    - cron: '0 0 * * 1,4'
+
+permissions:
+  actions: write  # Для удаления артефактов
+  contents: read  # Для доступа к репозиторию (если потребуется)
+
+jobs:
+  cleanup-old-artifacts:
+    name: Cleanup-old-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Run cleanup-old-artifacts script
+        id: update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x scripts/cleanup-old-artifacts.sh
+          ./scripts/cleanup-old-artifacts.sh sofijacom/void-package

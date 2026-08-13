@@ -1,0 +1,9 @@
+# 🤝 How to contribute
+
+I'm so glad you're reading this, I'm doing my best, but help is always needed.
+
+Want a package added, or spotted something broken?
+
+- **Package updates** are handled (mostly) automatically by the workflow — no need to bump versions manually
+- **[Open an issue](https://github.com/sofijacom/void-package/issues/)** — request a new package or report a build failure
+- **[Submit a PR](https://github.com/sofijacom/void-package/pulls)** — add your own template following the existing structure and coding convention (one directory per package inside [srcpkgs](./srcpkgs/), containing a `template` file and if possible, a `update.sh`)

@@ -1,0 +1,15 @@
+# Template file for 'perl-Sys-Mmap'
+
+pkgname=perl-Sys-Mmap
+version=0.21
+revision=1
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="${makedepends}"
+short_desc="Perl interface to the mmap() call"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/pod/Sys::Mmap"
+distfiles="https://cpan.metacpan.org/authors/id/T/TO/TODDR/Sys-Mmap-${version}.tar.gz"
+checksum="fdec18081928b0b3ff688ec8b5d2d9bd1ffc81c2c3eb1fb3c1c56aac48a96f4c"

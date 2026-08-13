@@ -1,0 +1,28 @@
+# Template file for 'osmo'
+pkgname=osmo
+version=0.4.4
+revision=1
+build_style=gnu-configure
+configure_args="--prefix=/usr"
+hostmakedepends="pkg-config"
+makedepends="automake autoconf m4 perl gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel libwebkit2gtk41-devel"
+depends=""
+optdepends="sox: to play sounds"
+short_desc="A handy personal organizer"
+maintainer="Sofiya <sofiya@v.org>"
+license="GPL-2.0-or-later"
+homepage="http://clayo.org/osmo/"
+# source="https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${version}/${pkgname}-${version}.tar.gz
+distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
+checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
+
+pre_configure() {
+  autoreconf -f -i
+}
+
+# build_options="contacts gspell libical backup"
+# build_options_default="contacts gspell libical backup"
+# desc_option_contacts="Enable contacts, depends on webkit2gtk"
+# desc_option_gspell="Enable gspell, depends on gspell-devel"
+# desc_option_ical="Enable libical"
+# desc_option_backup="Enable backup, depends on libarchive-devel libgringotts-devel"

@@ -1,0 +1,16 @@
+# Template file for 'perl-Device-SerialPort'
+
+pkgname=perl-Device-SerialPort
+version=1.04
+revision=1
+archs="x86_64"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="${makedepends}"
+short_desc="Device::SerialPort — interface to serial ports"
+maintainer="Sofiya <sofiya@v.com>"
+license="Artistic-1.0-clauses OR GPL-1.0-or-later"
+homepage="https://metacpan.org/release/Device-SerialPort"
+distfiles="https://cpan.metacpan.org/authors/id/C/CO/COOK/Device-SerialPort-${version}.tar.gz"
+checksum=d392567cb39b4ea606c0e0acafd8ed72320311b995336ece5fcefcf9b150e9d7

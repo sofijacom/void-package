@@ -59,11 +59,20 @@ sudo xbps-install -S
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ✔️ |
 | Ly                                  | https://codeberg.org/fairyglade/ly                | ✔️ |
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
-| Mullvad-browser_                    | https://github.com/mullvad/mullvad-browser        | ✔️ |
+| Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
-| Palemoon ( browser )_               | https://www.palemoon.org/                         | ✔️ |
-| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
 | Osmo + dependency (libgringotts)    | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
+| Palemoon ( browser )                | https://www.palemoon.org/                         | ✔️ |
+| perl-Class-Mix                      | https://metacpan.org/pod/Class::Mix               | ✔️ |
+| perl-Crypt-Eksblowfish              | https://metacpan.org/pod/Crypt::Eksblowfish       | ✔️ |
+| perl-Device-SerialPort              | https://metacpan.org/pod/Device::SerialPort       | ✔️ |
+| perl-Net-MQTT                       | https://metacpan.org/pod/Net::MQTT                | ✔️ |
+| perl-Net-WebSocket-Server           | https://metacpan.org/pod/Net::WebSocket::Server   | ✔️ |
+| perl-Number-Bytes-Human             | https://metacpan.org/pod/Number::Bytes::Human     | ✔️ |
+| perl-Protocol-WebSocket             | https://metacpan.org/pod/perl::Protocol::WebSocket| ✔️ |
+| perl-Sys-MemInfo                    | https://metacpan.org/pod/perl::Sys::MemInfo       | ✔️ |
+| perl-Sys-Mmap                       | https://metacpan.org/pod/perl::Sys::Mmap          | ✔️ |
+| Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
 | SeaMonkey ( Web-browser )           | https://www.seamonkey-project.org/                | ✔️ |
 | SmartGit                            | https://www.smartgit.dev/                         | ✔️ |
 | Waterfox-browser                    | https://www.waterfox.net/                         | ✔️ |

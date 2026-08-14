@@ -127,18 +127,65 @@ jobs:
             echo "</details>" >> "$GITHUB_STEP_SUMMARY"
           fi
 
-      - name: commit updates
-        id: check-updates
+      - name: commit & push updates
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit --all --message "Automated update 🤖" --signoff
-            echo "has_updates=true" >> "$GITHUB_OUTPUT"
-          else
+          # Находим изменённые template-файлы
+          changed_files=($(git diff --name-only | grep 'srcpkgs/.*/template' || true))
+          count=${#changed_files[@]}
+
+          # Если нет изменений — выходим
+          if [[ $count -eq 0 ]]; then
             echo "No new updates"
             echo "has_updates=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          # Настройка автора коммита
+          git config user.name "Sofiya S.V"
+          git config user.email "107557749+sofijacom@users.noreply.github.com"
+
+          # Выбор эмодзи по количеству
+          if [[ $count -eq 1 ]]; then
+            emoji="📦"
+            msg="Single update"
+          elif [[ $count -le 3 ]]; then
+            emoji="🔄"
+            msg="Small batch update"
+          elif [[ $count -le 10 ]]; then
+            emoji="🤖"
+            msg="Automated update"
+          else
+            emoji="🚀✨"
+            msg="MASS UPDATE"
+          fi
+
+          # Формируем сообщение
+          commit_msg="$msg $emoji ($count packages)"
+
+          # Делаем коммит и пушим
+          git commit --all --message "$commit_msg" --signoff
+          git push origin "${{ github.ref }}"
+
+          # Сигнал для условий (хотя здесь он не используется, но на будущее)
+          echo "has_updates=true" >> "$GITHUB_OUTPUT"
+
+          # Лог в консоль
+          echo "✅ Committed $count package(s): $commit_msg"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PULL_PUSH }}
+          
+      #- name: commit updates
+      #  id: check-updates
+      #  run: |
+      #    if [[ -n "$(git status --porcelain)" ]]; then
+      #      git config user.name "github-actions[bot]"
+      #      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #      git commit --all --message "Automated update 🤖" --signoff
+      #      echo "has_updates=true" >> "$GITHUB_OUTPUT"
+      #    else
+      #      echo "No new updates"
+      #      echo "has_updates=false" >> "$GITHUB_OUTPUT"
+      #    fi
       
       #- name: commit updates
       #  id: check-updates
@@ -153,10 +200,10 @@ jobs:
       #      echo "has_updates=false" >> "$GITHUB_OUTPUT"
       #    fi
 
-      - name: push updates
-        if: steps.check-updates.outputs.has_updates == 'true'
-        uses: ad-m/github-push-action@v1.1.0
-        with:
-          github_token: ${{ secrets.PULL_PUSH }}
-          branch: ${{ github.ref }}
+      #- name: push updates
+      #  if: steps.check-updates.outputs.has_updates == 'true'
+      #  uses: ad-m/github-push-action@v1.1.0
+      #  with:
+      #    github_token: ${{ secrets.PULL_PUSH }}
+      #    branch: ${{ github.ref }}
           

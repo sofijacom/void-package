@@ -140,7 +140,7 @@ jobs:
             echo "has_updates=false" >> "$GITHUB_OUTPUT"
           fi
       
-      #- name: commit updates
+      #- name: commit updates (on my own behalf)
       #  id: check-updates
       #  run: |
       #    if [[ -n "$(git status --porcelain)" ]]; then
@@ -160,7 +160,7 @@ jobs:
           github_token: ${{ secrets.PULL_PUSH }}
           branch: ${{ github.ref }}
 
-      #--- Новый коминт --- #    
+      # --- Новый коминт --- #    
       #- name: commit & push updates
       #  run: |
       #    # Находим изменённые template-файлы

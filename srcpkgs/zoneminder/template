@@ -72,7 +72,7 @@ depends="
 	perl-Crypt-Eksblowfish
 "
 short_desc="Complete video surveillance storage and monitoring solution"
-maintainer="Erik Schoepplenberg <erik@puppylinux.com>"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://zoneminder.com/"
 distfiles="https://github.com/ZoneMinder/zoneminder/archive/refs/tags/"${version}".tar.gz"

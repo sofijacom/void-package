@@ -91,46 +91,6 @@ post_extract() {
 }
 
 post_install() {
-	# echo "Bootstrapping an independent cpanm instance inside the sandbox..."
-	
-	# Use Perl's native HTTP client instead of external curl
-	# perl -e '
-	#	use HTTP::Tiny;
-	#	my $response = HTTP::Tiny->new->get("https://cpanmin.us");
-	#	if ($response->{success}) {
-	#		open(my $fh, ">", "cpanm");
-	#		print $fh $response->{content};
-	#		close($fh);
-	#	} else {
-	#		die "Download failed: $response->{reason}\n";
-	#	}
-	#'
-	
-	# Ensure the downloaded bootstrap script can be executed
-	# chmod +x cpanm
-
-	# echo "Running standalone cpanm installer layer..."
-	
-	# Force installation directly inside your targeted package directory
-	#./cpanm --notest --no-man-pages -l "${DESTDIR}/usr" \
-	#	Net::WebSocket::Server \
-	#	Net::MQTT::Simple \
-	#	Sys::MemInfo \
-	#	Sys::Mmap \
-	#	Device::SerialPort \
-	#	Number::Bytes::Human \
-	#	Crypt::Eksblowfish \
-
-	# Clean up the standalone script tool and artifacts
-	# rm -f cpanm
-	# rm -rf "${DESTDIR}/usr/lib/perl5/client"
-	# rm -f "${DESTDIR}/usr/lib/perl5/"*.pod
-
-	# Move the contents of x86_64-linux to vendor_perl
-	# mkdir -p "${DESTDIR}/usr/lib/perl5/vendor_perl"
-	# mv ${DESTDIR}/usr/lib/perl5/x86_64-linux/* ${DESTDIR}/usr/lib/perl5/vendor_perl/
-	# rm -rf "${DESTDIR}/usr/lib/perl5/x86_64-linux"
-
 	# Runit service block
 	mkdir -p "${PKGDESTDIR}/etc/sv/zoneminder"
 	cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"

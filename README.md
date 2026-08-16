@@ -42,7 +42,7 @@ printf "repository=https://github.com/sofijacom/void-package/releases/latest/dow
 sudo xbps-install -S
 ```
 
-# Available packages
+# 📦 Available packages
 
 | package | source | automatic update |
 |:--------|:-------|:-----------------|

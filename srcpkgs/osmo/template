@@ -1,4 +1,5 @@
 # Template file for 'osmo'
+
 pkgname=osmo
 version=0.4.4
 revision=1

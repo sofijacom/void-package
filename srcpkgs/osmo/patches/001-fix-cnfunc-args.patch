@@ -1,11 +1,22 @@
 --- a/src/calendar_notes.c
 +++ b/src/calendar_notes.c
-@@ -76,7 +76,7 @@
-     GList *l = notes;
-     while (l) {
-         Note *n = l->data;
--        if ((*cnfunc)(n, appGUI) == TRUE)
-+        if ((*cnfunc)(n) == TRUE)
-             return TRUE;
-         l = l->next;
-     }
+@@ -35,13 +35,13 @@
+ }
+ 
+ void
+-cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(), GUI *appGUI)
++cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note *), GUI *appGUI)
+ {
+ 	GSList *node;
+ 	struct note *n;
+ 
+ 	for (node = appGUI->cal->notes_list; node != NULL; node = node->next) {
+ 		n = (struct note *) node->data;
+ 
+-		if (n->date >= julian_start && n->date <= julian_end)
+-			if ((*cnfunc)(n, appGUI) == TRUE)
++		if (n->date >= julian_start && n->date <= julian_end)
++			if (cnfunc(n) == TRUE)
+ 				break;
+ 	}
+ }

@@ -1,0 +1,11 @@
+--- a/src/calendar_notes.c
++++ b/src/calendar_notes.c
+@@ -76,7 +76,7 @@
+     GList *l = notes;
+     while (l) {
+         Note *n = l->data;
+-        if ((*cnfunc)(n, appGUI) == TRUE)
++        if ((*cnfunc)(n) == TRUE)
+             return TRUE;
+         l = l->next;
+     }

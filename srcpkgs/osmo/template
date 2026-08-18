@@ -16,6 +16,10 @@ homepage="http://clayo.org/osmo/"
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
+do_patch() {
+    patch -Np1 < patches/001-fix-cnfunc-args.patch
+}
+
 pre_configure() {
   autoreconf -f -i
 }

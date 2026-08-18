@@ -1,14 +1,15 @@
 --- a/src/calendar_notes.h
 +++ b/src/calendar_notes.h
-@@ -55,7 +55,7 @@
- gboolean      cal_check_notes            (guint32 julian_start, guint32 julian_end, GUI *appGUI);
+@@ -52,7 +52,7 @@
+ };
  
- void          cal_notes_foreach          (guint32 julian_start, guint32 julian_end,
--                                          gboolean (*cnfunc)(), GUI *appGUI);
-+                                          gboolean (*cnfunc)(struct note *, GUI *), GUI *appGUI);
+ gboolean    cal_check_note              (guint32 julian, GUI *appGUI);
+ gboolean    cal_check_notes             (guint32 julian_start, guint32 julian_end, GUI *appGUI);
+-void        cal_notes_foreach           (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(), GUI *appGUI);
++void        cal_notes_foreach           (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note*, GUI*), GUI *appGUI);
  
- gchar        *cal_get_note               (guint32 julian, GUI *appGUI);
- gchar        *cal_get_note_color         (guint32 julian, GUI *appGUI);
+ gchar *     cal_get_note                (guint32 julian, GUI *appGUI);
+ gchar *     cal_get_note_color          (guint32 julian, GUI *appGUI);
 --- a/src/calendar_notes.c
 +++ b/src/calendar_notes.c
 @@ -41,7 +41,7 @@
@@ -16,7 +17,7 @@
  
  void
 -cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(), GUI *appGUI)
-+cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note *, GUI *), GUI *appGUI)
++cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note*, GUI*), GUI *appGUI)
  {
  	GSList *node;
  	struct note *n;

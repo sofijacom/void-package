@@ -16,6 +16,13 @@ homepage="http://clayo.org/osmo/"
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
+do_patch() {
+	sed -i 's|gboolean \(\*cnfunc\)()|\1(struct note *)|' src/calendar_notes.h
+	sed -i 's|gboolean \(\*cnfunc\)()|\1(struct note *)|' src/calendar_notes.c
+	sed -i 's|\(\*cnfunc\)(n, appGUI)|cnfunc(n)|' src/calendar_notes.c
+}
+
+
 pre_configure() {
   autoreconf -f -i
 }

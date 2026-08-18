@@ -17,15 +17,16 @@ distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 do_patch() {
-	# В .h: возвращаем сигнатуру с двумя аргументами у колбэка
+	# 1. В .h делаем сигнатуру колбэка: принимает struct note * и GUI *
 	sed -i 's/gboolean (\*cnfunc)(struct note \*)/gboolean (*cnfunc)(struct note *, GUI \*)/' src/calendar_notes.h
 
-	# В .c: возвращаем определение функции
+	# 2. В .c делаем то же самое для определения функции
 	sed -i 's/gboolean (\*cnfunc)(struct note \*)/gboolean (*cnfunc)(struct note *, GUI \*)/' src/calendar_notes.c
 
-	# В .c: возвращаем вызов с двумя аргументами
+	# 3. В .c оставляем вызов с ДВУМЯ аргументами (чтобы совпало с сигнатурой)
 	sed -i 's/cnfunc(n)/(*cnfunc)(n, appGUI)/' src/calendar_notes.c
 }
+
 
 pre_configure() {
   autoreconf -f -i

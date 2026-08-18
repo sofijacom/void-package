@@ -7,7 +7,7 @@ configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
 makedepends="automake autoconf m4 perl gtk+3-devel libxml2-devel libnotify-devel gspell-devel libical-devel libarchive-devel libgringotts-devel libwebkit2gtk41-devel"
 depends=""
-optdepends="sox: to play sounds"
+optdepends="sox"
 short_desc="A handy personal organizer"
 maintainer="Sofiya <sofiya@v.org>"
 license="GPL-2.0-or-later"
@@ -15,18 +15,6 @@ homepage="http://clayo.org/osmo/"
 # source="https://sourceforge.net/projects/osmo-pim/files/osmo-pim/${pkgname}-${version}/${pkgname}-${version}.tar.gz
 distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
-
-do_patch() {
-	# 1. В .h делаем сигнатуру колбэка: принимает struct note * и GUI *
-	sed -i 's/gboolean (\*cnfunc)(struct note \*)/gboolean (*cnfunc)(struct note *, GUI \*)/' src/calendar_notes.h
-
-	# 2. В .c делаем то же самое для определения функции
-	sed -i 's/gboolean (\*cnfunc)(struct note \*)/gboolean (*cnfunc)(struct note *, GUI \*)/' src/calendar_notes.c
-
-	# 3. В .c оставляем вызов с ДВУМЯ аргументами (чтобы совпало с сигнатурой)
-	sed -i 's/cnfunc(n)/(*cnfunc)(n, appGUI)/' src/calendar_notes.c
-}
-
 
 pre_configure() {
   autoreconf -f -i

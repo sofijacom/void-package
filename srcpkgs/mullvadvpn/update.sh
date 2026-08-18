@@ -1,39 +1,64 @@
 #!/bin/bash
-
 set -euo pipefail
 
-API_URL="https://api.github.com/repos/mullvad/mullvadvpn-app/releases/latest"
+# --- Настройки ---
+REPO="mullvad/mullvadvpn-app"
+ASSET_PATTERN=".*amd64.*\\.deb$"
+TEMPLATE_FILE="./srcpkgs/mullvadvpn/template"
+
+# --- Функция: запись в GITHUB_OUTPUT, если доступно ---
+safe_output() {
+  local key="$1"
+  local value="$2"
+  echo "$key=$value" >> "$GITHUB_OUTPUT" 2>/dev/null || true
+  # Также экспортируем в переменные окружения для использования в том же сценарии
+  export "GH_${key^^}=$value"
+}
+
+# --- 1. Получаем данные с GitHub API ---
+echo "Fetching latest release from $REPO..."
+API_URL="https://api.github.com/repos/$REPO/releases/latest"
 RESPONSE=$(curl -s "$API_URL")
 
-echo "Full release asset list for debugging:"
-echo "$RESPONSE" | jq '.assets[].name'
+echo "Found assets:"
+echo "$RESPONSE" | jq -r '.assets[].name'
 
 VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
-DEB_URL=$(echo "$RESPONSE" | jq -r '.assets[] | select(.name | test(".*amd64.*\\.deb$")) | .browser_download_url')
-
-echo "Parsed version: $VERSION"
-echo "Detected .deb URL: $DEB_URL"
+DEB_URL=$(echo "$RESPONSE" | jq -r ".assets[] | select(.name | test(\"$ASSET_PATTERN\")) | .browser_download_url")
 
 if [[ -z "$DEB_URL" ]]; then
-  echo "::notice title=No .deb found::The latest release does not contain a .deb asset. Exiting gracefully."
-  echo "skip_update=true" >> "$GITHUB_OUTPUT"
-  exit 0
+  echo "❌ No matching .deb asset found for pattern: $ASSET_PATTERN" >&2
+  exit 1
 fi
 
-echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-echo "deb_url=${DEB_URL}" >> "$GITHUB_OUTPUT"
+echo "✅ Version: $VERSION"
+echo "✅ DEB URL: $DEB_URL"
 
-CURRENT_VERSION=$(grep '^version=' ./srcpkgs/mullvadvpn/template | cut -d= -f2)
-echo "current_version=${CURRENT_VERSION}" >> "$GITHUB_OUTPUT"
+# --- Сохраняем в outputs и окружение ---
+safe_output "version" "$VERSION"
+safe_output "deb_url" "$DEB_URL"
 
-curl -Lo mullvad.deb "${{ steps.get_release.outputs.deb_url }}"
+# --- 2. Скачиваем и считаем хеш ---
+echo "📥 Downloading package..."
+curl -Lo mullvad.deb "$DEB_URL"
+
 SHA256=$(sha256sum mullvad.deb | awk '{print $1}')
-echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
+echo "✅ SHA256: $SHA256"
+safe_output "sha256" "$SHA256"
 
-sed -i "s/^version=.*/version=${{ steps.get_release.outputs.version }}/" ./srcpkgs/mullvadvpn/template
-sed -i "s/^checksum=.*/checksum=${{ steps.download_and_verify.outputs.sha256 }}/" ./srcpkgs/mullvadvpn/template
+# --- 3. Обновляем шаблон ---
+if [[ ! -f "$TEMPLATE_FILE" ]]; then
+  echo "❌ Template file not found: $TEMPLATE_FILE" >&2
+  exit 1
+fi
 
-echo "NEW_VERSION=$VERSION" >> $GITHUB_ENV
-echo "### Done! mullvadvpn updated to $VERSION"
+echo "🔧 Updating template: $TEMPLATE_FILE"
+sed -i "s/^version=.*/version=$VERSION/" "$TEMPLATE_FILE"
+sed -i "s/^checksum=.*/checksum=$SHA256/" "$TEMPLATE_FILE"
 
-# echo "Update Mullvad VPN to v${{ steps.get_release.outputs.version }} [automated update]"
+echo "✅ Template updated successfully!"
+
+# --- Дополнительно: экспорт в GITHUB_ENV, если нужно в последующих шагах ---
+echo "NEW_VERSION=$VERSION" >> "$GITHUB_ENV" 2>/dev/null || true
+
+echo "🎉 Done MullvadVPN updated to version $VERSION"

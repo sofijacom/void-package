@@ -1,6 +1,6 @@
 --- a/src/calendar_notes.c
 +++ b/src/calendar_notes.c
-@@ -35,13 +35,13 @@
+@@ -40,7 +40,7 @@
  }
  
  void
@@ -9,13 +9,12 @@
  {
  	GSList *node;
  	struct note *n;
- 
+
  	for (node = appGUI->cal->notes_list; node != NULL; node = node->next) {
  		n = (struct note *) node->data;
- 
--		if (n->date >= julian_start && n->date <= julian_end)
+
+ 		if (n->date >= julian_start && n->date <= julian_end)
 -			if ((*cnfunc)(n, appGUI) == TRUE)
-+		if (n->date >= julian_start && n->date <= julian_end)
 +			if (cnfunc(n) == TRUE)
  				break;
  	}

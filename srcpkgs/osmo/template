@@ -17,13 +17,13 @@ distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 do_patch() {
-	# В .h меняем: gboolean (*cnfunc)() → gboolean (*cnfunc)(struct note *)
-	sed -i 's/gboolean (\*cnfunc)\(\)/gboolean (\*cnfunc)(struct note \*)/' src/calendar_notes.h
+	# В .h: заменяем ТОЛЬКО старый шаблон на правильный, без лишних скобок
+	sed -i 's/gboolean (\*cnfunc)()/gboolean (*cnfunc)(struct note *)/' src/calendar_notes.h
 
-	# В .c меняем: gboolean (*cnfunc)() → gboolean (*cnfunc)(struct note *)
-	sed -i 's/gboolean (\*cnfunc)\(\)/gboolean (\*cnfunc)(struct note \*)/' src/calendar_notes.c
+	# В .c: то же самое — только сигнатура
+	sed -i 's/gboolean (\*cnfunc)()/gboolean (*cnfunc)(struct note *)/' src/calendar_notes.c
 
-	# В .c меняем вызов: (*cnfunc)(n, appGUI) → cnfunc(n)
+	# В .c: заменяем вызов с двумя аргументами на вызов с одним
 	sed -i 's/(\*cnfunc)(n, appGUI)/cnfunc(n)/' src/calendar_notes.c
 }
 

@@ -1,0 +1,24 @@
+diff -ru osmo-0.4.4.orig/configure.ac osmo-0.4.4/configure.ac
+--- osmo-0.4.4.orig/configure.ac	2026-05-09 19:26:36.559186892 +0200
++++ osmo-0.4.4/configure.ac	2026-05-09 19:30:48.246056689 +0200
+@@ -86,7 +86,7 @@
+ AM_CONDITIONAL([HAVE_LIBARCHIVE], test "x$have_libarchive" = "xtrue")
+ 
+ # Checks for libical
+-PKG_CHECK_MODULES(LIBICAL, libical >= 1.0, have_libical=true,
++PKG_CHECK_MODULES(LIBICAL, libical >= 1.0 libicalss, have_libical=true,
+     have_libical=false)
+ if test "x$have_libical" = "xtrue"; then
+     AC_DEFINE([HAVE_LIBICAL], [1], [Definded to 1 if compile with libical support])
+diff -ru osmo-0.4.4.orig/src/calendar_ical.c osmo-0.4.4/src/calendar_ical.c
+--- osmo-0.4.4.orig/src/calendar_ical.c	2026-05-09 19:26:36.547186656 +0200
++++ osmo-0.4.4/src/calendar_ical.c	2026-05-09 19:28:00.628210993 +0200
+@@ -56,7 +56,7 @@
+ 
+     for (i = 0; i < N_SEARCH_PATHS; i++) {
+         if (!g_access (tz_search_paths[i], F_OK | R_OK)) {
+-            set_zone_directory (tz_search_paths[i]);
++            icaltimezone_set_zone_directory (tz_search_paths[i]);
+             break;
+         }
+     }

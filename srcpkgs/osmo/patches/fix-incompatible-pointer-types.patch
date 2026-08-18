@@ -1,0 +1,28 @@
+diff -rU4 osmo-0.4.4--orig/src/calendar_notes.c osmo-0.4.4/src/calendar_notes.c
+--- osmo-0.4.4--orig/src/calendar_notes.c	2020-06-14 08:04:47.000000000 +0200
++++ osmo-0.4.4/src/calendar_notes.c	2026-02-22 17:13:50.105757120 +0100
+@@ -66,9 +66,9 @@
+ 
+ /*------------------------------------------------------------------------------*/
+ 
+ void
+-cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(), GUI *appGUI)
++cal_notes_foreach (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note*, GUI*), GUI *appGUI)
+ {
+ 	GSList *node;
+ 	struct note *n;
+ 
+diff -rU4 osmo-0.4.4--orig/src/calendar_notes.h osmo-0.4.4/src/calendar_notes.h
+--- osmo-0.4.4--orig/src/calendar_notes.h	2017-03-28 22:27:38.000000000 +0200
++++ osmo-0.4.4/src/calendar_notes.h	2026-02-22 17:10:37.953017150 +0100
+@@ -52,9 +52,9 @@
+ };
+ 
+ gboolean    cal_check_note              (guint32 julian, GUI *appGUI);
+ gboolean    cal_check_notes             (guint32 julian_start, guint32 julian_end, GUI *appGUI);
+-void        cal_notes_foreach           (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(), GUI *appGUI);
++void        cal_notes_foreach           (guint32 julian_start, guint32 julian_end, gboolean (*cnfunc)(struct note*, GUI*), GUI *appGUI);
+ gchar *     cal_get_note                (guint32 julian, GUI *appGUI);
+ gchar *     cal_get_note_color          (guint32 julian, GUI *appGUI);
+ void        cal_replace_note_color      (gchar *old_color, gchar *new_color, GUI *appGUI);
+ void        cal_add_note                (guint32 julian, gchar *color_str, gchar *text_note, GUI *appGUI);

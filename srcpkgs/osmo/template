@@ -1,7 +1,7 @@
 # Template file for 'osmo'
 pkgname=osmo
 version=0.4.4
-revision=1
+revision=2
 build_style=gnu-configure
 configure_args="--prefix=/usr"
 hostmakedepends="pkg-config"
@@ -17,7 +17,7 @@ distfiles="${SOURCEFORGE_SITE}/osmo-pim/files/latest/$pkgname-$version.tar.gz"
 checksum=1e8b11bd1baa0f6756326b58f87eb95a56b38a25d7336fdfb65c2dfca46d03a6
 
 pre_configure() {
-  autoreconf -f -i
+  autoreconf -fiv
 }
 
 # build_options="contacts gspell libical backup"

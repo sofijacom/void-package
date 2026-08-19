@@ -7,7 +7,6 @@ wrksrc="nixie-clock-v${version}"
 build_style=gnu-makefile
 hostmakedepends="pkg-config vala"
 makedepends="gtk+3-devel cairo-devel"
-depends=""
 short_desc="Nixie Clock Desktop Gadget"
 maintainer="Sofiya <sofiya@v.com>"
 license="MIT"
@@ -41,4 +40,5 @@ EOF
 
 post_install() {
 	vlicense LICENSE
+	vdoc README.md
 }

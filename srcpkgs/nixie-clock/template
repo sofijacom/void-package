@@ -2,7 +2,7 @@
 
 pkgname=nixie-clock
 version=1.1.2
-revision=1
+revision=2
 wrksrc="nixie-clock-v${version}"
 build_style=gnu-makefile
 hostmakedepends="pkg-config vala"
@@ -14,12 +14,23 @@ homepage="https://github.com/sofijacom/nixie-clock"
 distfiles="https://github.com/sofijacom/nixie-clock/archive/refs/tags/v${version}.tar.gz"
 checksum=ed3af01d3255bc7bbe197a8b2c2f8ab582b051d585975f8f38f88705e881953e
 
-do_build() {
-	# Compile Vala source into a standard C source file
-	valac -C nixie_clock.vala --pkg gtk+-3.0 --pkg cairo
+#do_build() {
+#	# Compile Vala source into a standard C source file
+#	valac -C nixie_clock.vala --pkg gtk+-3.0 --pkg cairo
+#
+#	# Compile the generated C file using Void's native, optimized compiler environment
+#	${CC} ${CFLAGS} nixie_clock.c -o nixie-clock $(pkg-config --cflags --libs gtk+-3.0 cairo) ${LDFLAGS} -lm
+#}
 
-	# Compile the generated C file using Void's native, optimized compiler environment
-	${CC} ${CFLAGS} nixie_clock.c -o nixie-clock $(pkg-config --cflags --libs gtk+-3.0 cairo) ${LDFLAGS} -lm
+do_build() {
+	valac --pkg gtk+-3.0 \
+	      --pkg cairo \
+	      --pkg pangocairo \
+	      --pkg gdk-pixbuf \
+	      --pkg gtk-layer-shell \
+	      -X -lm \
+	      nixie_clock.vala \
+	      -o nixie-clock
 }
 
 do_install() {

@@ -1,7 +1,7 @@
 # Template file for 'nixie-clock'
 
 pkgname=nixie-clock
-version=1.3.0
+version=1.1.2
 revision=1
 wrksrc="nixie-clock-v${version}"
 build_style=gnu-makefile
@@ -12,7 +12,7 @@ maintainer="Sofiya <sofiya@v.com>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/sofijacom/nixie-clock"
 distfiles="https://github.com/sofijacom/nixie-clock/archive/refs/tags/v${version}.tar.gz"
-checksum=cd60b8678cefc503cb849aa6d503057bf9b2652269ddec6211e387155d7fa3b5
+checksum=41ce7dc5adebe16e30e6e7244483c0f8a45d472ce16e3fb391ea3079eb4dd14d
 
 do_build() {
 	# Compile Vala source into a standard C source file

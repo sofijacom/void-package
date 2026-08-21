@@ -61,7 +61,7 @@ sudo xbps-install -S
 | Microsoft-edge ( Web browser )      | https://github.com/NDViet/microsoft-edge-stable   | ✔️ |
 | Mullvad-browser                     | https://github.com/mullvad/mullvad-browser        | ✔️ |
 | Mullvad VPN                         | https://github.com/mullvad/mullvadvpn-app/        | ✔️ |
-| nixie-clock                         | https://github.com/sofijacom/nixie-clock          | 🔐 |
+| Nixie-clock                         | https://github.com/sofijacom/nixie-clock          | 🔐 |
 | Osmo + dependency (libgringotts)    | https://sourceforge.net/projects/osmo-pim/files/  | 🔐 |
 | Palemoon ( browser )                | https://www.palemoon.org/                         | ✔️ |
 | perl-Class-Mix                      | https://metacpan.org/pod/Class::Mix               | ✔️ |

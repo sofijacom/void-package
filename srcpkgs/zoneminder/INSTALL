@@ -17,55 +17,55 @@ case "$ACTION" in
 		fi
 
 		# 3. Set ownership to web server group for all ZM paths
-		chown -R ${WEBUSER}:${WEBGROUP} /var/log/zoneminder
-		chown -R ${WEBUSER}:${WEBGROUP} /var/cache/zoneminder
-		chown -R ${WEBUSER}:${WEBGROUP} /var/lib/zoneminder
-		chown -R ${WEBUSER}:${WEBGROUP} /var/lib/zoneminder/events
-		chown -R ${WEBUSER}:${WEBGROUP} /var/lib/zoneminder/images
-		chown -R ${WEBUSER}:${WEBGROUP} /var/lib/zoneminder/temp
-		chown -R ${WEBUSER}:${WEBGROUP} /run/zoneminder
+		chown -R "${WEBUSER}:${WEBGROUP}" /var/log/zoneminder
+		chown -R "${WEBUSER}:${WEBGROUP}" /var/cache/zoneminder
+		chown -R "${WEBUSER}:${WEBGROUP}" /var/lib/zoneminder
+		chown -R "${WEBUSER}:${WEBGROUP}" /run/zoneminder
 
-		# 4. Set secure permissions:
-		# - Directories: 775 (rwxrwxr-x) — group can write
-		# - Files:      664 (rw-rw-r--) — group can read/write
-		find /var/log/zoneminder /var/cache/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events /var/lib/zoneminder/images /var/lib/zoneminder/temp /run/zoneminder \
-			-type d -exec chmod 775 {} \;
-		find /var/log/zoneminder /var/cache/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events /var/lib/zoneminder/images /var/lib/zoneminder/temp /run/zoneminder \
-			-type f -exec chmod 664 {} \;
+		# NOTE: We do NOT recursively chmod files/subdirs here.
+		# Correct permissions are enforced by:
+		#   - Patch in zm_monitor.cpp: chmod(..., 02770) on new monitor dirs
+		#   - umask 007 in /etc/sv/zoneminder/run for all new files/dirs
+		#
+		# We only set setgid on the root directories so that new subdirs
+		# inherit the correct group automatically.
 
-		# 5. Enable setgid bit on directories
-		# Ensures new files inherit the group of the parent directory
-		find /var/log/zoneminder /var/cache/zoneminder /var/lib/zoneminder /var/lib/zoneminder/events /var/lib/zoneminder/images /var/lib/zoneminder/temp /run/zoneminder \
-			-type d -exec chmod g+s {} \;
+		# 4. Enable setgid bit ONLY on root directories (not recursive)
+		chmod g+s /var/lib/zoneminder/events
+		chmod g+s /var/lib/zoneminder/images
+		chmod g+s /var/lib/zoneminder/temp
+		chmod g+s /var/cache/zoneminder
+		chmod g+s /var/log/zoneminder
 
-		# 6. Create symlink for web-accessible cache
-		# Allows the web interface to access /cache via /usr/share/zoneminder/www/cache
+		# Optionally, set explicit mode on these roots to ensure setgid is visible
+		chmod 2770 /var/lib/zoneminder/events
+		chmod 2770 /var/lib/zoneminder/images
+		chmod 2770 /var/lib/zoneminder/temp
+		chmod 2770 /var/cache/zoneminder
+		chmod 2770 /var/log/zoneminder
+
+		# 5. Create symlink for web-accessible cache
 		if [ ! -L /usr/share/zoneminder/www/cache ]; then
 			ln -sf /var/cache/zoneminder/cache /usr/share/zoneminder/www/cache
 			echo "Symlink created: /usr/share/zoneminder/www/cache → /var/cache/zoneminder/cache"
 		fi
 
-		# 7. Check if MariaDB/MySQL is running
+		# 6. Check if MariaDB/MySQL is running
 		echo "Checking if MySQL/MariaDB is running..."
 		if mysqladmin ping --silent >/dev/null 2>&1; then
 			echo "Database server is active"
 
-			# Check if 'zm' database already exists
 			if mysql -e "USE zm;" >/dev/null 2>&1; then
 				echo "Database 'zm' already exists. Skipping initialization."
 			else
 				echo "Creating database 'zm' and importing schema..."
 
-				# Path to the SQL schema file
 				SCHEMA_FILE="/usr/share/zoneminder/db/zm_create.sql"
 				if [ -f "$SCHEMA_FILE" ]; then
-					# Create database with UTF8MB4 support (for emojis, Cyrillic, etc.)
 					mysql -e "CREATE DATABASE zm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-
-					# Import the default schema
 					mysql zm < "$SCHEMA_FILE"
 
-					# Create dedicated database user with privileges
+					# Use a random password in production; this is just for dev/demo
 					mysql -e "CREATE USER 'zmuser'@'localhost' IDENTIFIED BY 'zmpass';"
 					mysql -e "GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost';"
 					mysql -e "FLUSH PRIVILEGES;"
@@ -79,39 +79,22 @@ case "$ACTION" in
 		else
 			echo "   MySQL/MariaDB is not running."
 			echo "   After starting the service, run manually:"
-			echo "   mysql -e 'CREATE DATABASE zm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
-			echo "   mysql zm < /usr/share/zoneminder/db/zm_create.sql"
-			echo "   mysql -e \"CREATE USER 'zmuser'@'localhost' IDENTIFIED BY 'zmpass';\""
-			echo "   mysql -e \"GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost'; FLUSH PRIVILEGES;\""
+			echo "     mysql -e 'CREATE DATABASE zm CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'"
+			echo "     mysql zm < /usr/share/zoneminder/db/zm_create.sql"
+			echo "     mysql -e \"CREATE USER 'zmuser'@'localhost' IDENTIFIED BY 'zmpass';\""
+			echo "     mysql -e \"GRANT ALL PRIVILEGES ON zm.* TO 'zmuser'@'localhost'; FLUSH PRIVILEGES;\""
 		fi
 
-		# 8. Create dedicated 'zm' system user for daemons
-		# if ! getent passwd zm >/dev/null; then
-		#	adduser -S -D -H -h /var/lib/zoneminder -s /usr/bin/nologin -G ${WEBGROUP} zm
-		#	echo "System user 'zm' created (no login, runs daemons)"
-		# fi
-		# Ensure zm user owns data directories
-		# chown -R zm:${WEBGROUP} /var/lib/zoneminder 2>/dev/null || true
+		# 7. Ensure config dir ownership (config files should be readable by www-data)
+		chown -R "${WEBUSER}:${WEBGROUP}" /etc/zm 2>/dev/null || true
 
-		 chown -R ${WEBUSER}:${WEBGROUP} /var/lib/zoneminder 2>/dev/null || true
-		 chown -R ${WEBUSER}:${WEBGROUP} /etc/zm 2>/dev/null || true
-
-		# 9. Enable zoneminder service via runit
+		# 8. Enable zoneminder service via runit
 		if [ ! -e /var/service/zoneminder ]; then
 			ln -sf /etc/sv/zoneminder /var/service/zoneminder
 			echo "Service 'zoneminder' enabled (runit)"
 		fi
 
-		# 10. Final check: warn about missing Perl modules
-		# echo "Checking for critical Perl modules..."
-		# for mod in Sys::Mmap Sys::MemInfo Crypt::Eksblowfish; do
-		#	if ! perl -e "use $mod" >/dev/null 2>&1; then
-		#		echo "Missing Perl module: $mod"
-		#		echo "   Tip: install it with: cpanm $mod"
-		#	fi
-		# done
-
-		# Final message
+		# 9. Final message
 		echo "   ZoneMinder installation complete!"
 		echo "   Web interface: http://localhost/zm"
 		echo "   Default login: admin / admin (change password after first login)"

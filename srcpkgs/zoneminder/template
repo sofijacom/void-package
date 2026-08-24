@@ -95,12 +95,15 @@ post_install() {
 	mkdir -p "${PKGDESTDIR}/etc/sv/zoneminder"
 	cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"
 #!/bin/sh
+exec 2>&1
 
 /usr/bin/zmpkg.pl start
+
 # zmpkg.pl start returns immediately after forking zmdc.pl — this script must
 # stay in the foreground itself, or runit will treat the exit as a crash and
 # restart run in a tight loop. So we poll zmdc's status and only exit if it
 # actually goes down.
+
 while chpst -u www-data:www-data /usr/bin/zmdc.pl status >/dev/null 2>&1; do
     sleep 15
 done

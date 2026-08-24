@@ -2,7 +2,7 @@
 
 pkgname=zoneminder
 version=1.38.4
-revision=2
+revision=3
 system_groups="www-data" # Ensures the target group exists on the user's host OS
 build_style=cmake
 configure_args="

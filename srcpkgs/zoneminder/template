@@ -70,7 +70,7 @@ depends="
 	perl-Device-SerialPort
 	perl-Number-Bytes-Human
 	perl-Crypt-Eksblowfish
-  perl-Archive-Zip
+	perl-Archive-Zip
 "
 short_desc="Complete video surveillance storage and monitoring solution"
 maintainer="Sofiya <sofija.p2018@gmail.com>"

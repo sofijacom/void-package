@@ -9,8 +9,8 @@
 -    }
 +    if ( mkdir(monitor_dir.c_str(), 0755) && ( errno != EEXIST ) ) {
 +      Error("Can't mkdir %s: %s", monitor_dir.c_str(), strerror(errno));
-+    } else if ( chmod(monitor_dir.c_str(), 02740) ) {
-+      Error("Can't chmod %s to 02740: %s", monitor_dir.c_str(), strerror(errno));
++    } else if ( chmod(monitor_dir.c_str(), 02770) ) {
++      Error("Can't chmod %s to 02770: %s", monitor_dir.c_str(), strerror(errno));
 +    }
  
      if ( config.record_diag_images ) {

@@ -91,33 +91,33 @@ post_extract() {
 }
 
 post_install() {
-# Runit service block
-	mkdir -p "${PKGDESTDIR}/etc/sv/zoneminder"
-	cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"
+# Start
+mkdir -p "${PKGDESTDIR}/etc/sv/zoneminder"
+cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/run"
 #!/bin/sh
 exec 2>&1
 
+if [ ! -e ./down ]; then
+    # Create a pipe lock if it doesn't exist yet
+    test -p supervise/ok || mkfifo supervise/ok
+fi
+
+# Run the main command in the background
 /usr/bin/zmpkg.pl start
 
-# zmpkg.pl start returns immediately after forking zmdc.pl — this script must
-# stay in the foreground itself, or runit will treat the exit as a crash and
-# restart run in a tight loop. So we poll zmdc's status and only exit if it
-# actually goes down.
-
-while chpst -u www-data:www-data /usr/bin/zmdc.pl status >/dev/null 2>&1; do
-    sleep 15
-done
-
-echo "zmdc is no longer running — exiting so runit can restart the service"
-exit 1
+# Block execution until someone writes data to the pipe.
+# While the pipe is empty, the shell hangs on reading, and runit considers the service running.
+read dummy < supervise/ok
 EOF
-	
+chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/run"
+
+# Finish
 cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/finish"
 #!/bin/sh
-chpst -u www-data:www-data /usr/bin/zmpkg.pl stop
-exit 0
+/usr/bin/zmpkg.pl stop
+# Write any line to the pipe so that read in "run" completes
+echo "" > supervise/ok
 EOF
+chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/finish"
 
-	chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/run"
-	chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/finish"
 }

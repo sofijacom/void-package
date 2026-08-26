@@ -1,0 +1,12 @@
+diff --git a/web/skins/classic/includes/export_functions.php b/web/skins/classic/includes/export_functions.php
+index 3200b56bf..f40c4eca2 100644
+--- a/web/skins/classic/includes/export_functions.php
++++ b/web/skins/classic/includes/export_functions.php
+@@ -944,6 +944,7 @@ function exportEvents(
+     if (!(@mkdir($event_dir) or file_exists($event_dir))) {
+       ZM\Error("Can't mkdir $event_dir");
+     }
++    chmod($event_dir, 0700);
+     $event_exportFileList = exportFileList($event, $exportDetail, $exportFrames, $exportImages, $exportVideo, $exportMisc);
+     #$exportFileList = array_merge($exportFileList, $event_exportFileList);
+     foreach ($event_exportFileList as $file) {

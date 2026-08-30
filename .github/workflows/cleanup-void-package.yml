@@ -2,18 +2,13 @@ name: 🗑️ Cleanup Void Package Branch Runs
 
 on:
   schedule:
-    - cron: '0 0 * * 0' # Runs every Sunday at midnight
-  workflow_dispatch:  # Allows manual triggering from the Actions tab
+    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
+  workflow_dispatch:
     inputs:
       min_age_days:
         description: 'Minimum age (in days) of runs to delete'
         required: false
         default: '7'
-      dry_run:
-        description: 'Dry Run? (Log outputs without deleting anything)'
-        type: boolean
-        required: true
-        default: true
 
 jobs:
   cleanup:
@@ -22,53 +17,51 @@ jobs:
       actions: write
 
     steps:
+      - name: Install GitHub CLI
+        uses: actions/setup-gh@v2
+
       - name: Delete old workflow runs on void-package branch
         env:
           GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
           BRANCH: 'main'
+          # Безопасное значение по умолчанию
           MIN_AGE_DAYS: ${{ github.event.inputs.min_age_days || '7' }}
-          DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
-          # Ensure fallback values exist
+          # Если input пустой — ставим 7 по умолчанию
           if [ -z "$MIN_AGE_DAYS" ]; then
             MIN_AGE_DAYS=7
           fi
-          
-          # Default to false for scheduled runs, respect choice for manual triggers
-          if [ -z "$DRY_RUN" ]; then
-            DRY_RUN=false
-          fi
 
-          if [ "$DRY_RUN" = "true" ]; then
-            echo "⚠️ DRY RUN MODE ENABLED. No workflow runs will be deleted."
-          fi
+          echo "Fetching runs for branch: $BRANCH older than $MIN_AGE_DAYS day(s)"
 
-          # Compute cutoff timestamp using native Unix epoch seconds
+          # Compute cutoff timestamp (epoch seconds)
           CUTOFF_EPOCH=$(date -d "-${MIN_AGE_DAYS} days" +%s)
-          echo "Target Cutoff Timestamp: $CUTOFF_EPOCH"
-          echo "Target Repository: $GITHUB_REPOSITORY"
-          echo "Target Branch: $BRANCH"
 
-          echo "Fetching and filtering completed runs..."
-
-          # FIX: Fetch broad metadata and filter by headBranch directly in JQ.
-          # This circumvents API filtering limitations on non-default branches.
-          gh run list --repo "$GITHUB_REPOSITORY" --all --limit 500 --json databaseId,createdAt,status,headBranch \
-            --jq ".[] | select(.status != \"in_progress\" and .status != \"queued\" and .headBranch == \"$BRANCH\") | [.databaseId, (.createdAt | fromdateiso8601)] | @tsv" | while IFS=$'\t' read -r run_id run_epoch; do
-            
-            if [ -z "$run_id" ] || [ -z "$run_epoch" ]; then
+          # Fetch up to 250 runs with id + createdAt, filter by age, then delete
+          gh run list \
+            --repo "$OWNER/$REPO" \
+            --branch "$BRANCH" \
+            --limit 250 \
+            --json databaseId,createdAt \
+            --jq '.[] | [.databaseId, .createdAt] | @tsv' | while IFS=$'\t' read -r run_id created_at; do
+            if [ -z "$run_id" ]; then
               continue
             fi
 
-            if [ "$run_epoch" -lt "$CUTOFF_EPOCH" ]; then
-              if [ "$DRY_RUN" = "true" ]; then
-                echo "[DRY RUN] Would delete run ID: $run_id (Timestamp: $run_epoch)"
-              else
-                echo "Deleting run ID: $run_id..."
-                gh run delete "$run_id" --repo "$GITHUB_REPOSITORY" \
-                  || echo "Failed to delete run $run_id"
-              fi
+            # Безопасное преобразование времени
+            RUN_EPOCH=$(date -d "$created_at" +%s 2>/dev/null)
+            if [ -z "$RUN_EPOCH" ]; then
+              echo "Warning: could not parse date for run $run_id, skipping"
+              continue
+            fi
+
+            if [ "$RUN_EPOCH" -lt "$CUTOFF_EPOCH" ]; then
+              echo "Deleting run ID: $run_id (created: $created_at)"
+              gh api repos/"$OWNER"/"$REPO"/actions/runs/"$run_id" -X DELETE --silent \
+                || echo "Failed to delete run $run_id"
             else
-              echo "Skipping run ID: $run_id (Run timestamp $run_epoch is younger than cutoff)"
+              echo "Skipping run ID: $run_id (created: $created_at, younger than $MIN_AGE_DAYS days)"
             fi
           done

@@ -1,0 +1,74 @@
+name: 🗑️ Cleanup Void Package Branch Runs
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs every Sunday at midnight
+  workflow_dispatch:  # Allows manual triggering from the Actions tab
+    inputs:
+      min_age_days:
+        description: 'Minimum age (in days) of runs to delete'
+        required: false
+        default: '7'
+      dry_run:
+        description: 'Dry Run? (Log outputs without deleting anything)'
+        type: boolean
+        required: true
+        default: true
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+
+    steps:
+      - name: Delete old workflow runs on void-package branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: 'main'
+          MIN_AGE_DAYS: ${{ github.event.inputs.min_age_days || '7' }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          # Ensure fallback values exist
+          if [ -z "$MIN_AGE_DAYS" ]; then
+            MIN_AGE_DAYS=7
+          fi
+          
+          # Default to false for scheduled runs, respect choice for manual triggers
+          if [ -z "$DRY_RUN" ]; then
+            DRY_RUN=false
+          fi
+
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "⚠️ DRY RUN MODE ENABLED. No workflow runs will be deleted."
+          fi
+
+          # Compute cutoff timestamp using native Unix epoch seconds
+          CUTOFF_EPOCH=$(date -d "-${MIN_AGE_DAYS} days" +%s)
+          echo "Target Cutoff Timestamp: $CUTOFF_EPOCH"
+          echo "Target Repository: $GITHUB_REPOSITORY"
+          echo "Target Branch: $BRANCH"
+
+          echo "Fetching and filtering completed runs..."
+
+          # FIX: Fetch broad metadata and filter by headBranch directly in JQ.
+          # This circumvents API filtering limitations on non-default branches.
+          gh run list --repo "$GITHUB_REPOSITORY" --all --limit 500 --json databaseId,createdAt,status,headBranch \
+            --jq ".[] | select(.status != \"in_progress\" and .status != \"queued\" and .headBranch == \"$BRANCH\") | [.databaseId, (.createdAt | fromdateiso8601)] | @tsv" | while IFS=$'\t' read -r run_id run_epoch; do
+            
+            if [ -z "$run_id" ] || [ -z "$run_epoch" ]; then
+              continue
+            fi
+
+            if [ "$run_epoch" -lt "$CUTOFF_EPOCH" ]; then
+              if [ "$DRY_RUN" = "true" ]; then
+                echo "[DRY RUN] Would delete run ID: $run_id (Timestamp: $run_epoch)"
+              else
+                echo "Deleting run ID: $run_id..."
+                gh run delete "$run_id" --repo "$GITHUB_REPOSITORY" \
+                  || echo "Failed to delete run $run_id"
+              fi
+            else
+              echo "Skipping run ID: $run_id (Run timestamp $run_epoch is younger than cutoff)"
+            fi
+          done

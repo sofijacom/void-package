@@ -22,7 +22,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-          BRANCH: 'void-package'
+          BRANCH: 'main'
         run: |
           # Безопасное значение по умолчанию, если input пустой
           MIN_AGE_DAYS="${{ github.event.inputs.min_age_days }}"

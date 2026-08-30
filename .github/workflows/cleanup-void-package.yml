@@ -2,7 +2,7 @@ name: 🗑️ Cleanup Void Package Branch Runs
 
 on:
   schedule:
-    - cron: '0 0 * * 0'  # Runs every Sunday at midnight
+    - cron: '0 0 * * 0'  # Каждое воскресенье в полночь
   workflow_dispatch:
     inputs:
       min_age_days:

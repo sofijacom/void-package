@@ -17,19 +17,15 @@ jobs:
       actions: write
 
     steps:
-      - name: Install GitHub CLI
-        uses: actions/setup-gh@v2
-
       - name: Delete old workflow runs on void-package branch
         env:
           GH_TOKEN: ${{ github.token }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
-          BRANCH: 'main'
-          # Безопасное значение по умолчанию
-          MIN_AGE_DAYS: ${{ github.event.inputs.min_age_days || '7' }}
+          BRANCH: 'void-package'
         run: |
-          # Если input пустой — ставим 7 по умолчанию
+          # Безопасное значение по умолчанию, если input пустой
+          MIN_AGE_DAYS="${{ github.event.inputs.min_age_days }}"
           if [ -z "$MIN_AGE_DAYS" ]; then
             MIN_AGE_DAYS=7
           fi

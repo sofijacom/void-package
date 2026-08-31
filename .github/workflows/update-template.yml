@@ -146,7 +146,7 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "Sofiya"
             git config user.email "sofija.p2018@gmail.com"
-            git commit --all --message "🤖 Automated update"
+            git commit --all --message "🤖 Automated update" --signoff
             echo "has_updates=true" >> "$GITHUB_OUTPUT"
           else
             echo "No new updates"

@@ -223,7 +223,7 @@ jobs:
             chmod 600 private.pem
 
             xbps-rindex -r "$PWD"
-            xbps-rindex -s --signedby "Sofiya <sofiya@v.com>" --privkey private.pem "$PWD"
+            xbps-rindex -s --signedby "Sofiya <sofija.p2018@gmail.com>" --privkey private.pem "$PWD"
             xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
             xbps-rindex -c "$PWD"
 

@@ -1,4 +1,5 @@
 # Template file for 'pup-volume-monitor'
+
 pkgname=pup-volume-monitor
 version=0.2.1
 revision=1
@@ -19,10 +20,10 @@ pre_configure() {
 }
 
 post_install() {
-    # Readme
-    vdoc README.md
+  # Readme
+	vdoc README.md
 
-    # Remove
-    rm -rf ${DESTDIR}/usr/lib/pkgconfig
-    rm -rf ${DESTDIR}/usr/include
+  # Remove
+	rm -rf ${DESTDIR}/usr/lib/pkgconfig
+	rm -rf ${DESTDIR}/usr/include
 }

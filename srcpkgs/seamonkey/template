@@ -1,4 +1,5 @@
 # Template file for 'seamonkey'
+
 pkgname=seamonkey
 version=2.53.24
 revision=1

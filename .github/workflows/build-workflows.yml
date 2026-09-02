@@ -37,6 +37,14 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
+      - name: Cache masterdir
+        uses: actions/cache@v6.1.0
+        with:
+          path: void-packages/masterdir-${{ matrix.config.arch }}
+          key: masterdir-${{ matrix.config.arch }}-${{ hashFiles('void-packages/common/xbps-src/shlibs') }}
+          restore-keys: |
+            masterdir-${{ matrix.config.arch }}-
+      
       # Подготовка контейнера
       - name: 🧰 Prep container
         run: |

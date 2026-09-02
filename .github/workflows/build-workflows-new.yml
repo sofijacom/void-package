@@ -1,4 +1,4 @@
-name: 🏗️ Build Packages (xbps)
+name: 🏗️ Build Packages 2 (xbps)
 
 on:
   workflow_dispatch:

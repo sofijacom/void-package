@@ -18,29 +18,28 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
-    # Кэшируем тяжелые скачанные исходники между запусками
+
+    # --- КЭШИРОВАНИЕ НА УРОВНЕ ЗАДАНИЯ ---
     cache:
-      key: distfiles-${{ matrix.config.arch }}-${{ github.sha }}
+      key: distfiles-${{ matrix.config.arch }}-${{ github.ref_name }}
       path: void-packages/hostdir/distfiles/
       restore-keys: |
+        distfiles-${{ matrix.config.arch }}-main
         distfiles-${{ matrix.config.arch }}-
-        
+
     strategy:
       fail-fast: false
       matrix:
         config:
-          - { arch: x86_64, host: x86_64, libc: glibc, platform: linux/amd64, test: 1 }
-          # - { arch: i686,         host: i686,        libc: glibc, platform: linux/386,   test: 1 }
-          # - { arch: x86_64-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 1 }
+          - { arch: x86_64, host: x86_64, libc: glibc, platform: linux/amd64 }
+          # - { arch: i686,         host: i686,        libc: glibc, platform: linux/386 }
+          # - { arch: x86_64-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64 }
 
     container:
       image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250616R1
       options: --platform ${{ matrix.config.platform }} --privileged
       volumes:
         - /dev:/dev
-        # Пробрасываем кэш прямо в контейнер для скорости
-        - distfiles-cache:/void-packages/hostdir/distfiles
       env:
         ARCH: ${{ matrix.config.arch }}
         XBPS_TARGET_ARCH: ${{ matrix.config.arch }}
@@ -53,14 +52,11 @@ jobs:
       # --- Подготовка контейнера ---
       - name: 🧰 Prep container & user
         run: |
-          # Обновляем систему внутри официального образа Void Linux
           xbps-install -Syu xbps
           xbps-install -y bash curl jq zip unzip git xtools coreutils sudo
           
-          # Создаем пользователя builder (UID/GID совпадут с runner благодаря особенностям GH Actions + Docker)
           id -u builder &>/dev/null || useradd -G xbuilder -M builder -s $(which bash)
           
-          # Копируем репы во временную домашнюю директорию на случай вызовов без переменной $XBPS_DISTDIR
           mkdir -p /home/builder/.xbps.d
           cp /usr/share/xbps.d/*-repository-*.conf /home/builder/.xbps.d/
           chown -R builder:builder /home/builder
@@ -72,7 +68,7 @@ jobs:
           repository: void-linux/void-packages
           ref: master
           path: void-packages
-          fetch-depth: 0 # Нужна полная история для поиска тегов
+          fetch-depth: 0
 
       - name: 🐛 Fix sourcepkg.sh
         working-directory: void-packages
@@ -91,17 +87,14 @@ jobs:
           git remote add mine https://github.com/${{ github.repository }}.git || true
           git fetch mine main --depth=1
           
-          # Если ветка существует — сливаем наши изменения поверх апстрима
           if git rev-parse --verify mine/main >/dev/null 2>&1; then
             git merge --no-commit --strategy-option=theirs --allow-unrelated-histories -Xignore-space-change mine/main
           fi
           
           mkdir -p hostdir/binpkgs
           
-          # Скачиваем старые пакеты из последнего релиза GitHub для инкрементальной сборки
           gh release download --pattern "*${ARCH}*" --dir hostdir/binpkgs --repo ${{ github.repository }} || true
 
-          # Чистим конфликтующие архитектуры из кэша релизов
           if [ "$ARCH" = "x86_64" ]; then
             rm --force hostdir/binpkgs/*x86_64-musl* || true
           elif [ "$ARCH" = "x86_64-musl" ]; then
@@ -116,11 +109,10 @@ jobs:
         run: |
           set -e
           
-          # Ищем последний аннотированный тег в истории cloned репозитория
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
           
           if [ -z "$LATEST_TAG" ]; then
-            BASE_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904" # Пустое дерево
+            BASE_SHA="4b825dc642cb6eb9a060e54bf8d69288fbee4904"
           else
             BASE_SHA=$(git rev-list -n 1 "$LATEST_TAG")
           fi
@@ -129,7 +121,6 @@ jobs:
           
           echo "Comparing range: $BASE_SHA..$CURRENT_SHA"
           
-          # Находим измененные имена каталогов в srcpkgs
           CHANGED_PKGS=$(git diff-tree -r --no-renames --name-only --diff-filter=AM $BASE_SHA $CURRENT_SHA -- 'srcpkgs/**' \
             | cut -d/ -f 2 | sort -u)
             
@@ -142,9 +133,8 @@ jobs:
           echo "📝 Raw changed packages:"
           echo "$CHANGED_PKGS"
           
-          # Передаем список в сортировщик зависимостей от имени системного пользователя
           printf "%s\n" $CHANGED_PKGS | ./xbps-src sort-dependencies | tee /tmp/templates
-          
+
       - name: 🧹 Clean outdated .xbps for changed packages
         working-directory: void-packages
         if: steps.identify.outputs.changed_pkgs != ''
@@ -152,7 +142,7 @@ jobs:
           if [ ! -f /tmp/templates ]; then echo "Nothing to clean."; exit 0; fi
           
           echo "📋 Packages to purge from binpkgs:"
-          cat /tmp_templates || cat /tmp/templates
+          cat /tmp/templates
           
           while IFS= read -r pkg; do
             [ -z "$pkg" ] && continue
@@ -324,3 +314,4 @@ jobs:
                 --fail
             fi
           done
+          

@@ -47,11 +47,7 @@ jobs:
           env -u XBPS_TARGET_ARCH xbps-install -yu
           env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils
           useradd -G xbuilder -M builder -s $(which bash)
-          
-      #    Даём ему NOPASSWD для всех команд
-      #    echo "builder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/builder
-      #    chmod 0440 /etc/sudoers.d/builder
-          
+              
       # --- Клонируем void-packages и применяем свои шаблоны ---
       - name: 🔎 Checkout void-packages
         uses: actions/checkout@v6

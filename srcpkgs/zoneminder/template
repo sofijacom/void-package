@@ -120,5 +120,4 @@ cat << 'EOF' > "${PKGDESTDIR}/etc/sv/zoneminder/finish"
 echo "" > supervise/ok
 EOF
 chmod 0755 "${PKGDESTDIR}/etc/sv/zoneminder/finish"
-
 }

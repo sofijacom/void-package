@@ -18,15 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-
-    # --- КЭШИРОВАНИЕ НА УРОВНЕ ЗАДАНИЯ ---
-    cache:
-      key: distfiles-${{ matrix.config.arch }}-${{ github.ref_name }}
-      path: void-packages/hostdir/distfiles/
-      restore-keys: |
-        distfiles-${{ matrix.config.arch }}-main
-        distfiles-${{ matrix.config.arch }}-
-
+      
     strategy:
       fail-fast: false
       matrix:

@@ -37,7 +37,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
-      # --- Подготовка контейнера ---
+      # Подготовка контейнера
       - name: 🧰 Prep container
         run: |
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
@@ -46,7 +46,7 @@ jobs:
           env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils
           useradd -G xbuilder -M builder -s $(which bash)
               
-      # --- Клонируем void-packages и применяем свои шаблоны ---
+      # Клонируем void-packages и применяем свои шаблоны
       - name: 🔎 Checkout void-packages
         uses: actions/checkout@v6
         with:
@@ -81,7 +81,7 @@ jobs:
           fi
           rm --force hostdir/binpkgs/*.xbps.sig2
           
-      # --- Определяем, какие пакеты строить ---
+      # Определяем, какие пакеты строить
       - name: 📋 Identify changes to build
         working-directory: void-packages
         env:
@@ -126,7 +126,7 @@ jobs:
             fi
           done
             
-      # --- Настройка xbps-src ---
+      # Настройка xbps-src
       - name: 🛠️ Setup void-packages
         working-directory: void-packages
         run: |
@@ -171,7 +171,7 @@ jobs:
         working-directory: void-packages
         run: sudo -Eu builder ./xbps-src clean || true
 
-      # --- Сборка ---
+      # Сборка
       - name: 📦 Build pkgs
         working-directory: void-packages
         env:

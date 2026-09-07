@@ -31,8 +31,8 @@ jobs:
           # - { arch: x86_64-musl,  host: x86_64-musl, libc: musl,  platform: linux/amd64, test: 1 }
           
     container:
-      image: ghcr.io/void-linux/void-${{ matrix.config.libc }}-full:20250616R1
-      options: --platform ${{ matrix.config.platform }} --privileged
+      image: ghcr.io/void-linux/void-glibc-full
+      options: --platform linux/amd64 --privileged
       volumes:
         - /dev:/dev
       env:

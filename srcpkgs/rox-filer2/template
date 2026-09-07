@@ -26,7 +26,6 @@ makedepends="
 	libnotify-devel
 	xcb-util-wm-devel
 	libuuid-devel
-	util-linux
 	file-devel
 	gtk-layer-shell-devel
 	udisks2-devel

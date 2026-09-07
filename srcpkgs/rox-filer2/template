@@ -1,0 +1,191 @@
+# Template file for 'rox-filer2'
+
+pkgname=rox-filer2
+version=2.12.2.89
+revision=1
+_tarver="${version%.*}-${version##*.}"
+wrksrc="ROX-Filer2-${_tarver}"
+
+build_style=meson
+configure_args="-Dsmb=enabled"
+hostmakedepends="pkg-config python3 gettext meson ninja"
+makedepends="
+	gtk+3-devel
+	glib-devel
+	libxml2-devel
+	libSM-devel
+	libICE-devel
+	libX11-devel
+	shared-mime-info
+	samba-devel
+	pango-devel
+	atk-devel
+	cairo-devel
+	gdk-pixbuf-devel
+	wayland-devel
+	libnotify-devel
+	xcb-util-wm-devel
+	libuuid-devel
+	util-linux
+	file-devel
+	gtk-layer-shell-devel
+	udisks2-devel
+	cifs-utils
+"
+depends="
+	gtk+3
+	glib
+	libxml2
+	libSM
+	libICE
+	libX11
+	shared-mime-info
+	smbclient
+	hicolor-icon-theme
+	desktop-file-utils
+	util-linux
+	file
+	gtk-layer-shell
+	udisks2
+	cifs-utils
+"
+short_desc="Rox-Filer2 lightweight GTK3 file manager and desktop"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/josejp2424/ROX-Filer2"
+distfiles="https://github.com/josejp2424/ROX-Filer2/archive/refs/tags/v${_tarver}.tar.gz"
+checksum=e486ab96e848f5dc9684cab14bae4b4239b747333166c67d09b190a5f6b5d303
+provides="rox-filer-${version}_${revision}"
+replaces="rox-filer>=0"
+
+LANGS="ar ca de es fr hu it ja pt ru zh"
+
+pre_build() {
+	local lang
+	echo "==> Checking existing translations in ${wrksrc}/ROX-Filer/Messages"
+	for lang in ${LANGS}; do
+		local mo_path="${wrksrc}/ROX-Filer/Messages/${lang}/LC_MESSAGES/ROX-Filer.mo"
+		if [ ! -f "$mo_path" ]; then
+			echo "ERROR: missing translation file: $mo_path" >&2
+			exit 1
+		fi
+	done
+	echo "==> Translations OK, skipping rebuild."
+}
+
+do_install() {
+	# Используем правильную переменную PKGDESTDIR
+	local app_install="${PKGDESTDIR}/usr/lib/rox-filer2"
+	local bdir="${wrksrc}/build"
+
+	# 1. package-base (обертки). Удаляем /local перед копированием всей папки usr
+	if [ -d "${wrksrc}/package-base/usr" ]; then
+		rm -rf "${wrksrc}/package-base/usr/local"
+		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
+	fi
+
+	# 2. Основная директория приложения (копируем ВСЁ дерево ROX-Filer)
+	rm -rf "$app_install"
+	mkdir -p "$app_install"
+	cp -a "${wrksrc}/ROX-Filer/." "$app_install/"
+	install -m0755 "${bdir}/ROX-Filer" "${app_install}/ROX-Filer"
+
+	# 3. Чистим мусор разработки из скопированного дерева
+	rm -rf "${app_install}/build" "${app_install}/src" \
+	       "${app_install}/ROX-Filer.dbg" "${app_install}/ROX"
+
+	if [ -d "${wrksrc}/package-assets/ROX" ]; then
+		cp -a "${wrksrc}/package-assets/ROX" "${app_install}/ROX"
+	fi
+	install -m0644 "${wrksrc}/data/icons/hicolor/256x256/apps/rox-filer2.png" \
+		"${app_install}/ROX-Filer.png"
+	ln -sfn ROX-Filer.png "${app_install}/.DirIcon"
+
+	# 4. Иконки во все размеры (системные пути)
+	local size icon
+	for size in 16 22 24 32 48 64 96 128 192 256; do
+		vinstall "${wrksrc}/data/icons/hicolor/${size}x${size}/apps/rox-filer2.png" 0644 \
+			"usr/share/icons/hicolor/${size}x${size}/apps"
+	done
+	vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
+		"usr/share/icons/hicolor/scalable/apps"
+	for icon in rox-filer2.svg ROX-Filer.svg Rox-Filer2.svg; do
+		vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
+			"usr/share/pixmaps" "$icon"
+	done
+
+	# 5. MIME-иконки и определения
+	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do
+		vinstall "${wrksrc}/package-assets/ROX/MIME/${icon}" 0644 \
+			"usr/share/icons/hicolor/scalable/mimetypes"
+	done
+	if [ -f "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" ]; then
+		vinstall "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" 0644 \
+			"usr/share/mime/packages"
+	fi
+
+	# 6. rox-find — бинарник, desktop-файл, иконки
+	vbin "${bdir}/rox-find"
+	if [ -f "${wrksrc}/rox-find/data/rox-find.desktop" ]; then
+		vinstall "${wrksrc}/rox-find/data/rox-find.desktop" 0644 "usr/share/applications"
+	fi
+	if [ -f "${wrksrc}/rox-find/data/rox-find.svg" ]; then
+		vinstall "${wrksrc}/rox-find/data/rox-find.svg" 0644 "usr/share/pixmaps"
+	fi
+	for size in 48 64 128 256; do
+		vinstall "${wrksrc}/rox-find/data/icons/${size}x${size}/apps/rox-find.png" 0644 \
+			"usr/share/icons/hicolor/${size}x${size}/apps"
+	done
+
+	# 7. Готовые .mo файлы переводов (ЛОКАЛЬ)
+	vmkdir usr/share/locale
+	if [ -d "${wrksrc}/rox-find/locale" ]; then
+		cp -a "${wrksrc}/rox-find/locale/." "${PKGDESTDIR}/usr/share/locale/"
+	fi
+	if [ -d "${wrksrc}/ROX-Filer/Messages" ]; then
+		cp -a "${wrksrc}/ROX-Filer/Messages/." "${PKGDESTDIR}/usr/share/locale/"
+	fi
+
+	# 8. Лицензия и документация
+	if [ -f "${wrksrc}/LICENSE" ]; then
+		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/CHANGELOG" ]; then
+		vinstall "${wrksrc}/CHANGELOG" 0644 "usr/share/doc/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/README.md" ]; then
+		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
+	fi
+
+	# 9. Man-страницы
+
+	vmkdir usr/share/man/man1
+
+	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
+
+	# 10. Устанавливаем rox-find (он всегда должен быть)
+	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
+		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+	fi
+
+	# 11. Пытаемся установить основной 'rox'
+	if [ -f "${wrksrc}/data/man/rox.1" ]; then
+		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+		main_rox_target="rox.1.gz" # Обновляем цель для ссылок, если нашли файл
+	else
+		msg_warn "Man page ${wrksrc}/data/man/rox.1 not found."
+	fi
+
+	# 12. Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует
+	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+		ln -sf "/usr/share/man/man1/${main_rox_target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+	done
+
+	# 13. Нормализация прав (важно для pkglint!)
+	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
+		-exec chmod 0644 {} + 2>/dev/null || true
+	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
+		-exec chmod 0644 {} + 2>/dev/null || true
+}

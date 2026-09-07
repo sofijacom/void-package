@@ -43,7 +43,7 @@ jobs:
           mkdir -p /etc/xbps.d && cp /usr/share/xbps.d/*-repository-*.conf /etc/xbps.d/
           env -u XBPS_TARGET_ARCH xbps-install -Syu xbps
           env -u XBPS_TARGET_ARCH xbps-install -yu
-          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils util-linux
+          env -u XBPS_TARGET_ARCH xbps-install -y sudo bash curl grep jq zip unzip git github-cli xtools coreutils
           useradd -G xbuilder -M builder -s $(which bash)
               
       # Клонируем void-packages и применяем свои шаблоны
@@ -162,7 +162,7 @@ jobs:
           sudo mount --bind /dev "$MASTERDIR/dev" || true
           sudo mount --bind /sys "$MASTERDIR/sys" || true
 
-          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk || { echo "❌ gawk installation failed"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
+          yes | sudo chroot "$MASTERDIR" xbps-install -y gawk util-linux || { echo "❌ gawk installation failed"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
           { [ -f "$MASTERDIR/usr/bin/awk" ] || [ -f "$MASTERDIR/usr/bin/gawk" ]; } || { echo "❌ awk not found"; sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null; exit 1; }
 
           sudo umount "$MASTERDIR/proc" "$MASTERDIR/dev" "$MASTERDIR/sys" 2>/dev/null

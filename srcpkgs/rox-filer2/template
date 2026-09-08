@@ -19,7 +19,6 @@ makedepends="
 	pango-devel
 	gtk-layer-shell-devel
 	udisks2-devel
-	wayland-devel
 "
 depends="
 	gtk+3

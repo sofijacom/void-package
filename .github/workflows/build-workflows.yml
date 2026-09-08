@@ -261,7 +261,7 @@ jobs:
 
           # Уникальный тег, чтобы не было конфликтов
           TAG="$ARCH-latest"
-          NAME="Binary repo for $ARCH Latest"
+          NAME="Binary repo for $ARCH"
           COMMIT_SHA="${{ github.sha }}"
 
           # Удаляем старый релиз по тегу, если есть

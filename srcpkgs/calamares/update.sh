@@ -27,7 +27,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-URL_X86="https://codeberg.org/Calamares/calamares/releases/download/v${LATEST_VERSION}/calamares-${LATEST_VERSION}.tar.gz"
+URL_X86="https://codeberg.org/Calamares/calamares/releases/download/v${LATEST_VERSION}/calamares-${VERSION}.tar.gz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

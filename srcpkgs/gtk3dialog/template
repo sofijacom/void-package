@@ -5,7 +5,15 @@ revision=1
 timestamp=e
 build_style=meson
 configure_args="--prefix=/usr -Dgtkver=3"
-hostmakedepends="pkg-config meson ninja"
+hostmakedepends="
+	pkg-config 
+	meson 
+	ninja 
+	subversion 
+	bison 
+	flex 
+	texinfo
+	"
 makedepends="
 	glib-devel
 	gtk+3-devel

@@ -1,29 +1,23 @@
 #!/bin/bash
 set -euo pipefail
 
+# В GitLab адрес репозитория указывается без .git
 REPO="mullvad/mullvadvpn-app"
 TEMPLATE_FILE="./srcpkgs/mullvadvpn/template"
 DEB_PATTERN='.*amd64.*\.deb$'
 
-safe_output() {
-  local key="$1"
-  local value="$2"
-  echo "$key=$value" >> "$GITHUB_OUTPUT" 2>/dev/null || true
-}
-
 echo "Fetching latest release from $REPO..."
-API_URL="https://api.github.com/repos/$REPO/releases/latest"
-RESPONSE=$(curl -s -H "Accept: application/vnd.github.v3+json" "$API_URL")
+# Используем публичный API GitLab. 
+# Обратите внимание: Mullvad VPN хостится на GitHub, поэтому мы запрашиваем у GitLab зеркало или прокси.
+# Если проект перенесут на gitlab.com/mullvad/mullvadvpn-app, путь будет таким:
+API_URL="https://gitlab.com/api/v4/projects/${REPO//\//%2F}/releases/permalink/latest"
+RESPONSE=$(curl -s "$API_URL")
 
-echo "Found assets:"
-echo "$RESPONSE" | jq -r '.assets[].name'
-
-echo "Searching for .deb asset matching pattern: $DEB_PATTERN"
-
+# Логика поиска DEB-файла остается прежней, так как структура JSON релизов GitLab похожа на GitHub
 DEB_URL=$(echo "$RESPONSE" | jq -r --arg pattern "$DEB_PATTERN" '
-  .assets[] 
-  | select(.name | test($pattern)) 
-  | .browser_download_url
+  .assets.links[]
+  | select(.name | test($pattern))
+  | .direct_asset_url // .url
 ')
 
 if [[ -z "$DEB_URL" || "$DEB_URL" == "null" ]]; then
@@ -32,25 +26,24 @@ if [[ -z "$DEB_URL" || "$DEB_URL" == "null" ]]; then
 fi
 
 VERSION=$(echo "$RESPONSE" | jq -r '.tag_name')
-if [[ -z "$VERSION" || "$VERSION" == "null" ]]; then
-  echo "Failed to extract version from release" >&2
-  exit 1
-fi
+SHA256=""
 
-echo "Version: $VERSION"
-echo "DEB URL: $DEB_URL"
-
-safe_output "version" "$VERSION"
-safe_output "deb_url" "$DEB_URL"
+# В GitLab нет временных файлов вроде GITHUB_OUTPUT. 
+# Экспортируем данные через job artifacts, чтобы забрать их в следующих jobs.
+cat > build_info.env <<EOF
+VERSION=${VERSION}
+DEB_URL=${DEB_URL}
+EOF
 
 echo "Downloading package: $DEB_URL"
 curl -Lo mullvad.deb "$DEB_URL"
 
 echo "Calculating SHA256..."
 SHA256=$(sha256sum mullvad.deb | awk '{print $1}')
-
 echo "SHA256: $SHA256"
-safe_output "sha256" "$SHA256"
+
+# Дописываем хеш в тот же файл экспорта
+echo "SHA256=${SHA256}" >> build_info.env
 
 if [[ ! -f "$TEMPLATE_FILE" ]]; then
   echo "Template file not found: $TEMPLATE_FILE" >&2
@@ -58,20 +51,17 @@ if [[ ! -f "$TEMPLATE_FILE" ]]; then
 fi
 
 CURRENT_VERSION=$(grep '^version=' "$TEMPLATE_FILE" | cut -d= -f2)
-echo "Current version in template: $CURRENT_VERSION"
-echo "New version: $VERSION"
 
 if [[ "$CURRENT_VERSION" == "$VERSION" ]]; then
-  echo "Version is already up to date — no changes needed."
+  echo "Version is already up to date."
   exit 0
 fi
 
-echo "Updating template: $TEMPLATE_FILE"
 sed -i "s/^version=.*/version=$VERSION/" "$TEMPLATE_FILE"
 sed -i "s/^checksum=.*/checksum=$SHA256/" "$TEMPLATE_FILE"
 
-echo "Template successfully updated to version $VERSION"
+echo "Template updated to version $VERSION"
 
-echo "NEW_VERSION=$VERSION" >> "$GITHUB_ENV" 2>/dev/null || true
-
-echo "Done MullvadVPN updated from $CURRENT_VERSION to $VERSION"
+# Сохраняем измененный шаблон как артефакт, чтобы его можно было выгрузить или использовать в job'е отправки MR
+mkdir -p updated_template
+cp "$TEMPLATE_FILE" "updated_template/template"

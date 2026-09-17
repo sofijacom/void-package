@@ -3,6 +3,7 @@
 pkgname=pup-volume-monitor
 version=0.2.1
 revision=1
+_commit=aa2fbe6f815909f060027ba1e0f93075b91e4384
 build_style=gnu-configure
 configure_args="--prefix=/usr --sysconfdir=/etc --disable-static"
 hostmakedepends="pkg-config gettext gawk"
@@ -11,8 +12,9 @@ short_desc="This is pup-volume-monitor, a lightweight drive and volume managemen
 maintainer="Sofiya <sofiya@v.org>"
 license="MIT"
 homepage="https://github.com/01micko/pup-volume-monitor"
-distfiles="https://github.com/01micko/pup-volume-monitor/archive/aa2fbe6f815909f060027ba1e0f93075b91e4384.zip"
+distfiles="https://github.com/01micko/pup-volume-monitor/archive/${_commit}.zip"
 checksum=d4cd01930806c37140a7ca12ba81cd2afd8daea13cb1b78c2c7be13b5cb0784a
+# wrksrc="pup-volume-monitor-${_commit}"
 lib32disabled=yes
 
 pre_configure() {

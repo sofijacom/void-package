@@ -1,6 +1,6 @@
 # Template file for 'rox-filer2'
 pkgname=rox-filer2
-version=2.12.2.89
+version=2.13.0.8
 revision=1
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
@@ -42,7 +42,7 @@ maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/josejp2424/ROX-Filer2"
 distfiles="https://github.com/josejp2424/ROX-Filer2/archive/refs/tags/v${_tarver}.tar.gz"
-checksum=e486ab96e848f5dc9684cab14bae4b4239b747333166c67d09b190a5f6b5d303
+checksum=ae6345189be16bd634c7dbac5cc47e41b7385dd657c8877faf15a7a4f836231b
 provides="rox-filer-${version}_${revision}"
 replaces="rox-filer>=0"
 

@@ -87,6 +87,11 @@ sudo xbps-install -S
 - [x] Build and package void-package once a new version is released via GitHub Actions
 - ▷
 
+
+### Disclaimer
+
+This is an unofficial repository and is not affiliated with the Void Linux project.
+
 <br>
  
 <details>

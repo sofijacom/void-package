@@ -43,8 +43,8 @@ license="GPL-3.0-or-later"
 homepage="https://github.com/josejp2424/ROX-Filer2"
 distfiles="https://github.com/josejp2424/ROX-Filer2/archive/refs/tags/v${_tarver}.tar.gz"
 checksum=ae6345189be16bd634c7dbac5cc47e41b7385dd657c8877faf15a7a4f836231b
-provides="rox-filer-${version}_${revision}"
-replaces="rox-filer>=0"
+provides="rox-${version}_${revision}"
+replaces="rox>=0"
 
 LANGS="ar ca de es fr hu it ja pt ru zh"
 

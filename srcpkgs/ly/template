@@ -1,7 +1,6 @@
 # Template file for 'ly'
-
 pkgname=ly
-version=1.5.0
+version=1.4.1
 revision=1
 archs="x86_64"
 build_style=zig-build
@@ -13,7 +12,7 @@ maintainer="Sofiya <sofiya@v.org>"
 license="WTFPL"
 homepage="https://codeberg.org/fairyglade/ly"
 distfiles="https://codeberg.org/fairyglade/ly/archive/v${version}.tar.gz"
-checksum="115a7f7fb281803ca7f9e0ddbdf76834a53f7fa6bc702d766d03772ce1976dc3"
+checksum=4d1c10422e6c5b8d5a795150e4c364c82404f900c1a04318b83fe8d81fade58b
 
 conf_files="
  /etc/ly/config.ini

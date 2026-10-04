@@ -6,7 +6,6 @@
 <!-- # 【 Void Linux Software Repository 】 -->
 <!-- # 【 Unofficial package repository for Void Linux 】 -->
 
-
 ##### ⮞⮞【 `Unofficial package repository` 】⮜⮜
 
 [![Platform](https://img.shields.io/badge/platform-Void%20Linux-478061?logo=linux&colorA=363a4f)](#)

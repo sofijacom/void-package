@@ -1,7 +1,7 @@
 # Template file for 'rox-filer2'
 pkgname=rox-filer2
 version=2.13.0.8
-revision=1
+revision=2
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
@@ -77,6 +77,7 @@ do_install() {
 	mkdir -p "$app_install"
 	cp -a "${wrksrc}/ROX-Filer/." "$app_install/"
 	install -m0755 "${bdir}/ROX-Filer" "${app_install}/ROX-Filer"
+	install -m0755 "${bdir}/rox-mount-helper" "$app_install/rox-mount-helper"
 
 	# 3. Чистим мусор разработки из скопированного дерева
 	rm -rf "${app_install}/build" "${app_install}/src" \

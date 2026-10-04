@@ -1,10 +1,11 @@
 <div align="center" markdown="1">
   <a>
-  <!-- <img width="600" height="120" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.gif" /> -->
-  <img width="350" height="auto" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux-1.png?raw=true" />
+  <!-- <img width="600" height="200" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux.gif" /> -->
+  <img width="600" height="200" alt="void-linux" src="https://github.com/sofijacom/void-package/blob/main/img/void-linux-3.gif" />
   </a>
 <!-- # 【 Void Linux Software Repository 】 -->
 <!-- # 【 Unofficial package repository for Void Linux 】 -->
+
 
 ##### ⮞⮞【 `Unofficial package repository` 】⮜⮜
 

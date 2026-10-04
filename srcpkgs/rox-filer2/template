@@ -14,8 +14,8 @@ makedepends="
 	libSM-devel
 	libICE-devel
 	libX11-devel
-	shared-mime-info-devel
-	smbclient-devel
+	shared-mime-info
+	samba-devel
 	pango-devel
 	gtk-layer-shell-devel
 	udisks2-devel

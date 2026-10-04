@@ -27,6 +27,7 @@ depends="
 	libSM
 	libICE
 	libX11
+	polkit
 	shared-mime-info
 	smbclient
 	hicolor-icon-theme

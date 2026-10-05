@@ -149,17 +149,40 @@ do_install() {
 		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
 	fi
 
-	# 9. Man-страницы
-mkdir -p "${PKGDESTDIR}/usr/share/man/man1"
+# 9. Man-страницы:
+local man_dir="${PKGDESTDIR}/usr/share/man/man1"
+local src_man="${wrksrc}/data/man/rox-find.1"
 
-install -m0644 "${wrksrc}/data/man/rox-find.1" \
-	"${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+mkdir -p "${man_dir}"
 
-gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+# Копируем (или устанавливаем) несжатый .1
+if [ ! -f "${src_man}" ]; then
+	echo "ERROR: man page not found at ${src_man}" >&2
+	exit 1
+fi
 
+cp -p "${src_man}" "${man_dir}/rox-find.1"
+chmod 0644 "${man_dir}/rox-find.1"
+
+# Сжимаем вручную — именно этот .gz попадёт в пакет
+gzip -n -9 -f "${man_dir}/rox-find.1"
+
+# Создаём алиасы на .1.gz (они будут валидными сразу)
 for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-	ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+	ln -sfn rox-find.1.gz "${man_dir}/${alias}.1.gz"
 done
+
+	# 9. Man-страницы
+#	mkdir -p "${PKGDESTDIR}/usr/share/man/man1"
+
+#	install -m0644 "${wrksrc}/data/man/rox-find.1" \
+#		"${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+
+#	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+
+#	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+#		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+#	done
 
 #	vmkdir usr/share/man/man1
 #	vman data/man/rox-find.1 # data/man/rox.1

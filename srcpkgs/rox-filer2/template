@@ -1,10 +1,12 @@
 # Template file for 'rox-filer2'
 pkgname=rox-filer2
 version=2.13.0.8
-revision=3
+revision=2
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
-hostmakedepends="pkg-config python3 gettext meson ninja bash gzip"
+build_style=meson
+configure_args="-Dsmb=enabled -Dportable_devices=auto"
+hostmakedepends="pkg-config python3 gettext meson ninja"
 makedepends="
 	gtk+3-devel
 	glib-devel
@@ -47,144 +49,133 @@ replaces="rox-filer>=0"
 
 LANGS="ar ca de es fr hu it ja pt ru zh"
 
-do_prepare() {
-	msg_normal "Validating and building translations\n"
+pre_build() {
+	local lang
+	echo "==> Checking existing translations in ${wrksrc}/ROX-Filer/Messages"
 	for lang in ${LANGS}; do
-		if [ -f "${wrksrc}/ROX-Filer/src/po/${lang}.po" ]; then
-			msgfmt -c "${wrksrc}/ROX-Filer/src/po/${lang}.po" -o /dev/null
+		local mo_path="${wrksrc}/ROX-Filer/Messages/${lang}/LC_MESSAGES/ROX-Filer.mo"
+		if [ ! -f "$mo_path" ]; then
+			echo "ERROR: missing translation file: $mo_path" >&2
+			exit 1
 		fi
 	done
-	rm -rf "${wrksrc}/ROX-Filer/Messages"
-	mkdir -p "${wrksrc}/ROX-Filer/Messages"
-	for lang in ${LANGS}; do
-		if [ -f "${wrksrc}/ROX-Filer/src/po/${lang}.po" ]; then
-			(cd "${wrksrc}/ROX-Filer/src/po" && ./make-mo "$lang")
-		fi
-	done
-}
-
-do_build() {
-	msg_normal "Building Rox-Filer2 $version for Void Linux\n"
-	rm -rf "${wrksrc}/build-void"
-	mkdir -p "${wrksrc}/build-void"
-
-	cd "${wrksrc}/build-void"
-	meson setup --buildtype=release -Dsmb=enabled -Dportable_devices=auto "${wrksrc}"
-	meson compile -C "${wrksrc}/build-void"
-
-	[[ -x "${wrksrc}/build-void/ROX-Filer" ]] || { echo "ERROR: ROX-Filer binary was not produced." >&2; exit 1; }
-	[[ -x "${wrksrc}/build-void/rox-find" ]] || { echo "ERROR: rox-find binary was not produced." >&2; exit 1; }
-	[[ -x "${wrksrc}/build-void/rox-mount-helper" ]] || { echo "ERROR: rox-mount-helper binary was not produced." >&2; exit 1; }
+	echo "==> Translations OK, skipping rebuild."
 }
 
 do_install() {
-	msg_normal "Installing Rox-Filer2 $version\n"
-	vmkdir usr/lib/rox-filer2
-	vmkdir usr/bin
-	vmkdir usr/share/applications
-	vmkdir usr/share/pixmaps
-	vmkdir usr/share/icons/hicolor/scalable/apps
-	vmkdir usr/share/icons/hicolor/scalable/mimetypes
-	vmkdir usr/share/mime/packages
-	vmkdir usr/share/licenses/${pkgname}
-	vmkdir usr/share/doc/${pkgname}
-	vmkdir usr/share/man/man1
+	# Используем правильную переменную PKGDESTDIR
+	local app_install="${PKGDESTDIR}/usr/lib/rox-filer2"
+	local bdir="${wrksrc}/build"
 
-	local appdir="${PKGDESTDIR}/usr/lib/rox-filer2"
-	local bdir="${wrksrc}/build-void"
+	# 1. package-base (обертки). Удаляем /local перед копированием всей папки usr
+	if [ -d "${wrksrc}/package-base/usr" ]; then
+		rm -rf "${wrksrc}/package-base/usr/local"
+		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
+	fi
 
-	# Копируем само приложение
-	cp -a "${wrksrc}/ROX-Filer/." "${appdir}/"
-	install -Dm0755 "${bdir}/ROX-Filer" "${appdir}/ROX-Filer"
-	install -Dm0755 "${bdir}/rox-mount-helper" "${appdir}/rox-mount-helper"
-	rm -rf "${appdir}/build" "${appdir}/src" "${appdir}/ROX-Filer.dbg" "${appdir}/ROX"
+	# 2. Основная директория приложения (копируем ВСЁ дерево ROX-Filer)
+	rm -rf "$app_install"
+	mkdir -p "$app_install"
+	cp -a "${wrksrc}/ROX-Filer/." "$app_install/"
+	install -m0755 "${bdir}/ROX-Filer" "${app_install}/ROX-Filer"
+	install -m0755 "${bdir}/rox-mount-helper" "$app_install/rox-mount-helper"
+
+	# 3. Чистим мусор разработки из скопированного дерева
+	rm -rf "${app_install}/build" "${app_install}/src" \
+	       "${app_install}/ROX-Filer.dbg" "${app_install}/ROX"
 
 	if [ -d "${wrksrc}/package-assets/ROX" ]; then
-		cp -a "${wrksrc}/package-assets/ROX" "${appdir}/ROX"
+		cp -a "${wrksrc}/package-assets/ROX" "${app_install}/ROX"
 	fi
-	install -Dm0644 "${wrksrc}/data/icons/hicolor/256x256/apps/rox-filer2.png" "${appdir}/ROX-Filer.png"
-	ln -sfn ROX-Filer.png "${appdir}/.DirIcon"
+	install -m0644 "${wrksrc}/data/icons/hicolor/256x256/apps/rox-filer2.png" \
+		"${app_install}/ROX-Filer.png"
+	ln -sfn ROX-Filer.png "${app_install}/.DirIcon"
 
-	# Иконки и MIME
-	local size
+	# 4. Иконки во все размеры (системные пути)
+	local size icon
 	for size in 16 22 24 32 48 64 96 128 192 256; do
-		install -Dm0644 "${wrksrc}/data/icons/hicolor/${size}x${size}/apps/rox-filer2.png" \
-			"${PKGDESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/rox-filer2.png"
+		vinstall "${wrksrc}/data/icons/hicolor/${size}x${size}/apps/rox-filer2.png" 0644 \
+			"usr/share/icons/hicolor/${size}x${size}/apps"
 	done
-	install -Dm0644 "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" \
-		"${PKGDESTDIR}/usr/share/icons/hicolor/scalable/apps/rox-filer2.svg"
+	vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
+		"usr/share/icons/hicolor/scalable/apps"
 	for icon in rox-filer2.svg ROX-Filer.svg Rox-Filer2.svg; do
-		ln -sf rox-filer2.svg "${PKGDESTDIR}/usr/share/pixmaps/${icon}"
+		vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
+			"usr/share/pixmaps" "$icon"
 	done
+
+	# 5. MIME-иконки и определения
 	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do
-		install -Dm0644 "${wrksrc}/package-assets/ROX/MIME/${icon}" \
-			"${PKGDESTDIR}/usr/share/icons/hicolor/scalable/mimetypes/${icon}"
+		vinstall "${wrksrc}/package-assets/ROX/MIME/${icon}" 0644 \
+			"usr/share/icons/hicolor/scalable/mimetypes"
 	done
 	if [ -f "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" ]; then
-		install -Dm0644 "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" \
-			"${PKGDESTDIR}/usr/share/mime/packages/rox-filer2-image-mounter.xml"
+		vinstall "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" 0644 \
+			"usr/share/mime/packages"
 	fi
 
-	# rox-find
-	install -Dm0755 "${bdir}/rox-find" "${PKGDESTDIR}/usr/bin/rox-find"
+	# 6. rox-find — бинарник, desktop-файл, иконки
+	vbin "${bdir}/rox-find"
 	if [ -f "${wrksrc}/rox-find/data/rox-find.desktop" ]; then
-		install -Dm0644 "${wrksrc}/rox-find/data/rox-find.desktop" \
-			"${PKGDESTDIR}/usr/share/applications/rox-find.desktop"
+		vinstall "${wrksrc}/rox-find/data/rox-find.desktop" 0644 "usr/share/applications"
 	fi
 	if [ -f "${wrksrc}/rox-find/data/rox-find.svg" ]; then
-		install -Dm0644 "${wrksrc}/rox-find/data/rox-find.svg" \
-			"${PKGDESTDIR}/usr/share/pixmaps/rox-find.svg"
+		vinstall "${wrksrc}/rox-find/data/rox-find.svg" 0644 "usr/share/pixmaps"
 	fi
 	for size in 48 64 128 256; do
-		install -Dm0644 "${wrksrc}/rox-find/data/icons/${size}x${size}/apps/rox-find.png" \
-			"${PKGDESTDIR}/usr/share/icons/hicolor/${size}x${size}/apps/rox-find.png"
+		vinstall "${wrksrc}/rox-find/data/icons/${size}x${size}/apps/rox-find.png" 0644 \
+			"usr/share/icons/hicolor/${size}x${size}/apps"
 	done
+
+	# 7. Готовые .mo файлы переводов (ЛОКАЛЬ)
+	vmkdir usr/share/locale
 	if [ -d "${wrksrc}/rox-find/locale" ]; then
 		cp -a "${wrksrc}/rox-find/locale/." "${PKGDESTDIR}/usr/share/locale/"
 	fi
+	if [ -d "${wrksrc}/ROX-Filer/Messages" ]; then
+		cp -a "${wrksrc}/ROX-Filer/Messages/." "${PKGDESTDIR}/usr/share/locale/"
+	fi
 
-	# Документация
-	install -Dm0644 "${wrksrc}/LICENSE" "${PKGDESTDIR}/usr/share/licenses/${pkgname}/LICENSE"
-	install -Dm0644 "${wrksrc}/CHANGELOG" "${PKGDESTDIR}/usr/share/doc/${pkgname}/CHANGELOG"
-	install -Dm0644 "${wrksrc}/README.md" "${PKGDESTDIR}/usr/share/doc/${pkgname}/README.md"
+	# 8. Лицензия и документация
+	if [ -f "${wrksrc}/LICENSE" ]; then
+		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/CHANGELOG" ]; then
+		vinstall "${wrksrc}/CHANGELOG" 0644 "usr/share/doc/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/README.md" ]; then
+		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
+	fi
 
-	# Man-страницы
+	# 9. Man-страницы
+
+	vmkdir usr/share/man/man1
+
+	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
+
+	# 10. Устанавливаем rox-find (он всегда должен быть)
 	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
-		install -Dm0644 "${wrksrc}/data/man/rox-find.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
 		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
 	fi
+
+	# 11. Пытаемся установить основной 'rox'
 	if [ -f "${wrksrc}/data/man/rox.1" ]; then
-		install -Dm0644 "${wrksrc}/data/man/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
 		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+		main_rox_target="rox.1.gz" # Обновляем цель для ссылок, если нашли файл
+	else
+		msg_warn "Man page ${wrksrc}/data/man/rox.1 not found."
 	fi
 
-	local target="rox.1.gz"
-	if [ ! -f "${PKGDESTDIR}/usr/share/man/man1/rox.1.gz" ]; then
-		target="rox-find.1.gz"
-	fi
+	# 12. Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sf "/usr/share/man/man1/${target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+		ln -sf "/usr/share/man/man1/${main_rox_target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 	done
 
-	# Создаем wrapper для запуска (вместо vbin)
-	vmkdir usr/bin
-	cat > "${PKGDESTDIR}/usr/bin/rox-filer2" << EOF
-#!/bin/sh
-exec /usr/lib/rox-filer2/ROX-Filer "\$@"
-EOF
-	chmod 0755 "${PKGDESTDIR}/usr/bin/rox-filer2"
-
-	# Очистка прав
-	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' -exec chmod 0644 {} + 2>/dev/null || true
-	find "${PKGDESTDIR}/usr/share/pixmaps" -type f -exec chmod 0644 {} + 2>/dev/null || true
-}
-
-do_strip() {
-	v_strip "${wrksrc}/build-void/ROX-Filer"
-	v_strip "${wrksrc}/build-void/rox-mount-helper"
-	v_strip "${wrksrc}/build-void/rox-find"
-}
-
-do_clean() {
-	rm -rf "${wrksrc}/build-void"
+	# 13. Нормализация прав (важно для pkglint!)
+	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
+		-exec chmod 0644 {} + 2>/dev/null || true
+	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
+		-exec chmod 0644 {} + 2>/dev/null || true
 }

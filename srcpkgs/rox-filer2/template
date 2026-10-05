@@ -177,16 +177,6 @@ do_install() {
 		install -Dm0644 "${wrksrc}/data/man/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
 	fi
 
-	# 10. Нормализация прав (важно для pkglint!)
-	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
-		-exec chmod 0644 {} + 2>/dev/null || true
-	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
-		-exec chmod 0644 {} + 2>/dev/null || true
-}
-
-# post_install выполняется после копирования файлов в PKGDESTDIR.
-# Это идеальное место для сжатия man-страниц и создания ссылок.
-post_install() {
 	# Сжимаем man-страницы, если они существуют
 	if [ -f "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" ]; then
 		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
@@ -204,4 +194,10 @@ post_install() {
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
 		ln -sf "/usr/share/man/man1/${target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 	done
+
+	# 10. Нормализация прав (важно для pkglint!)
+	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
+		-exec chmod 0644 {} + 2>/dev/null || true
+	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
+		-exec chmod 0644 {} + 2>/dev/null || true
 }

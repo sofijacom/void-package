@@ -151,17 +151,7 @@ do_install() {
 
 	# 9. Man-страницы
 	vmkdir usr/share/man/man1
-
-# Устанавливаем .1 файл через vinstall (не vman!), затем сжимаем вручную
-	vinstall data/man/rox-find.1 0644 usr/share/man/man1
-	gzip -n -9 -f "${DESTDIR}/usr/share/man/man1/rox-find.1"
-
-# Симлинки-алиасы на уже сжатый файл
-for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-	ln -sfn rox-find.1.gz "${DESTDIR}/usr/share/man/man1/${alias}.1.gz"
-done
-
-#	vman data/man/rox-find.1 # data/man/rox.1
+	vman data/man/rox-find.1 # data/man/rox.1
 
 #	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
@@ -197,4 +187,18 @@ done
 		-exec chmod 0644 {} + 2>/dev/null || true
 	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
 		-exec chmod 0644 {} + 2>/dev/null || true
+}
+
+post_pkg() {
+	local man_dir="${PKGDESTDIR}/usr/share/man/man1"
+
+	# Проверяем, что сжатый файл существует (если нет — значит, vman не сработал или путь не тот)
+	if [ ! -f "${man_dir}/rox-find.1.gz" ]; then
+		echo "ERROR: rox-find.1.gz not found in ${man_dir}" >&2
+		exit 1
+	fi
+
+	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+		ln -sfn rox-find.1.gz "${man_dir}/${alias}.1.gz"
+	done
 }

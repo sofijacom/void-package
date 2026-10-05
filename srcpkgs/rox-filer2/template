@@ -1,14 +1,13 @@
 # Template file for 'rox-filer2'
-
 pkgname=rox-filer2
 version=2.13.0.8
-revision=4
+revision=3
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
-build_style=meson
-# Исправлен путь libdir, добавлен флаг для Wayland/GTK Layer Shell
-configure_args="-Dsmb=enabled -Dportable_devices=auto --libdir=/usr/lib --buildtype=release"
-hostmakedepends="pkg-config python3 gettext meson ninja gzip"
+#build_style=meson
+#configure_args="-Dsmb=enabled -Dportable_devices=auto"
+build_style=meta
+hostmakedepends="pkg-config python3 gettext meson ninja"
 makedepends="
 	gtk+3-devel
 	glib-devel
@@ -49,143 +48,49 @@ checksum=ae6345189be16bd634c7dbac5cc47e41b7385dd657c8877faf15a7a4f836231b
 provides="rox-filer-${version}_${revision}"
 replaces="rox-filer>=0"
 
-# Языки, для которых компилируются переводы
-LANGS="ar ca de es fr hu it ja pt ru zh"
-
-do_strip() {
-	vbin "${wrksrc}/build/ROX-Filer"
-	vbin "${wrksrc}/build/rox-mount-helper"
-	vbin "${wrksrc}/build/rox-find"
-}
-
-pre_build() {
-	printf "==> Compiling translations (.po -> .mo)\n"
-	local lang
-	for lang in ${LANGS}; do
-		local po="${wrksrc}/ROX-Filer/src/po/${lang}.po"
-		local mo="${wrksrc}/ROX-Filer/Messages/${lang}/LC_MESSAGES/ROX-Filer.mo"
-		if [ -f "$po" ]; then
-			mkdir -p "$(dirname "$mo")"
-			msgfmt -o "$mo" "$po"
+# Функция подготовки: валидация .po файлов и компиляция .mo.
+# Полностью повторяет вашу функцию prepare_messages().
+do_prepare() {
+	vmsg "Validating and building translations"
+	for lang in ar ca de es fr hu it ja pt ru zh; do
+		if [ -f "$FILESDIR/../ROX-Filer/src/po/$lang.po" ]; then
+			msgfmt -c "$FILESDIR/../ROX-Filer/src/po/$lang.po" -o /dev/null
+		fi
+	done
+	# Если у вас есть скрипт check-po-formats.py, его вызов можно оставить здесь.
+	rm -rf "$wrksrc/ROX-Filer/Messages"
+	mkdir -p "$wrksrc/ROX-Filer/Messages"
+	for lang in ar ca de es fr hu it ja pt ru zh; do
+		if [ -f "$FILESDIR/../ROX-Filer/src/po/$lang.po" ]; then
+			(cd "$FILESDIR/../ROX-Filer/src/po" && ./make-mo "$lang")
 		fi
 	done
 }
 
-do_install() {
-	local app_install="${PKGDESTDIR}/usr/lib/rox-filer2"
-	local bdir="${wrksrc}/build"
+# Основная функция сборки.
+# Вызывает ваш скрипт, который сделает всю работу в изолированной папке $wrksrc.
+do_build() {
+	# Скрипт ожидает, что он лежит в корне исходников.
+	# $FILESDIR указывает на srcpkgs/rox-filer2/files/ внутри репозитория xbps-src.
+	# Копируем его в рабочую директорию, чтобы пути внутри скрипта не сломались.
+	cp "$FILESDIR/build_void.sh" "$wrksrc/"
+	chmod +x "$wrksrc/build_void.sh"
 
-	if [ -d "${wrksrc}/package-base/usr" ]; then
-		rm -rf "${wrksrc}/package-base/usr/local"
-		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
-	fi
-
-	rm -rf "$app_install"
-	mkdir -p "$app_install"
-	cp -a "${wrksrc}/ROX-Filer/." "$app_install/"
-	install -m0755 "${bdir}/ROX-Filer" "${app_install}/ROX-Filer"
-	install -m0755 "${bdir}/rox-mount-helper" "$app_install/rox-mount-helper"
-
-	rm -rf "${app_install}/build" "${app_install}/src" \
-	       "${app_install}/ROX-Filer.dbg" "${app_install}/ROX"
-
-	if [ -d "${wrksrc}/package-assets/ROX" ]; then
-		cp -a "${wrksrc}/package-assets/ROX" "${app_install}/ROX"
-	fi
-	install -m0644 "${wrksrc}/data/icons/hicolor/256x256/apps/rox-filer2.png" \
-		"${app_install}/ROX-Filer.png"
-	ln -sfn ROX-Filer.png "${app_install}/.DirIcon"
-
-	local size icon
-	for size in 16 22 24 32 48 64 96 128 192 256; do
-		vinstall "${wrksrc}/data/icons/hicolor/${size}x${size}/apps/rox-filer2.png" 0644 \
-			"usr/share/icons/hicolor/${size}x${size}/apps"
-	done
-	vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
-		"usr/share/icons/hicolor/scalable/apps"
-	for icon in rox-filer2.svg ROX-Filer.svg Rox-Filer2.svg; do
-		vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
-			"usr/share/pixmaps" "$icon"
-	done
-
-	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do
-		vinstall "${wrksrc}/package-assets/ROX/MIME/${icon}" 0644 \
-			"usr/share/icons/hicolor/scalable/mimetypes"
-	done
-	if [ -f "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" ]; then
-		vinstall "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" 0644 \
-			"usr/share/mime/packages"
-	fi
-
-	vbin "${bdir}/rox-find"
-	if [ -f "${wrksrc}/rox-find/data/rox-find.desktop" ]; then
-		vinstall "${wrksrc}/rox-find/data/rox-find.desktop" 0644 "usr/share/applications"
-	fi
-	if [ -f "${wrksrc}/rox-find/data/rox-find.svg" ]; then
-		vinstall "${wrksrc}/rox-find/data/rox-find.svg" 0644 "usr/share/pixmaps"
-	fi
-	for size in 48 64 128 256; do
-		vinstall "${wrksrc}/rox-find/data/icons/${size}x${size}/apps/rox-find.png" 0644 \
-			"usr/share/icons/hicolor/${size}x${size}/apps"
-	done
-
-	vmkdir usr/share/locale
-	if [ -d "${wrksrc}/rox-find/locale" ]; then
-		cp -a "${wrksrc}/rox-find/locale/." "${PKGDESTDIR}/usr/share/locale/"
-	fi
-	if [ -d "${wrksrc}/ROX-Filer/Messages" ]; then
-		cp -a "${wrksrc}/ROX-Filer/Messages/." "${PKGDESTDIR}/usr/share/locale/"
-	fi
-
-	if [ -f "${wrksrc}/LICENSE" ]; then
-		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
-	fi
-	if [ -f "${wrksrc}/CHANGELOG" ]; then
-		vinstall "${wrksrc}/CHANGELOG" 0644 "usr/share/doc/${pkgname}"
-	fi
-	if [ -f "${wrksrc}/README.md" ]; then
-		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
-	fi
-
-	vmkdir usr/share/man/man1
-	if [ -f "${wrksrc}/rox-find.1" ]; then
-		install -Dm0644 "${wrksrc}/rox-find.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
-	fi
-	if [ -f "${wrksrc}/rox.1" ]; then
-		install -Dm0644 "${wrksrc}/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
-	fi
-	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
-		install -Dm0644 "${wrksrc}/data/man/rox-find.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
-	fi
-	if [ -f "${wrksrc}/data/man/rox.1" ]; then
-		install -Dm0644 "${wrksrc}/data/man/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
-	fi
-
-	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
-		-exec chmod 0644 {} + 2>/dev/null || true
-	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
-		-exec chmod 0644 {} + 2>/dev/null || true
+	# Запускаем сборку. --fakeroot нужен для корректной работы xbps-create внутри xbps-src.
+	chroot "$XBPS_MASTERDIR" \
+		su - root -c "cd /builddir/$pkgname-$version && ./build_void.sh"
 }
 
-# Хук, который гарантированно вызывается при создании архива
-post_pkg() {
-	local mandir="${XBPS_DESTDIR}/usr/share/man/man1"
+# Функция установки.
+# Для build_style=meta она должна быть пустой, так как пакет уже создан
+# и проиндексирован вашим скриптом в папке $outputdir.
+do_install() {
+	:
+}
 
-	if [ -f "${mandir}/rox-find.1" ]; then
-		gzip -n -9 "${mandir}/rox-find.1"
-	fi
-	if [ -f "${mandir}/rox.1" ]; then
-		gzip -n -9 "${mandir}/rox.1"
-	fi
-
-	local target="rox.1.gz"
-	if [ ! -f "${mandir}/rox.1.gz" ]; then
-		target="rox-find.1.gz"
-	fi
-
-	(cd "${mandir}" && ln -sf "/usr/share/man/man1/${target}" roxfiler.1.gz)
-	(cd "${mandir}" && ln -sf "/usr/share/man/man1/${target}" Rox-Filer2.1.gz)
-	(cd "${mandir}" && ln -sf "/usr/share/man/man1/${target}" ROX-Filer.1.gz)
-	(cd "${mandir}" && ln -sf "/usr/share/man/man1/${target}" rox-wayland.1.gz)
-	(cd "${mandir}" && ln -sf "/usr/share/man/man1/${target}" rox-x11.1.gz)
+# Функция очистки. Вызывается при 'xbps-src clean'.
+# Повторяет логику аргумента --clean вашего скрипта.
+do_clean() {
+	vmsg "Cleaning Rox-Filer2 build directories"
+	rm -rf "$wrksrc/build-void" "$wrksrc/output"
 }

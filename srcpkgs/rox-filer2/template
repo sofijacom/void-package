@@ -152,18 +152,22 @@ do_install() {
 	# 9. Man-страницы
 	vmkdir usr/share/man/man1
 
-	vman data/man/rox-find.1 # data/man/rox.1
+# Устанавливаем .1 файл через vinstall (не vman!), затем сжимаем вручную
+	vinstall data/man/rox-find.1 0644 usr/share/man/man1
+	gzip -n -9 -f "${DESTDIR}/usr/share/man/man1/rox-find.1"
 
-	# Вместо ручных ln делаем vlink — xbps-src сам обработает ссылки корректно
-	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		vlink usr/share/man/man1/${alias}.1.gz usr/share/man/man1/rox-find.1.gz
-	done
+# Симлинки-алиасы на уже сжатый файл
+for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+	ln -sfn rox-find.1.gz "${DESTDIR}/usr/share/man/man1/${alias}.1.gz"
+done
+
+#	vman data/man/rox-find.1 # data/man/rox.1
 
 #	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
 #	# Создание ссылок для псевдонимов (rox.1.gz )
 #	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-#		ln -sfn rox-find.1 "${PKGDESTDIR}/usr/share/man/man1/${alias}.1"
+#		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 #	done
 
 #	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
@@ -189,7 +193,7 @@ do_install() {
 #	done
 
 	# 13. Нормализация прав (важно для pkglint!)
-	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
+	find "${DESTDIR}/usr/share/applications" -type f -name '*.desktop' \
 		-exec chmod 0644 {} + 2>/dev/null || true
 	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
 		-exec chmod 0644 {} + 2>/dev/null || true

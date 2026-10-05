@@ -104,7 +104,7 @@ do_install() {
 			"usr/share/pixmaps" "$icon"
 	done
 	vinstall "${wrksrc}/ROX-Filer-root.svg" 0644 \
-			"/usr/share/pixmaps"
+			"usr/share/pixmaps"
 
 	# 5. MIME-иконки и определения
 	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do
@@ -158,7 +158,7 @@ do_install() {
 	# 10. Устанавливаем rox-find (он всегда должен быть)
 	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
 		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
-		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" # "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+		gzip -n -9 "usr/share/man/man1/rox-find.1" # "${PKGDESTDIR}/usr/share/man/man1/rox.1"
 	fi
 
 	# 11. Пытаемся установить основной 'rox'

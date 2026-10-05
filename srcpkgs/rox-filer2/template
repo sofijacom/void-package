@@ -5,7 +5,7 @@ revision=3
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
-configure_args="-Dsmb=enabled -Dportable_devices=auto"
+configure_args="-Dsmb=enabled -Dportable_devices=auto --libdir=/usr/lib"
 hostmakedepends="pkg-config python3 gettext meson ninja"
 makedepends="
 	gtk+3-devel
@@ -59,13 +59,13 @@ do_strip() {
 
 # Компилируем .po файлы в .mo до начала основной сборки
 pre_build() {
-	vmsg "Compiling translations (.po -> .mo)"
+	printf "==> Compiling translations (.po -> .mo)\n"
 	local lang
 	for lang in ${LANGS}; do
 		local po="${wrksrc}/ROX-Filer/src/po/${lang}.po"
 		local mo="${wrksrc}/ROX-Filer/Messages/${lang}/LC_MESSAGES/ROX-Filer.mo"
 		if [ -f "$po" ]; then
-			vmkdir "$(dirname "$mo")"
+			mkdir -p "$(dirname "$mo")"
 			msgfmt -o "$mo" "$po"
 		fi
 	done

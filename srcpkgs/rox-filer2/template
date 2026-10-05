@@ -1,7 +1,8 @@
 # Template file for 'rox-filer2'
+
 pkgname=rox-filer2
 version=2.13.0.8
-revision=3
+revision=4
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
@@ -58,7 +59,7 @@ do_strip() {
 	vbin "${wrksrc}/build/rox-find"
 }
 
-# pre_build выполняется на хосте, vmsg недоступен. Используем printf.
+# pre_build выполняется на хосте, поэтому vmsg недоступен. Используем printf.
 pre_build() {
 	printf "==> Compiling translations (.po -> .mo)\n"
 	local lang
@@ -157,13 +158,23 @@ do_install() {
 		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
 	fi
 
-	# 9. Man-страницы (только копируем, сжатие перенесено в post_install)
+	# 9. Man-страницы (гарантированное копирование из корня или data/man)
 	vmkdir usr/share/man/man1
+
+	# Проверяем корень wrksrc (часто страницы лежат там)
+	if [ -f "${wrksrc}/rox-find.1" ]; then
+		install -Dm0644 "${wrksrc}/rox-find.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+	fi
+	if [ -f "${wrksrc}/rox.1" ]; then
+		install -Dm0644 "${wrksrc}/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+	fi
+
+	# Проверяем data/man (как в вашем изначальном шаблоне)
 	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
-		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
+		install -Dm0644 "${wrksrc}/data/man/rox-find.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
 	fi
 	if [ -f "${wrksrc}/data/man/rox.1" ]; then
-		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
+		install -Dm0644 "${wrksrc}/data/man/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox.1"
 	fi
 
 	# 10. Нормализация прав (важно для pkglint!)
@@ -173,12 +184,16 @@ do_install() {
 		-exec chmod 0644 {} + 2>/dev/null || true
 }
 
-# Сжатие man-страниц и создания ссылок.
+# post_install выполняется после копирования файлов в PKGDESTDIR.
+# Это идеальное место для сжатия man-страниц и создания ссылок.
 post_install() {
-	# Сжимаем man-страницы. 2>/dev/null нужно, чтобы сборка не упала,
-	# если файл не был скопирован в do_install.
-	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" 2>/dev/null || true
-	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1" 2>/dev/null || true
+	# Сжимаем man-страницы, если они существуют
+	if [ -f "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" ]; then
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+	fi
+	if [ -f "${PKGDESTDIR}/usr/share/man/man1/rox.1" ]; then
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+	fi
 
 	# Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует и сжат
 	local target="rox.1.gz"

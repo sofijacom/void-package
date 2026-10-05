@@ -70,7 +70,7 @@ do_install() {
 	# 1. package-base (обертки). Удаляем /local перед копированием всей папки usr
 	if [ -d "${wrksrc}/package-base/usr" ]; then
 		rm -rf "${wrksrc}/package-base/usr/local"
-		cp -a "${wrksrc}/package-base/usr" "${ }/"
+		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
 	fi
 
 	# 2. Основная директория приложения (копируем ВСЁ дерево ROX-Filer)
@@ -155,7 +155,7 @@ mkdir -p "${PKGDESTDIR}/usr/share/man/man1"
 install -m0644 "${wrksrc}/data/man/rox-find.1" \
 	"${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
 
-gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
 
 for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
 	ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"

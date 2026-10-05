@@ -4,9 +4,7 @@ version=2.13.0.8
 revision=3
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
-#build_style=meson
-#configure_args="-Dsmb=enabled -Dportable_devices=auto"
-hostmakedepends="pkg-config python3 gettext meson ninja"
+hostmakedepends="pkg-config python3 gettext meson ninja bash gzip"
 makedepends="
 	gtk+3-devel
 	glib-devel
@@ -47,49 +45,148 @@ checksum=ae6345189be16bd634c7dbac5cc47e41b7385dd657c8877faf15a7a4f836231b
 provides="rox-filer-${version}_${revision}"
 replaces="rox-filer>=0"
 
-# Функция подготовки: валидация .po файлов и компиляция .mo.
-# Полностью повторяет вашу функцию prepare_messages().
+LANGS="ar ca de es fr hu it ja pt ru zh"
+
+# Исправлено: пути переведены на $wrksrc, так как в meta-шаблонах
+# $FILESDIR/../ часто указывает не туда, куда нужно.
 do_prepare() {
 	vmsg "Validating and building translations"
-	for lang in ar ca de es fr hu it ja pt ru zh; do
-		if [ -f "$FILESDIR/../ROX-Filer/src/po/$lang.po" ]; then
-			msgfmt -c "$FILESDIR/../ROX-Filer/src/po/$lang.po" -o /dev/null
+	for lang in ${LANGS}; do
+		if [ -f "${wrksrc}/ROX-Filer/src/po/${lang}.po" ]; then
+			msgfmt -c "${wrksrc}/ROX-Filer/src/po/${lang}.po" -o /dev/null
 		fi
 	done
-	# Если у вас есть скрипт check-po-formats.py, его вызов можно оставить здесь.
-	rm -rf "$wrksrc/ROX-Filer/Messages"
-	mkdir -p "$wrksrc/ROX-Filer/Messages"
-	for lang in ar ca de es fr hu it ja pt ru zh; do
-		if [ -f "$FILESDIR/../ROX-Filer/src/po/$lang.po" ]; then
-			(cd "$FILESDIR/../ROX-Filer/src/po" && ./make-mo "$lang")
+	rm -rf "${wrksrc}/ROX-Filer/Messages"
+	mkdir -p "${wrksrc}/ROX-Filer/Messages"
+	for lang in ${LANGS}; do
+		if [ -f "${wrksrc}/ROX-Filer/src/po/${lang}.po" ]; then
+			(cd "${wrksrc}/ROX-Filer/src/po" && ./make-mo "$lang")
 		fi
 	done
 }
 
 # Основная функция сборки.
-# Вызывает ваш скрипт, который сделает всю работу в изолированной папке $wrksrc.
+# Теперь она использует встроенный meson, а не внешний скрипт.
 do_build() {
-	# Скрипт ожидает, что он лежит в корне исходников.
-	# $FILESDIR указывает на srcpkgs/rox-filer2/files/ внутри репозитория xbps-src.
-	# Копируем его в рабочую директорию, чтобы пути внутри скрипта не сломались.
-	cp "$FILESDIR/build_void.sh" "$wrksrc/"
-	chmod +x "$wrksrc/build_void.sh"
+	vmsg "Building Rox-Filer2 $version for Void Linux"
+	rm -rf "${wrksrc}/build-void"
+	mkdir -p "${wrksrc}/build-void"
 
-	# Запускаем сборку. --fakeroot нужен для корректной работы xbps-create внутри xbps-src.
-	chroot "$XBPS_MASTERDIR" \
-		su - root -c "cd /builddir/$pkgname-$version && ./build_void.sh"
+	# Вызываем meson и ninja напрямую
+	cd "${wrksrc}/build-void"
+	meson setup --buildtype=release -Dsmb=enabled -Dportable_devices=auto "${wrksrc}"
+	meson compile -C "${wrksrc}/build-void"
+
+	# Проверка бинарников
+	[[ -x "${wrksrc}/build-void/ROX-Filer" ]] || { echo "ERROR: ROX-Filer binary was not produced." >&2; exit 1; }
+	[[ -x "${wrksrc}/build-void/rox-find" ]] || { echo "ERROR: rox-find binary was not produced." >&2; exit 1; }
+	[[ -x "${wrksrc}/build-void/rox-mount-helper" ]] || { echo "ERROR: rox-mount-helper binary was not produced." >&2; exit 1; }
 }
 
 # Функция установки.
-# Для build_style=meta она должна быть пустой, так как пакет уже создан
-# и проиндексирован вашим скриптом в папке $outputdir.
+# Здесь мы вручную собираем структуру пакета, как это делал build_void.sh
 do_install() {
-	:
+	vmsg "Preparing Void package filesystem"
+	rm -rf "${PKGDESTDIR}"
+	mkdir -p "${PKGDESTDIR}"
+
+	local app_install="${PKGDESTDIR}/usr/lib/rox-filer2"
+	local bdir="${wrksrc}/build-void"
+
+	# 1. package-base
+	if [ -d "${wrksrc}/package-base/usr" ]; then
+		rm -rf "${wrksrc}/package-base/usr/local"
+		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
+	fi
+
+	# 2. Приложение
+	rm -rf "$app_install"
+	mkdir -p "$app_install"
+	cp -a "${wrksrc}/ROX-Filer/." "$app_install/"
+	install -m0755 "${bdir}/ROX-Filer" "$app_install/ROX-Filer"
+	install -m0755 "${bdir}/rox-mount-helper" "$app_install/rox-mount-helper"
+	rm -rf "${app_install}/build" "${app_install}/src" "${app_install}/ROX-Filer.dbg" "${app_install}/ROX"
+
+	if [ -d "${wrksrc}/package-assets/ROX" ]; then
+		cp -a "${wrksrc}/package-assets/ROX" "$app_install/ROX"
+	fi
+	install -m0644 "${wrksrc}/data/icons/hicolor/256x256/apps/rox-filer2.png" "${app_install}/ROX-Filer.png"
+	ln -sfn ROX-Filer.png "${app_install}/.DirIcon"
+
+	# 3. Иконки, MIME, Desktop (используем vinstall)
+	local size
+	for size in 16 22 24 32 48 64 96 128 192 256; do
+		vinstall "${wrksrc}/data/icons/hicolor/${size}x${size}/apps/rox-filer2.png" 0644 "usr/share/icons/hicolor/${size}x${size}/apps"
+	done
+	vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 "usr/share/icons/hicolor/scalable/apps"
+	for icon in rox-filer2.svg ROX-Filer.svg Rox-Filer2.svg; do
+		vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 "usr/share/pixmaps" "$icon"
+	done
+	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do
+		vinstall "${wrksrc}/package-assets/ROX/MIME/${icon}" 0644 "usr/share/icons/hicolor/scalable/mimetypes"
+	done
+	if [ -f "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" ]; then
+		vinstall "${wrksrc}/data/mime/rox-filer2-image-mounter.xml" 0644 "usr/share/mime/packages"
+	fi
+
+	# 4. rox-find
+	vbin "${bdir}/rox-find"
+	if [ -f "${wrksrc}/rox-find/data/rox-find.desktop" ]; then
+		vinstall "${wrksrc}/rox-find/data/rox-find.desktop" 0644 "usr/share/applications"
+	fi
+	if [ -f "${wrksrc}/rox-find/data/rox-find.svg" ]; then
+		vinstall "${wrksrc}/rox-find/data/rox-find.svg" 0644 "usr/share/pixmaps"
+	fi
+	for size in 48 64 128 256; do
+		vinstall "${wrksrc}/rox-find/data/icons/${size}x${size}/apps/rox-find.png" 0644 "usr/share/icons/hicolor/${size}x${size}/apps"
+	done
+	if [ -d "${wrksrc}/rox-find/locale" ]; then
+		cp -a "${wrksrc}/rox-find/locale/." "${PKGDESTDIR}/usr/share/locale/"
+	fi
+
+	# 5. Документация
+	if [ -f "${wrksrc}/LICENSE" ]; then
+		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/CHANGELOG" ]; then
+		vinstall "${wrksrc}/CHANGELOG" 0644 "usr/share/doc/${pkgname}"
+	fi
+	if [ -f "${wrksrc}/README.md" ]; then
+		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
+	fi
+
+	# 6. Man-страницы
+	vmkdir usr/share/man/man1
+	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
+		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+	fi
+	if [ -f "${wrksrc}/data/man/rox.1" ]; then
+		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
+		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+	fi
+
+	local target="rox.1.gz"
+	if [ ! -f "${PKGDESTDIR}/usr/share/man/man1/rox.1.gz" ]; then
+		target="rox-find.1.gz"
+	fi
+	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+		ln -sf "/usr/share/man/man1/${target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+	done
+
+	# 7. Очистка прав
+	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' -exec chmod 0644 {} + 2>/dev/null || true
+	find "${PKGDESTDIR}/usr/share/pixmaps" -type f -exec chmod 0644 {} + 2>/dev/null || true
 }
 
-# Функция очистки. Вызывается при 'xbps-src clean'.
-# Повторяет логику аргумента --clean вашего скрипта.
+# Явный хук strip (обязателен для meta, так как xbps-src не делает это сам)
+do_strip() {
+	vbin "${wrksrc}/build-void/ROX-Filer"
+	vbin "${wrksrc}/build-void/rox-mount-helper"
+	vbin "${wrksrc}/build-void/rox-find"
+}
+
 do_clean() {
 	vmsg "Cleaning Rox-Filer2 build directories"
-	rm -rf "$wrksrc/build-void" "$wrksrc/output"
+	rm -rf "${wrksrc}/build-void" "${wrksrc}/output"
 }

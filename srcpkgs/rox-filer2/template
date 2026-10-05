@@ -178,10 +178,10 @@ do_install() {
 #		msg_warn "Man page ${wrksrc}/data/man/rox.1 not found."
 #	fi
 
-	# 12. Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует
-	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz" # ${PKGDESTDIR}/usr/share/man/man1/${main_rox_target}
-	done
+#	# 12. Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует
+#	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+#		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz" # ${PKGDESTDIR}/usr/share/man/man1/${main_rox_target}
+#	done
 
 	# 13. Нормализация прав (важно для pkglint!)
 	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \

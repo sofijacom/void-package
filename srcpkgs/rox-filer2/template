@@ -156,10 +156,10 @@ do_install() {
 
 #	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
-	# Создание ссылок для псевдонимов (rox.1.gz )
-	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sfn rox-find.1 "${PKGDESTDIR}/usr/share/man/man1/${alias}.1"
-	done
+#	# Создание ссылок для псевдонимов (rox.1.gz )
+#	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+#		ln -sfn rox-find.1 "${PKGDESTDIR}/usr/share/man/man1/${alias}.1"
+#	done
 
 #	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
 
@@ -188,4 +188,12 @@ do_install() {
 		-exec chmod 0644 {} + 2>/dev/null || true
 	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
 		-exec chmod 0644 {} + 2>/dev/null || true
+}
+
+post_pkg() {
+	# Создаём алиасы уже после того, как xbps-src сжал rox-find.1 → rox-find.1.gz
+	local man_dir="${PKGDESTDIR}/usr/share/man/man1"
+	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+		ln -sfn rox-find.1.gz "${man_dir}/${alias}.1.gz"
+	done
 }

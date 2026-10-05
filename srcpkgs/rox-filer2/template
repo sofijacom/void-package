@@ -103,6 +103,8 @@ do_install() {
 		vinstall "${wrksrc}/data/icons/hicolor/scalable/apps/rox-filer2.svg" 0644 \
 			"usr/share/pixmaps" "$icon"
 	done
+	vinstall "${wrksrc}//ROX-Filer-root.svg" 0644 \
+	"/usr/share/pixmaps/ROX-Filer-root.svg"
 
 	# 5. MIME-иконки и определения
 	for icon in application-pet.svg application-x-sfs.svg application-x-squashfs-image.svg; do

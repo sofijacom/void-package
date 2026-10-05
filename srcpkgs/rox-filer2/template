@@ -151,24 +151,32 @@ do_install() {
 
 	# 9. Man-страницы
 
-	vmkdir usr/share/man/man1
+#	vmkdir usr/share/man/man1
+    # === УСТАНОВКА MAN-СТРАНИЦ (вместо ваших install/gzip/ln) ===
+    # vman сам копирует, сжимает и обрабатывает заголовки.
+    vman data/man/rox-find.1 # data/man/rox.1
 
-	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
+    # Создание ссылок для псевдонимов (так как в .1 файлах их может не быть) rox.1.gz
+    for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+        ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+    done
 
-	# 10. Устанавливаем rox-find (он всегда должен быть)
-	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
-		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
-		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" # "${PKGDESTDIR}/usr/share/man/man1/rox.1"
-	fi
+#	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
 
-	# 11. Пытаемся установить основной 'rox'
-	if [ -f "${wrksrc}/data/man/rox.1" ]; then
-		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
-		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
-		main_rox_target="rox.1.gz" # Обновляем цель для ссылок, если нашли файл
-	else
-		msg_warn "Man page ${wrksrc}/data/man/rox.1 not found."
-	fi
+#	# 10. Устанавливаем rox-find (он всегда должен быть)
+#	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
+#		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
+#		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" # "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+#	fi
+
+#	# 11. Пытаемся установить основной 'rox'
+#	if [ -f "${wrksrc}/data/man/rox.1" ]; then
+#		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
+#		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
+#		main_rox_target="rox.1.gz" # Обновляем цель для ссылок, если нашли файл
+#	else
+#		msg_warn "Man page ${wrksrc}/data/man/rox.1 not found."
+#	fi
 
 	# 12. Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do

@@ -6,7 +6,6 @@ _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 #build_style=meson
 #configure_args="-Dsmb=enabled -Dportable_devices=auto"
-build_style=meta
 hostmakedepends="pkg-config python3 gettext meson ninja"
 makedepends="
 	gtk+3-devel

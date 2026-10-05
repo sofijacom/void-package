@@ -64,13 +64,13 @@ pre_build() {
 
 do_install() {
 	# Используем правильную переменную PKGDESTDIR
-	local app_install="${PKGDESTDIR}/usr/lib/rox-filer2"
+	local app_install="${DESTDIR}/usr/lib/rox-filer2"
 	local bdir="${wrksrc}/build"
 
 	# 1. package-base (обертки). Удаляем /local перед копированием всей папки usr
 	if [ -d "${wrksrc}/package-base/usr" ]; then
 		rm -rf "${wrksrc}/package-base/usr/local"
-		cp -a "${wrksrc}/package-base/usr" "${PKGDESTDIR}/"
+		cp -a "${wrksrc}/package-base/usr" "${ }/"
 	fi
 
 	# 2. Основная директория приложения (копируем ВСЁ дерево ROX-Filer)
@@ -132,10 +132,10 @@ do_install() {
 	# 7. Готовые .mo файлы переводов (ЛОКАЛЬ)
 	vmkdir usr/share/locale
 	if [ -d "${wrksrc}/rox-find/locale" ]; then
-		cp -a "${wrksrc}/rox-find/locale/." "${PKGDESTDIR}/usr/share/locale/"
+		cp -a "${wrksrc}/rox-find/locale/." "${DESTDIR}/usr/share/locale/"
 	fi
 	if [ -d "${wrksrc}/ROX-Filer/Messages" ]; then
-		cp -a "${wrksrc}/ROX-Filer/Messages/." "${PKGDESTDIR}/usr/share/locale/"
+		cp -a "${wrksrc}/ROX-Filer/Messages/." "${DESTDIR}/usr/share/locale/"
 	fi
 
 	# 8. Лицензия и документация
@@ -185,7 +185,7 @@ do_install() {
 	# 13. Нормализация прав (важно для pkglint!)
 	find "${DESTDIR}/usr/share/applications" -type f -name '*.desktop' \
 		-exec chmod 0644 {} + 2>/dev/null || true
-	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
+	find "${DESTDIR}/usr/share/pixmaps" -type f \
 		-exec chmod 0644 {} + 2>/dev/null || true
 }
 

@@ -47,6 +47,8 @@ checksum=ae6345189be16bd634c7dbac5cc47e41b7385dd657c8877faf15a7a4f836231b
 provides="rox-filer-${version}_${revision}"
 replaces="rox-filer>=0"
 
+export XBPS_COMPRESS_MAN=gz
+
 LANGS="ar ca de es fr hu it ja pt ru zh"
 
 pre_build() {
@@ -150,16 +152,16 @@ do_install() {
 	fi
 
 	# 9. Man-страницы
+	vmkdir usr/share/man/man1
 
-#	vmkdir usr/share/man/man1
-    # === УСТАНОВКА MAN-СТРАНИЦ (вместо ваших install/gzip/ln) ===
-    # vman сам копирует, сжимает и обрабатывает заголовки.
-    vman data/man/rox-find.1 # data/man/rox.1
+	vman data/man/rox-find.1 # data/man/rox.1
 
-    # Создание ссылок для псевдонимов (так как в .1 файлах их может не быть) rox.1.gz
-    for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-        ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
-    done
+	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/"*.1
+
+	# Создание ссылок для псевдонимов (так как в .1 файлах их может не быть) rox.1.gz
+	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+	done
 
 #	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
 

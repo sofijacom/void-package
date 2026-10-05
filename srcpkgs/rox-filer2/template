@@ -190,7 +190,9 @@ do_install() {
 		-exec chmod 0644 {} + 2>/dev/null || true
 }
 
-post_pkg() {
+post_install() {
+	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
+
 	# Создаём алиасы уже после того, как xbps-src сжал rox-find.1 → rox-find.1.gz
 	local man_dir="${PKGDESTDIR}/usr/share/man/man1"
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do

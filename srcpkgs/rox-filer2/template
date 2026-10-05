@@ -2,8 +2,6 @@
 pkgname=rox-filer2
 version=2.13.0.8
 revision=2
-export XBPS_COMPRESS_MAN=gz
-export XBPS_MANPAGE_STYLE=none
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
@@ -152,16 +150,40 @@ do_install() {
 	fi
 
 	# 9. Man-страницы
-#	vmkdir usr/share/man/man1
+	vmkdir usr/share/man/man1
 
-	vman data/man/rox-find.1 # data/man/rox.1
+    # 2. Сначала создаем "пустые" ссылки на имя, которое будет у основного файла
+    # (На этом этапе они битые, это нормально)
+    for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+        ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+    done
 
-	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
+    # 3. Устанавливаем ОСНОВНУЮ страницу поверх (или рядом)
+    # vinstall скопирует файл и сохранит права
+    #vinstall data/man/rox.1 644 usr/share/man/man1 rox.1
 
-	# Создание ссылок для псевдонимов (так как в .1 файлах их может не быть) rox.1.gz
-	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
-	done
+    # 4. Устанавливаем вторую страницу под своим уникальным именем
+    vinstall data/man/rox-find.1 644 usr/share/man/man1 rox-find.1
+
+    # 5. Сжимаем ОБА файла.
+    # rox.1.gz появится, и ссылки из п.2 станут рабочими.
+    # rox-find.1.gz появится рядом.
+    gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" # "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+
+    # 6. Для страницы rox-find тоже нужны свои ссылки, если они требуются
+    # (Если нет — пропустите этот цикл)
+    for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+        ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}-find.1.gz"
+    done
+
+#	vman data/man/rox-find.1 # data/man/rox.1
+
+#	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
+
+#	# Создание ссылок для псевдонимов (так как в .1 файлах их может не быть) rox.1.gz
+#	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+#		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+#	done
 
 #	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию
 

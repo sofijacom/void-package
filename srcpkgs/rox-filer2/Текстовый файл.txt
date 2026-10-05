@@ -1,0 +1,30 @@
+do_install() {
+    # ... (вся ваша установка бинарников, иконок, локалей) ...
+
+    # 1. Создаем директорию
+    vmkdir usr/share/man/man1
+
+    # 2. Сначала создаем "пустые" ссылки на имя, которое будет у основного файла
+    # (На этом этапе они битые, это нормально)
+    for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
+        ln -sfn rox.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+    done
+
+    # 3. Устанавливаем ОСНОВНУЮ страницу поверх (или рядом)
+    # vinstall скопирует файл и сохранит права
+    vinstall data/man/rox.1 644 usr/share/man/man1 rox.1
+
+    # 4. Устанавливаем вторую страницу под своим уникальным именем
+    vinstall data/man/rox-find.1 644 usr/share/man/man1 rox-find.1
+
+    # 5. Сжимаем ОБА файла.
+    # rox.1.gz появится, и ссылки из п.2 станут рабочими.
+    # rox-find.1.gz появится рядом.
+    gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/rox.1" "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
+
+    # 6. Для страницы rox-find тоже нужны свои ссылки, если они требуются
+    # (Если нет — пропустите этот цикл)
+    # for alias in ...; do
+    #     ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}-find.1.gz"
+    # done
+}

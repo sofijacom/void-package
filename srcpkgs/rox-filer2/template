@@ -6,7 +6,7 @@ _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
 configure_args="-Dsmb=enabled -Dportable_devices=auto"
-hostmakedepends="pkg-config python3 gettext meson ninja cmake gzip"
+hostmakedepends="pkg-config python3 gettext meson ninja cmake"
 makedepends="
 	gtk+3-devel
 	glib-devel
@@ -154,7 +154,7 @@ do_install() {
 
 	vman data/man/rox-find.1 # data/man/rox.1
 
-	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
+#	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
 	# Создание ссылок для псевдонимов (rox.1.gz )
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do

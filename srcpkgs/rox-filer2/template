@@ -158,7 +158,7 @@ do_install() {
 
 	# Создание ссылок для псевдонимов (rox.1.gz )
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+		ln -sfn rox-find.1 "${PKGDESTDIR}/usr/share/man/man1/${alias}.1"
 	done
 
 #	local main_rox_target="rox-find.1.gz" # Ссылка по умолчанию

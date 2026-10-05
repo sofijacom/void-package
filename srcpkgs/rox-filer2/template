@@ -5,8 +5,9 @@ revision=3
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
-configure_args="-Dsmb=enabled -Dportable_devices=auto --libdir=/usr/lib"
-hostmakedepends="pkg-config python3 gettext meson ninja"
+# Исправлен путь libdir, добавлен флаг для Wayland/GTK Layer Shell
+configure_args="-Dsmb=enabled -Dportable_devices=auto --libdir=/usr/lib --buildtype=release"
+hostmakedepends="pkg-config python3 gettext meson ninja gzip"
 makedepends="
 	gtk+3-devel
 	glib-devel
@@ -57,7 +58,7 @@ do_strip() {
 	vbin "${wrksrc}/build/rox-find"
 }
 
-# Компилируем .po файлы в .mo до начала основной сборки
+# pre_build выполняется на хосте, vmsg недоступен. Используем printf.
 pre_build() {
 	printf "==> Compiling translations (.po -> .mo)\n"
 	local lang
@@ -156,23 +157,30 @@ do_install() {
 		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
 	fi
 
-	# 9. Man-страницы
+	# 9. Man-страницы (только копируем, сжатие перенесено в post_install)
 	vmkdir usr/share/man/man1
-
-	# Устанавливаем rox-find (он всегда должен быть)
 	if [ -f "${wrksrc}/data/man/rox-find.1" ]; then
 		vinstall "${wrksrc}/data/man/rox-find.1" 0644 "usr/share/man/man1"
-		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1"
 	fi
-
-	# Пытаемся установить основной 'rox'
 	if [ -f "${wrksrc}/data/man/rox.1" ]; then
 		vinstall "${wrksrc}/data/man/rox.1" 0644 "usr/share/man/man1"
-		gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1"
 	fi
 
-	# Создаем ВСЕ ссылки (alias)
-	# По умолчанию ссылаемся на rox.1.gz, но если его нет — на rox-find.1.gz
+	# 10. Нормализация прав (важно для pkglint!)
+	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
+		-exec chmod 0644 {} + 2>/dev/null || true
+	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
+		-exec chmod 0644 {} + 2>/dev/null || true
+}
+
+# Сжатие man-страниц и создания ссылок.
+post_install() {
+	# Сжимаем man-страницы. 2>/dev/null нужно, чтобы сборка не упала,
+	# если файл не был скопирован в do_install.
+	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox-find.1" 2>/dev/null || true
+	gzip -n -9 "${PKGDESTDIR}/usr/share/man/man1/rox.1" 2>/dev/null || true
+
+	# Создаем ВСЕ ссылки (alias) на ТОТ файл, который существует и сжат
 	local target="rox.1.gz"
 	if [ ! -f "${PKGDESTDIR}/usr/share/man/man1/rox.1.gz" ]; then
 		target="rox-find.1.gz"
@@ -181,10 +189,4 @@ do_install() {
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
 		ln -sf "/usr/share/man/man1/${target}" "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 	done
-
-	# 10. Нормализация прав (важно для pkglint!)
-	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
-		-exec chmod 0644 {} + 2>/dev/null || true
-	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \
-		-exec chmod 0644 {} + 2>/dev/null || true
 }

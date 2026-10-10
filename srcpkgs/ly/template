@@ -2,7 +2,7 @@
 
 pkgname=ly
 version=1.5.0
-revision=1
+revision=2
 archs="x86_64"
 build_style=zig-build
 hostmakedepends="pkg-config zig-0.17 git"

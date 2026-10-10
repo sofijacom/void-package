@@ -1,0 +1,89 @@
+diff --git a/res/config.ini b/res/config.ini
+index 21af637..ce81043 100644
+--- a/res/config.ini
++++ b/res/config.ini
+@@ -112,14 +112,14 @@ box_position_v = 0.5
+ box_title = null
+ 
+ # Brightness decrease command
+-brightness_down_cmd = $PREFIX_DIRECTORY/bin/brightnessctl -q -n s 10%-
++brightness_down_cmd = /usr/bin/brightnessctl -q -n s 10%-
+ 
+ # Brightness decrease key combination
+ # If null, the keybind is disabled and isn't shown
+ brightness_down_key = F5
+ 
+ # Brightness increase command
+-brightness_up_cmd = $PREFIX_DIRECTORY/bin/brightnessctl -q -n s +10%
++brightness_up_cmd = /usr/bin/brightnessctl -q -n s +10%
+ 
+ # Brightness increase key combination
+ # If null, the keybind is disabled and isn't shown
+@@ -200,7 +200,7 @@ custom_bind_width = null
+ # Custom sessions directory
+ # You can specify multiple directories,
+ # e.g. $CONFIG_DIRECTORY/ly/custom-sessions:$PREFIX_DIRECTORY/share/custom-sessions
+-custom_sessions = $CONFIG_DIRECTORY/ly/custom-sessions
++custom_sessions = /etc/ly/custom-sessions
+ 
+ # Input box active by default on startup
+ # Available inputs: info_line, session, login, password
+@@ -222,7 +222,7 @@ doom_middle_color = 0x00C78F17
+ doom_bottom_color = 0x00FFFFFF
+ 
+ # Dur file path
+-dur_file_path = $CONFIG_DIRECTORY/ly/example.dur
++dur_file_path = /etc/ly/example.dur
+ 
+ # Dur file alignment
+ # The dur file can be aligned with a direction and centered easily with the flags below
+@@ -365,7 +365,7 @@ service_name = ly
+ session_log = .local/state/ly-session.log
+ 
+ # Setup command
+-setup_cmd = $CONFIG_DIRECTORY/ly/setup.sh
++setup_cmd = /etc/ly/setup.sh
+ 
+ # Show the shell session in the session list
+ # If false, the shell session will be hidden
+@@ -381,7 +381,7 @@ shutdown_key = F1
+ 
+ # Command executed when starting Ly (before the TTY is taken control of)
+ # See file at path below for an example of changing the default TTY colors
+-start_cmd = $CONFIG_DIRECTORY/ly/startup.sh
++start_cmd = /etc/ly/startup.sh
+ 
+ # Center the session name.
+ text_in_center = false
+@@ -402,11 +402,11 @@ vi_mode = false
+ # You can specify multiple directories,
+ # e.g. $PREFIX_DIRECTORY/share/wayland-sessions:$PREFIX_DIRECTORY/local/share/wayland-sessions
+ # If null, Wayland sessions will not be shown
+-waylandsessions = $PREFIX_DIRECTORY/share/wayland-sessions
++waylandsessions = /usr/share/wayland-sessions
+ 
+ # Xorg server command
+ # Add the -quiet argument to hide startup logs from the server
+-x_cmd = $PREFIX_DIRECTORY/bin/X
++x_cmd = /usr/bin/X
+ 
+ # Xorg virtual terminal number
+ # Mostly useful for FreeBSD where choosing the current TTY causes issues
+@@ -414,7 +414,7 @@ x_cmd = $PREFIX_DIRECTORY/bin/X
+ x_vt = null
+ 
+ # Xorg xauthority edition tool
+-xauth_cmd = $PREFIX_DIRECTORY/bin/xauth
++xauth_cmd = /usr/bin/xauth
+ 
+ # xinitrc
+ # If null, the xinitrc session will be hidden
+@@ -424,7 +424,7 @@ xinitrc = ~/.xinitrc
+ # You can specify multiple directories,
+ # e.g. $PREFIX_DIRECTORY/share/xsessions:$PREFIX_DIRECTORY/local/share/xsessions
+ # If null, X11 sessions will not be shown
+-xsessions = $PREFIX_DIRECTORY/share/xsessions
++xsessions = /usr/share/xsessions
+ 
+ # Custom Commands and Labels:
+ # The following examples below give an outline for setting up custom commands and labels.

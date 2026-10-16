@@ -9,8 +9,8 @@ __dir="$(dirname "${BASH_SOURCE[0]}")"
 
 echo "### Checking for librewolf updates..."
 
-# LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/bsys6/releases/latest" | jq -r ".tag_name")
-LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/source/releases/latest" | jq -r ".tag_name")
+LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/bsys6/releases/latest" | jq -r ".tag_name")
+# LATEST_VERSION=$(curl -s "https://codeberg.org/api/v1/repos/librewolf/source/releases/latest" | jq -r ".tag_name")
 
 export VERSION=${LATEST_VERSION#"v"}
 CUR_VERSION=$(grep -E '^version=' ${__dir}/template | cut -d= -f2)
@@ -36,8 +36,9 @@ fi
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
 # URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf-source/${LATEST_VERSION}/librewolf-${LATEST_VERSION}.source.tar.gz"
-# URL_X86="https://dl.librewolf.net/librewolf/${LATEST_VERSION}/librewolf-${LATEST_VERSION}-linux-x86_64-package.tar.xz"
-URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf/${LATEST_VERSION}/librewolf-${LATEST_VERSION}-linux-x86_64-package.tar.xz"
+
+URL_X86="https://dl.librewolf.net/librewolf/${LATEST_VERSION}/librewolf-${LATEST_VERSION}-linux-x86_64-package.tar.xz"
+# URL_X86="https://codeberg.org/api/packages/librewolf/generic/librewolf/${LATEST_VERSION}/librewolf-${LATEST_VERSION}-linux-x86_64-package.tar.xz"
 
 echo "Calculating checksum..."
 CHK_X86=$(curl -L -s "$URL_X86" | sha256sum | awk '{print $1}')

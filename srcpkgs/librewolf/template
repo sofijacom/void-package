@@ -1,6 +1,6 @@
 # Template file for 'librewolf'
 pkgname=librewolf
-version=158.0.1
+version=158.0
 timestamp=1
 revision=1
 archs="x86_64"

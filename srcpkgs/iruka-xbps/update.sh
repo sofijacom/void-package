@@ -3,7 +3,7 @@
 set -euo pipefail
 
 REPO="javiercplus/iruka-xbps"
-TPL="srcpkgs/iruka-xbps"
+TPL="srcpkgs/iruka-xbps/template"
 
 echo "### Checking for iruka-xbps updates..."
 

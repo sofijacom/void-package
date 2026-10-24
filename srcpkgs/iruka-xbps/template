@@ -1,6 +1,6 @@
 # Template file for 'iruka-xbps'
 pkgname=iruka-xbps
-version=0.2.0.1
+version=0.2.0
 revision=1
 _tarver=${version%.*}_${version##*.}
 build_style=meson

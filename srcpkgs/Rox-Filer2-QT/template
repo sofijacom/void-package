@@ -20,10 +20,10 @@ makedepends="
 # Runtime-зависимости.
 # libmagic и shared-mime-info нужны для mime.cpp.
 # libpolkit нужен для data/qt-polkit-session и policy-файлов.
-depends="libXext libmagic shared-mime-info libpolkit cifs-utils"
+depends="libXext libmagic shared-mime-info polkit cifs-utils"
 
 short_desc="ROX-Filer port to Qt6"
-maintainer="Your Name <your.email@example.com>"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/josejp2424/Rox-Filer2-QT"
 distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${version}-QT.tar.gz"

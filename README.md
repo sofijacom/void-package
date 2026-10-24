@@ -31,6 +31,12 @@
 >>  _How to use_
 >>> _type in the terminal_
 
+### Make sure xbps.d directory exists:
+
+```
+sudo mkdir -p /etc/xbps.d
+```
+
 ```shell
 printf "repository=https://github.com/sofijacom/void-package/releases/latest/download" | sudo tee /etc/xbps.d/sofijacom-void-repository.conf
 ```

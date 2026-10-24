@@ -12,7 +12,7 @@ if ! LATEST_TAG=$(gh api repos/"$REPO"/releases/latest --jq .tag_name 2>/dev/nul
     exit 1
 fi
 VERSION="${LATEST_TAG/_/.}"  # Получаем "0.2.0.1"
-LATEST_VERSION="${VERSION%.*}_${VERSION##*.}"
+LATEST_VERSION="${VERSION%.*}_${VERSION##*.}"  # Получаем "0.2.0_1"
 
 # Обрезаем всё после подчеркивания 
 # VERSION="${LATEST_TAG%_*}" # Получаем "0.2.0"

@@ -11,9 +11,11 @@ if ! LATEST_TAG=$(gh api repos/"$REPO"/releases/latest --jq .tag_name 2>/dev/nul
     echo "Error: Failed to fetch latest tag from GitHub API."
     exit 1
 fi
-# VERSION="${LATEST_TAG/_/.}"  # Получаем "0.2.0.1"
+VERSION="${LATEST_TAG/_/.}"  # Получаем "0.2.0.1"
+LATEST_VERSION="${VERSION%.*}_${VERSION##*.}"
+
 # Обрезаем всё после подчеркивания 
-VERSION="${LATEST_TAG%_*}" # Получаем "0.2.0"
+# VERSION="${LATEST_TAG%_*}" # Получаем "0.2.0"
 # VERSION=${LATEST_TAG#v}
 
 if [[ ! -f "$TPL" ]]; then
@@ -31,7 +33,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-URL="https://github.com/$REPO/archive/refs/tags/${LATEST_TAG}.tar.gz"
+URL="https://github.com/$REPO/archive/refs/tags/${LATEST_VERSION}.tar.gz"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$URL" | sha256sum | awk '{print $1}')

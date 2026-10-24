@@ -1,0 +1,52 @@
+# Template file for 'Rox-Filer2-QT'
+pkgname=Rox-Filer2-QT
+version=1.0.7
+revision=1
+build_style=cmake
+# Используем Release, как в вашем build.sh, для оптимизации
+configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja"
+
+hostmakedepends="cmake ninja pkg-config qt6-tools"
+makedepends="
+ qt6-base-devel
+ qt6-svg-devel
+ qt6-tools-devel
+ libX11-devel
+ libXft-devel
+ libXext-devel
+ libdbus-devel"
+
+# Runtime-зависимости.
+# libmagic и shared-mime-info нужны для mime.cpp.
+# libpolkit нужен для data/qt-polkit-session и policy-файлов.
+depends="libXext libmagic shared-mime-info libpolkit"
+
+short_desc="ROX-Filer port to Qt6"
+maintainer="Your Name <your.email@example.com>"
+license="GPL-2.0-or-later"
+homepage="https://github.com/josejp2424/Rox-Filer2-QT"
+distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${version}-QT.tar.gz"
+checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
+
+do_install() {
+    # CMake сам установит всё, что прописано в install()
+    cmake --install build --destdir "${DESTDIR}"
+
+    # КРИТИЧЕСКАЯ ПРАВКА:
+    # В mime.cpp захардкожен путь /usr/share/mime/packages/rox-filer2-qt.xml.
+    # CMakeLists.txt его НЕ устанавливает. Создаем заглушку, чтобы не было ошибок fopen.
+    vmkdir usr/share/mime/packages
+    touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
+
+    # Устанавливаем документацию (help), так как CMake копирует ее в share/rox-filer2-qt/help
+    if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
+        vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"
+    fi
+}
+
+Rox-Filer2-QT-doc_package() {
+    pkg_install() {
+        vdoc README.md
+        vlicense LICENSE
+    }
+}

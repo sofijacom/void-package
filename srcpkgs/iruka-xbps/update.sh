@@ -31,7 +31,7 @@ fi
 
 echo "Update found: $CURRENT_VERSION -> $VERSION"
 
-URL="https://github.com/$REPO/archive/refs/tags/${LATEST_TAG}.tar.gz"
+URL="https://github.com/$REPO/archive/refs/tags/${VERSION}_1.tar.gz"
 
 echo "Calculating checksum..."
 CHK=$(curl -L -s "$URL" | sha256sum | awk '{print $1}')

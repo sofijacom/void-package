@@ -16,10 +16,16 @@ makedepends="
  expat-devel
  dbus-devel
  polkit-devel
- fuse-devel"
-
+ fuse-devel
+ fuse3-devel
+ libmtp-devel
+ libgphoto2-devel
+ libimobiledevice-devel
+ samba-devel
+ libusb-devel
+ libplist-devel
+ libusbmuxd-devel"
 depends="libXext libmagic shared-mime-info polkit cifs-utils fuse3"
-
 short_desc="ROX-Filer port to Qt6"
 maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
@@ -28,11 +34,20 @@ distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${vers
 checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
 
 do_install() {
-    # Устанавливаем переменную окружения DESTDIR перед вызовом cmake
+    # cmake install
     env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/qt/build" --target install
 
-    # КРИТИЧЕСКАЯ ПРАВКА: заглушка для mime.xml
+    # EDIT: Placeholder for mime.xml
     vmkdir usr/share/mime/packages
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
 
+}
+
+post_install() {
+    vlicense LICENSE LICENSE
+    vdoc README.md
+}
+
+post_remove() {
+    update-mime-database update /usr/share/mime >/dev/null 2>&1
 }

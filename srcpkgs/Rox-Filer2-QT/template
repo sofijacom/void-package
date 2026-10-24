@@ -35,8 +35,4 @@ do_install() {
     vmkdir usr/share/mime/packages
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
 
-    # Документация
-    if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
-        vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"
-    fi
 }

@@ -1,6 +1,6 @@
 # Template file for 'iruka-xbps'
 pkgname=iruka-xbps
-version=0.2.0
+version=0.2.0.1
 revision=1
 build_style=meson
 build_helper=qemu
@@ -14,7 +14,7 @@ license="WTFPL AND BSD-3-Clause"
 homepage="https://github.com/javiercplus/iruka-xbps"
 distfiles="https://github.com/javiercplus/iruka-xbps/archive/refs/tags/${version}_1.tar.gz"
 # distfiles="https://github.com/javiercplus/iruka-xbps/releases/download/${version}/iruka-xbps-main.tar.gz"
-checksum=07850b09be6aea225e8267b73bcb50d2be70b55f2751b93b89263bd7f5f8d08d
+checksum=d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed
 
 post_install() {
     vlicense LICENSE

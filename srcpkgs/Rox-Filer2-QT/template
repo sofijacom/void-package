@@ -41,11 +41,6 @@ do_install() {
     vmkdir usr/share/mime/packages
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
 
-    # Устанавливаем документацию (help), так как CMake копирует ее в share/rox-filer2-qt/help
-    if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
-        vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"
-    fi
-
     # Документация
     if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
         vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"

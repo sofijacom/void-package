@@ -15,7 +15,8 @@ makedepends="
  libXft-devel
  libXext-devel
  expat-devel
- dbus-devel"
+ dbus-devel
+ polkit-devel"
 
 # Runtime-зависимости.
 # libmagic и shared-mime-info нужны для mime.cpp.

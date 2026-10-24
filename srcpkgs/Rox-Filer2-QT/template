@@ -40,9 +40,8 @@ do_install() {
     # EDIT: Placeholder for mime.xml
     vmkdir usr/share/mime/packages
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
-}
 
-post_install() {
+    # LICENSE README
     vlicense LICENSE
     vdoc README.md
 }

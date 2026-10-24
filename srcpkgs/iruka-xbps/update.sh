@@ -11,7 +11,10 @@ if ! LATEST_TAG=$(gh api repos/"$REPO"/releases/latest --jq .tag_name 2>/dev/nul
     echo "Error: Failed to fetch latest tag from GitHub API."
     exit 1
 fi
-VERSION=${LATEST_TAG#v}
+VERSION="${LATEST_TAG/_/.}"
+# Обрезаем всё после подчеркивания 
+# VERSION="${TAG_CLEAN%_*}" # Получаем "0.2.0"
+# VERSION=${LATEST_TAG#v}
 
 if [[ ! -f "$TPL" ]]; then
     echo "Error: Template file '$TPL' not found."

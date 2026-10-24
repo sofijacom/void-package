@@ -1,7 +1,7 @@
 # Template file for 'rox-filer2'
 pkgname=rox-filer2
 version=2.13.0.8
-revision=2
+revision=1
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"
 build_style=meson
@@ -169,13 +169,14 @@ do_install() {
 
 	# 9. Man-страницы
 	vmkdir usr/share/man/man1
-	vman data/man/rox-find.1 # data/man/rox.1
+	vman data/man/rox.1 # data/man/rox.1 rox-find.1
+	vman data/man/rox-find.1
 
 	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
 	# Создание ссылок для псевдонимов (rox.1.gz )
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-		ln -sfn rox-find.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
+		ln -sfn rox.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 	done
 
 	# 13. Нормализация прав (важно для pkglint!)

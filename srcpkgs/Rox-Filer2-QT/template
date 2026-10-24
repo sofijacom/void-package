@@ -45,11 +45,9 @@ do_install() {
     if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
         vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"
     fi
-}
 
-Rox-Filer2-QT-doc_package() {
-    pkg_install() {
-        vdoc README.md
-        vlicense LICENSE
-    }
+    # Документация
+    if [ -d "${DESTDIR}/usr/share/rox-filer2-qt/help" ]; then
+        vdoc "${DESTDIR}/usr/share/rox-filer2-qt/help"
+    fi
 }

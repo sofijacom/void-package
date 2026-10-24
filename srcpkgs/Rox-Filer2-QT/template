@@ -5,7 +5,7 @@ revision=1
 build_style=cmake
 # Используем Release, как в вашем build.sh, для оптимизации
 configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja"
-
+build_wrksrc="qt"
 hostmakedepends="cmake ninja pkg-config qt6-tools"
 makedepends="
  qt6-base-devel
@@ -16,12 +16,13 @@ makedepends="
  libXext-devel
  expat-devel
  dbus-devel
- polkit-devel"
+ polkit-devel
+ fuse-devel"
 
 # Runtime-зависимости.
 # libmagic и shared-mime-info нужны для mime.cpp.
 # libpolkit нужен для data/qt-polkit-session и policy-файлов.
-depends="libXext libmagic shared-mime-info polkit cifs-utils"
+depends="libXext libmagic shared-mime-info polkit cifs-utils fuse3"
 
 short_desc="ROX-Filer port to Qt6"
 maintainer="Sofiya <sofija.p2018@gmail.com>"

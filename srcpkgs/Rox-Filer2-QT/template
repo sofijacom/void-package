@@ -26,7 +26,7 @@ makedepends="
  libplist-devel
  libusbmuxd-devel"
 depends="libXext libmagic shared-mime-info polkit cifs-utils fuse3"
-short_desc="ROX-Filer port to Qt6"
+short_desc="Rox-Filer2 modern Qt6 file manager"
 maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/josejp2424/Rox-Filer2-QT"
@@ -40,11 +40,10 @@ do_install() {
     # EDIT: Placeholder for mime.xml
     vmkdir usr/share/mime/packages
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
-
 }
 
 post_install() {
-    vlicense LICENSE LICENSE
+    vlicense LICENSE
     vdoc README.md
 }
 

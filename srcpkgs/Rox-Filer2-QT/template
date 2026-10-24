@@ -14,12 +14,13 @@ makedepends="
  libX11-devel
  libXft-devel
  libXext-devel
- libdbus-devel"
+ expat-devel
+ dbus-devel"
 
 # Runtime-зависимости.
 # libmagic и shared-mime-info нужны для mime.cpp.
 # libpolkit нужен для data/qt-polkit-session и policy-файлов.
-depends="libXext libmagic shared-mime-info libpolkit"
+depends="libXext libmagic shared-mime-info libpolkit cifs-utils"
 
 short_desc="ROX-Filer port to Qt6"
 maintainer="Your Name <your.email@example.com>"

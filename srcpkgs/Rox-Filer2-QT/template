@@ -42,6 +42,13 @@ do_install() {
     touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
 }
 
-post_remove() {
-    update-mime-database update /usr/share/mime >/dev/null 2>&1
+post_install() {
+	# 8. Лицензия и документация
+	if [ -f "${wrksrc}/LICENSE" ]; then
+		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
+	fi
+
+	if [ -f "${wrksrc}/README.md" ]; then
+		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
+	fi
 }

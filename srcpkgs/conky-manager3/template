@@ -1,0 +1,23 @@
+# Template file for 'conky-manager3'
+pkgname=conky-manager3
+version=3.3.1
+revision=1
+build_style=meson
+wrksrc="Conky-Manager-3-${version}"
+configure_args=""
+hostmakedepends="gettext-devel meson ninja pkg-config vala"
+makedepends="gtk+3-devel json-glib-devel libgee08-devel"
+depends="ImageMagick conky p7zip rsync curl psmisc"
+short_desc="GUI for managing Conky configuration files (Vala/Meson rewrite)"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
+license="GPL-2.0-or-later"
+homepage="https://github.com/thuutien/Conky-Manager-3"
+distfiles="https://github.com/thuutien/Conky-Manager-3/archive/refs/tags/v${version}.tar.gz"
+checksum="dbdd18b07a22e3b6ed9e3f8f06ee000ee4a2510ddde8212c3bce17c85feaca86"
+
+# Optional: If tests are not configured or require a graphical session, they can be disabled.
+# options="!check"
+
+do_install() {
+    meson install -C build --destdir="${DESTDIR}" --no-rebuild
+}

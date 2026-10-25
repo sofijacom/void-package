@@ -57,7 +57,8 @@ sudo xbps-install -S
 | Brave-origin ( stable )             | https://www.brave.com/                            | ✔️ |
 | Brave-origin ( beta )               | https://www.brave.com/                            | ✔️ |
 | Calamares ( Graphical installer )   | https://calamares.io                              | ✔️ |
-| Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 | 
+| Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 |
+| Conky-manager3                      | https://github.com/thuutien/Conky-Manager-3       | ✔️ |
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ✔️ |
 | Google-chrome ( stable )            | https://www.google.com/chrome/                    | ✔️ |
 | Gtk3dialog ( GTK+ 3, VTE )          | https://github.com/puppylinux-woof-CE/gtkdialog   | ✔️ |

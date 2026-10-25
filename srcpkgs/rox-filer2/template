@@ -149,37 +149,19 @@ do_install() {
 		vinstall "${wrksrc}/README.md" 0644 "usr/share/doc/${pkgname}"
 	fi
 
-# 9. Man-страницы: test
-#	local man_dir="${PKGDESTDIR}/usr/share/man/man1"
-#	local src_man="${wrksrc}/data/man/rox-find.1"
-
-#	mkdir -p "${man_dir}"
-
-#	# Копируем несжатую страницу
-#	cp -p "${src_man}" "${man_dir}/rox-find.1"
-#	chmod 0644 "${man_dir}/rox-find.1"
-
-#	# Сжимаем её вручную — теперь .gz точно будет в пакете
-#	gzip -n -9 -f "${man_dir}/rox-find.1"
-
-#	# Создаём алиасы — они будут указывать на .gz
-#	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
-#		ln -sfn rox-find.1.gz "${man_dir}/${alias}.1.gz"
-#	done
-
 	# 9. Man-страницы
 	vmkdir usr/share/man/man1
-	vman data/man/rox.1 # data/man/rox.1 rox-find.1
+	vman data/man/rox.1
 	vman data/man/rox-find.1
 
 	gzip -n -9 -f "${PKGDESTDIR}/usr/share/man/man1/"*.1
 
-	# Создание ссылок для псевдонимов (rox.1.gz )
+	# 10. Создание ссылок для псевдонимов (rox.1.gz )
 	for alias in roxfiler Rox-Filer2 ROX-Filer rox-wayland rox-x11; do
 		ln -sfn rox.1.gz "${PKGDESTDIR}/usr/share/man/man1/${alias}.1.gz"
 	done
 
-	# 13. Нормализация прав (важно для pkglint!)
+	# 11. Нормализация прав (важно для pkglint!)
 	find "${PKGDESTDIR}/usr/share/applications" -type f -name '*.desktop' \
 		-exec chmod 0644 {} + 2>/dev/null || true
 	find "${PKGDESTDIR}/usr/share/pixmaps" -type f \

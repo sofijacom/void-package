@@ -35,7 +35,7 @@ checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
 
 do_install() {
 	# cmake install
-	env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/build" --target install
+	env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/qt/build" --target install
 
 #	# EDIT: Placeholder for mime.xml
 #	vmkdir usr/share/mime/packages

@@ -37,11 +37,7 @@ do_install() {
 	# cmake install
 	env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/qt/build" --target install
 
-#	# EDIT: Placeholder for mime.xml
-#	vmkdir usr/share/mime/packages
-#	touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
-
-	# 8. License and documentation
+	# License and documentation
 	if [ -f "${wrksrc}/LICENSE" ]; then
 		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
 	fi

@@ -83,6 +83,7 @@ sudo xbps-install -S
 | perl-Sys-Mmap                       | https://metacpan.org/pod/perl::Sys::Mmap          | ✔️ |
 | Pup-volume-monitor                  | https://github.com/01micko/pup-volume-monitor     | 🔐 |
 | rox-filer2 (file manager)           | https://github.com/josejp2424/ROX-Filer2          | ✔️ |
+| Rox-Filer2-QT                       | https://github.com/josejp2424/Rox-Filer2-QT       | ✔️ |
 | SeaMonkey ( Web-browser )           | https://www.seamonkey-project.org/                | ✔️ |
 | SmartGit                            | https://www.smartgit.dev/                         | ✔️ |
 | Waterfox-browser                    | https://www.waterfox.net/                         | ✔️ |

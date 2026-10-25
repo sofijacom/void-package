@@ -7,24 +7,24 @@ configure_args="-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -G Ninja"
 build_wrksrc="qt"
 hostmakedepends="cmake ninja pkg-config qt6-tools"
 makedepends="
- qt6-base-devel
- qt6-svg-devel
- qt6-tools-devel
- libX11-devel
- libXft-devel
- libXext-devel
- expat-devel
- dbus-devel
- polkit-devel
- fuse-devel
- fuse3-devel
- libmtp-devel
- libgphoto2-devel
- libimobiledevice-devel
- samba-devel
- libusb-devel
- libplist-devel
- libusbmuxd-devel"
+	qt6-base-devel
+	qt6-svg-devel
+	qt6-tools-devel
+	libX11-devel
+	libXft-devel
+	libXext-devel
+	expat-devel
+	dbus-devel
+	polkit-devel
+	fuse-devel
+	fuse3-devel
+	libmtp-devel
+	libgphoto2-devel
+	libimobiledevice-devel
+	samba-devel
+	libusb-devel
+	libplist-devel
+	libusbmuxd-devel"
 depends="libXext libmagic shared-mime-info polkit cifs-utils fuse3"
 short_desc="Rox-Filer2 modern Qt6 file manager"
 maintainer="Sofiya <sofija.p2018@gmail.com>"
@@ -34,16 +34,14 @@ distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${vers
 checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
 
 do_install() {
-    # cmake install
-    env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/qt/build" --target install
+	# cmake install
+	env DESTDIR="${DESTDIR}" cmake --build "${wrksrc}/build" --target install
 
-    # EDIT: Placeholder for mime.xml
-    vmkdir usr/share/mime/packages
-    touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
-}
+#	# EDIT: Placeholder for mime.xml
+#	vmkdir usr/share/mime/packages
+#	touch "${DESTDIR}/usr/share/mime/packages/rox-filer2-qt.xml"
 
-post_install() {
-	# 8. Лицензия и документация
+	# 8. License and documentation
 	if [ -f "${wrksrc}/LICENSE" ]; then
 		vinstall "${wrksrc}/LICENSE" 0644 "usr/share/licenses/${pkgname}"
 	fi

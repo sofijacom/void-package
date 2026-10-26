@@ -20,4 +20,7 @@ checksum="dbdd18b07a22e3b6ed9e3f8f06ee000ee4a2510ddde8212c3bce17c85feaca86"
 
 do_install() {
     meson install -C build --destdir="${DESTDIR}" --no-rebuild
+
+    # license
+    install -Dm644 COPYING "${DESTDIR}/usr/share/licenses/${pkgname}/LICENSE"
 }

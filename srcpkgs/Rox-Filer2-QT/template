@@ -32,7 +32,7 @@ license="GPL-2.0-or-later"
 homepage="https://github.com/josejp2424/Rox-Filer2-QT"
 distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${version}-QT.tar.gz"
 checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
-provides="rox-filer2-qt-${version}_${revision}"
+provides="rox-filer2-${version}_${revision}"
 replaces="rox-filer2>=0"
 
 do_install() {

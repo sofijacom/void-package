@@ -1,6 +1,6 @@
 # Template file for 'conky-manager3'
 pkgname=conky-manager3
-version=3.3.1
+version=3.4.2
 revision=1
 build_style=meson
 wrksrc="Conky-Manager-3-${version}"
@@ -13,7 +13,7 @@ maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/thuutien/Conky-Manager-3"
 distfiles="https://github.com/thuutien/Conky-Manager-3/archive/refs/tags/v${version}.tar.gz"
-checksum="dbdd18b07a22e3b6ed9e3f8f06ee000ee4a2510ddde8212c3bce17c85feaca86"
+checksum=18aa5b01a14c48552f170730720750edb4e5993b7983be9c0947df423240c795
 
 # Optional: If tests are not configured or require a graphical session, they can be disabled.
 # options="!check"

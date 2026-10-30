@@ -1,7 +1,7 @@
 # Template file for 'brave-origin-beta'
 
 pkgname=brave-origin-beta
-version=1.100.44
+version=1.100.45
 revision=1
 archs="x86_64"
 create_wrksrc=yes
@@ -12,7 +12,7 @@ license="MPL-2.0"
 homepage="https://www.brave.com/"
 changelog="https://brave.com/latest/"
 distfiles="https://github.com/brave/brave-browser/releases/download/v${version}/brave-origin-beta-${version}-1.x86_64.rpm"
-checksum="f692e7cdeb0bfc79f16d7e255b72154fcabf99fb28c7c02cd71efd613536c79e"
+checksum="15c2853010e5f5941671c1b98e7503452eb48c1c97c4331f35e7749ba0c3c169"
 
 do_install() {
 

@@ -1,6 +1,6 @@
 # Template file for 'rox-filer2'
 pkgname=rox-filer2
-version=2.14.0.6
+version=2.14.0.5
 revision=1
 _tarver="${version%.*}-${version##*.}"
 wrksrc="ROX-Filer2-${_tarver}"

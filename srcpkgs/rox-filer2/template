@@ -43,7 +43,7 @@ maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/josejp2424/ROX-Filer2"
 distfiles="https://github.com/josejp2424/ROX-Filer2/archive/refs/tags/v${_tarver}.tar.gz"
-checksum=35c34ff3fe58da1ecea9fa658f6aca9d9437b563963783f5148bcb632d748320
+checksum=38b87961526905b7d96ca6932af69406d07622c8a1612e2bdca01dc5258f93ae
 provides="rox-filer-${version}_${revision}"
 replaces="rox-filer>=0"
 

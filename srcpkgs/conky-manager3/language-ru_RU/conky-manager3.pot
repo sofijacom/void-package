@@ -1,0 +1,1141 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-24 00:28+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: ../src/EditThemeWindow.vala:57
+msgid "Save Theme"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:57
+msgid "Edit Theme"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:67
+msgid "Theme Name"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:80 ../src/EditThemeWindow.vala:93
+msgid "Wallpaper"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:80
+msgid "Include desktop wallpaper in theme"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:113
+msgid "None"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:115
+msgid "Custom Wallpaper"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:123
+msgid "Current Wallpaper"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:130
+msgid "Choose File"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:135
+msgid "Select Wallpaper"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:152
+msgid "Scaling"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:205
+msgid "OK"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:212 ../src/MainWindow.vala:550
+msgid "Cancel"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:222 ../src/Pages.vala:415
+msgid "Widgets"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:222 ../src/EditThemeWindow.vala:223
+msgid "Include running widgets in theme"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:327
+msgid "Name Required"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:328
+msgid "Please enter theme name"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:340
+msgid "No Widgets Selected"
+msgstr ""
+
+#: ../src/EditThemeWindow.vala:341
+msgid "Select the widgets to include in theme"
+msgstr ""
+
+#: ../src/MainWindow.vala:154
+#, c-format
+msgid "Version %s · Click to install"
+msgstr ""
+
+#: ../src/MainWindow.vala:186
+msgid "Check for Updates…"
+msgstr ""
+
+#: ../src/MainWindow.vala:187
+msgid "Check for Updates at Startup"
+msgstr ""
+
+#: ../src/MainWindow.vala:195
+msgid "Generate Missing Previews"
+msgstr ""
+
+#: ../src/MainWindow.vala:196
+msgid "Regenerate All Previews"
+msgstr ""
+
+#: ../src/MainWindow.vala:198
+msgid "Open Widgets Folder"
+msgstr ""
+
+#: ../src/MainWindow.vala:199
+msgid "Rescan Folders"
+msgstr ""
+
+#: ../src/MainWindow.vala:200
+msgid "Stop All Widgets"
+msgstr ""
+
+#: ../src/MainWindow.vala:202 ../src/MainWindow.vala:630
+#, c-format
+msgid "About %s"
+msgstr ""
+
+#: ../src/MainWindow.vala:209
+msgid "Menu"
+msgstr ""
+
+#: ../src/MainWindow.vala:213
+msgid "Scanning for widgets…"
+msgstr ""
+
+#: ../src/MainWindow.vala:263
+msgid "Running widgets"
+msgstr ""
+
+#: ../src/MainWindow.vala:264
+msgid "CPU"
+msgstr ""
+
+#: ../src/MainWindow.vala:265
+msgid "Memory"
+msgstr ""
+
+#: ../src/MainWindow.vala:278
+msgid "Update available"
+msgstr ""
+
+#: ../src/MainWindow.vala:529 ../src/Pages.vala:1026
+msgid "Previews"
+msgstr ""
+
+#: ../src/MainWindow.vala:529
+msgid "Every widget already has a preview."
+msgstr ""
+
+#: ../src/MainWindow.vala:535
+msgid "Generating Previews"
+msgstr ""
+
+#: ../src/MainWindow.vala:570
+#, c-format
+msgid "Capturing %s (%d of %d)"
+msgstr ""
+
+#: ../src/MainWindow.vala:646
+#, c-format
+msgid "Version %s"
+msgstr ""
+
+#: ../src/MainWindow.vala:647
+msgid "Browse, preview, start and style your Conky widgets."
+msgstr ""
+
+#: ../src/MainWindow.vala:650
+msgid "Project on GitHub"
+msgstr ""
+
+#: ../src/MainWindow.vala:654
+msgid ""
+"Based on Conky Manager by Tony George and Scott Caudle.\n"
+"Free software under the GNU GPL v2 or later, with no warranty."
+msgstr ""
+
+#: ../src/MainWindow.vala:659 ../src/Updater.vala:354
+msgid "Close"
+msgstr ""
+
+#: ../src/Main.vala:136
+msgid "Missing Dependencies"
+msgstr ""
+
+#: ../src/Main.vala:157
+msgid "Starting widgets"
+msgstr ""
+
+#: ../src/Main.vala:158
+msgid "Scanning and importing themes"
+msgstr ""
+
+#: ../src/Main.vala:159
+msgid "Stopping all widgets"
+msgstr ""
+
+#: ../src/Main.vala:160
+msgid "Importing theme packs"
+msgstr ""
+
+#: ../src/Main.vala:161
+msgid "Generating previews (ImageMagick)"
+msgstr ""
+
+#: ../src/Main.vala:171
+msgid "Commands listed below are not available"
+msgstr ""
+
+#: ../src/Main.vala:172
+msgid ""
+"The features listed next to them will not work until the required packages "
+"are installed."
+msgstr ""
+
+#: ../src/Main.vala:174
+msgid "To install them, run"
+msgstr ""
+
+#: ../src/Main.vala:227
+msgid "App config saved"
+msgstr ""
+
+#: ../src/Main.vala:273
+msgid "App config loaded"
+msgstr ""
+
+#: ../src/Main.vala:282 ../src/Main.vala:288 ../src/Main.vala:294
+msgid "Directory Created"
+msgstr ""
+
+#: ../src/Main.vala:340
+msgid "Found theme pack [installed]"
+msgstr ""
+
+#: ../src/Main.vala:348
+msgid "Found theme pack [new]"
+msgstr ""
+
+#: ../src/Main.vala:399
+msgid "Importing"
+msgstr ""
+
+#: ../src/Main.vala:410
+msgid "Failed to unzip files from theme pack"
+msgstr ""
+
+#: ../src/Main.vala:463
+#, c-format
+msgid "Searching for conkyrc files... %d found"
+msgstr ""
+
+#: ../src/Main.vala:615
+msgid "Font Copied: "
+msgstr ""
+
+#: ../src/Main.vala:1003 ../src/Main.vala:1025
+msgid "Started"
+msgstr ""
+
+#: ../src/Main.vala:1047 ../src/Utility.vala:761
+msgid "Stopped"
+msgstr ""
+
+#: ../src/Main.vala:1120
+msgid "Saved"
+msgstr ""
+
+#: ../src/Main.vala:2134
+msgid "Current wallpaper source path"
+msgstr ""
+
+#: ../src/Main.vala:2138 ../src/Main.vala:2146
+msgid "Wallpaper saved"
+msgstr ""
+
+#: ../src/Utility.vala:107
+msgid "Warning"
+msgstr ""
+
+#: ../src/Utility.vala:107
+msgid "Error"
+msgstr ""
+
+#: ../src/Utility.vala:1039
+msgid "Missing Icon"
+msgstr ""
+
+#: ../src/Utility.vala:1338
+msgid "Failed to set ownership"
+msgstr ""
+
+#: ../src/Pages.vala:152
+msgid "No preview yet"
+msgstr ""
+
+#: ../src/Pages.vala:285 ../src/Pages.vala:620 ../src/Pages.vala:779
+#: ../src/Pages.vala:798
+#, c-format
+msgid "%d widget"
+msgid_plural "%d widgets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:287
+msgid "wallpaper"
+msgstr ""
+
+#: ../src/Pages.vala:298
+msgid "More actions"
+msgstr ""
+
+#: ../src/Pages.vala:308
+msgid "Show on desktop"
+msgstr ""
+
+#: ../src/Pages.vala:323 ../src/Pages.vala:536
+msgid "Active"
+msgstr ""
+
+#: ../src/Pages.vala:327
+msgid "Apply"
+msgstr ""
+
+#: ../src/Pages.vala:329
+msgid "Stop other widgets, start this theme's widgets and set its wallpaper"
+msgstr ""
+
+#: ../src/Pages.vala:341
+msgid "Edit Position and Look…"
+msgstr ""
+
+#: ../src/Pages.vala:342
+msgid "Open Config in Text Editor"
+msgstr ""
+
+#: ../src/Pages.vala:343 ../src/Pages.vala:356
+msgid "Open Folder"
+msgstr ""
+
+#: ../src/Pages.vala:345
+msgid "Generate Preview"
+msgstr ""
+
+#: ../src/Pages.vala:350
+msgid "Run in Terminal (show errors)"
+msgstr ""
+
+#: ../src/Pages.vala:354
+msgid "Edit Theme…"
+msgstr ""
+
+#: ../src/Pages.vala:355
+msgid "Open Theme File in Text Editor"
+msgstr ""
+
+#: ../src/Pages.vala:415
+msgid "Themes"
+msgstr ""
+
+#: ../src/Pages.vala:416
+msgid "Library"
+msgstr ""
+
+#: ../src/Pages.vala:422
+msgid "Search themes"
+msgstr ""
+
+#: ../src/Pages.vala:422
+msgid "Search widgets"
+msgstr ""
+
+#: ../src/Pages.vala:441
+msgid "New Theme"
+msgstr ""
+
+#: ../src/Pages.vala:442
+msgid "Save the running widgets and current wallpaper as a theme"
+msgstr ""
+
+#: ../src/Pages.vala:447 ../src/Pages.vala:785
+msgid "Stop All"
+msgstr ""
+
+#: ../src/Pages.vala:453
+msgid "Rescan folders (F5)"
+msgstr ""
+
+#: ../src/Pages.vala:535
+msgid "All"
+msgstr ""
+
+#: ../src/Pages.vala:536
+msgid "Running"
+msgstr ""
+
+#: ../src/Pages.vala:616 ../src/Pages.vala:646
+msgid "No themes yet"
+msgstr ""
+
+#: ../src/Pages.vala:617 ../src/Pages.vala:799
+#, c-format
+msgid "%d theme"
+msgid_plural "%d themes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:621
+#, c-format
+msgid "%d running"
+msgid_plural "%d running"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:642
+msgid "Looking for widgets…"
+msgstr ""
+
+#: ../src/Pages.vala:646
+msgid "No widgets found"
+msgstr ""
+
+#: ../src/Pages.vala:648
+msgid ""
+"Turn on the widgets you like, then press New Theme to save them with your "
+"wallpaper."
+msgstr ""
+
+#: ../src/Pages.vala:649
+msgid ""
+"Import a theme pack in Add Widgets, or add a folder that has Conky configs "
+"in Settings."
+msgstr ""
+
+#: ../src/Pages.vala:652
+msgid "No theme is active"
+msgstr ""
+
+#: ../src/Pages.vala:652
+msgid "Nothing is running"
+msgstr ""
+
+#: ../src/Pages.vala:653
+msgid "Press Apply on a theme to use it."
+msgstr ""
+
+#: ../src/Pages.vala:653
+msgid "Flip the switch on a widget to show it on your desktop."
+msgstr ""
+
+#: ../src/Pages.vala:656
+msgid "No matches"
+msgstr ""
+
+#: ../src/Pages.vala:657
+msgid "Try a different search."
+msgstr ""
+
+#: ../src/Pages.vala:681
+msgid "Overview"
+msgstr ""
+
+#: ../src/Pages.vala:682
+msgid "Your Desktop"
+msgstr ""
+
+#: ../src/Pages.vala:688
+msgid "Conky is not installed"
+msgstr ""
+
+#: ../src/Pages.vala:689
+msgid "Widgets can't be shown until it is. Install it with:"
+msgstr ""
+
+#: ../src/Pages.vala:699
+msgid "RUNNING"
+msgstr ""
+
+#: ../src/Pages.vala:700
+msgid "START AT LOGIN"
+msgstr ""
+
+#: ../src/Pages.vala:702
+msgid "LIBRARY"
+msgstr ""
+
+#: ../src/Pages.vala:718
+msgid "Browse"
+msgstr ""
+
+#: ../src/Pages.vala:721
+msgid "On your desktop now"
+msgstr ""
+
+#: ../src/Pages.vala:727
+msgid "No widgets are running"
+msgstr ""
+
+#: ../src/Pages.vala:728
+msgid "Pick some in Widgets, or apply a theme."
+msgstr ""
+
+#: ../src/Pages.vala:776
+msgid "No widgets on your desktop"
+msgstr ""
+
+#: ../src/Pages.vala:777
+#, c-format
+msgid "%d widget on your desktop"
+msgid_plural "%d widgets on your desktop"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:784
+msgid "Nothing on your desktop"
+msgstr ""
+
+#: ../src/Pages.vala:785
+msgid "Choose Widgets"
+msgstr ""
+
+#: ../src/Pages.vala:788
+msgid "On"
+msgstr ""
+
+#: ../src/Pages.vala:788
+msgid "Off"
+msgstr ""
+
+#: ../src/Pages.vala:790
+#, c-format
+msgid "Starts %d second after you log in"
+msgid_plural "Starts %d seconds after you log in"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:791
+msgid "Widgets stay off after you log in"
+msgstr ""
+
+#: ../src/Pages.vala:792
+msgid "Turn Off"
+msgstr ""
+
+#: ../src/Pages.vala:792
+msgid "Turn On"
+msgstr ""
+
+#: ../src/Pages.vala:800
+#, c-format
+msgid "%d pack"
+msgid_plural "%d packs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:817
+msgid "Edit position and look"
+msgstr ""
+
+#: ../src/Pages.vala:821
+msgid "Stop"
+msgstr ""
+
+#: ../src/Pages.vala:850
+msgid "Add Widgets"
+msgstr ""
+
+#: ../src/Pages.vala:850
+msgid "Get more"
+msgstr ""
+
+#: ../src/Pages.vala:852
+msgid "Import Conky theme packs and widget archives you have downloaded"
+msgstr ""
+
+#: ../src/Pages.vala:864
+msgid "Drop theme packs here"
+msgstr ""
+
+#: ../src/Pages.vala:865
+msgid ""
+"Conky Manager packs (.cmtp.7z) and .7z, .zip, .tar.gz, .tar.xz or .tar.bz2 "
+"archives"
+msgstr ""
+
+#: ../src/Pages.vala:871
+msgid "Import…"
+msgstr ""
+
+#: ../src/Pages.vala:909
+#, c-format
+msgid "Those files aren't archives %s can import."
+msgstr ""
+
+#: ../src/Pages.vala:915
+msgid "Find more widgets:"
+msgstr ""
+
+#: ../src/Pages.vala:923
+msgid "Import Widgets"
+msgstr ""
+
+#: ../src/Pages.vala:924 ../src/Pages.vala:1123
+msgid "_Cancel"
+msgstr ""
+
+#: ../src/Pages.vala:924
+msgid "_Import"
+msgstr ""
+
+#: ../src/Pages.vala:928
+msgid "Theme packs and archives"
+msgstr ""
+
+#: ../src/Pages.vala:947
+msgid "Importing…"
+msgstr ""
+
+#: ../src/Pages.vala:954
+#, c-format
+msgid "Imported %d file"
+msgid_plural "Imported %d files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:956
+#, c-format
+msgid "%d new widget"
+msgid_plural "%d new widgets"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:959
+#, c-format
+msgid "%d file could not be extracted"
+msgid_plural "%d files could not be extracted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/Pages.vala:975
+msgid "Settings"
+msgstr ""
+
+#: ../src/Pages.vala:975
+msgid "App"
+msgstr ""
+
+#: ../src/Pages.vala:977
+msgid "Changes are saved right away"
+msgstr ""
+
+#: ../src/Pages.vala:986
+msgid "Startup"
+msgstr ""
+
+#: ../src/Pages.vala:997
+msgid "Start widgets when you log in"
+msgstr ""
+
+#: ../src/Pages.vala:998
+msgid "The widgets that are on when you log out come back at login"
+msgstr ""
+
+#: ../src/Pages.vala:1010
+msgid "seconds"
+msgstr ""
+
+#: ../src/Pages.vala:1011
+msgid "Delay before starting"
+msgstr ""
+
+#: ../src/Pages.vala:1011
+msgid "Gives the desktop time to finish loading first"
+msgstr ""
+
+#: ../src/Pages.vala:1017
+msgid "Widget folders"
+msgstr ""
+
+#: ../src/Pages.vala:1018
+msgid "Add Folder…"
+msgstr ""
+
+#: ../src/Pages.vala:1037
+msgid "Include the desktop background"
+msgstr ""
+
+#: ../src/Pages.vala:1038
+msgid "Capture previews with your wallpaper behind the widget"
+msgstr ""
+
+#: ../src/Pages.vala:1047
+msgid "Image format"
+msgstr ""
+
+#: ../src/Pages.vala:1047
+msgid "PNG keeps transparency, JPEG files are smaller"
+msgstr ""
+
+#: ../src/Pages.vala:1048
+msgid "Generate"
+msgstr ""
+
+#: ../src/Pages.vala:1050
+msgid "Missing previews"
+msgstr ""
+
+#: ../src/Pages.vala:1050
+msgid "Capture a preview for every widget that has none"
+msgstr ""
+
+#: ../src/Pages.vala:1103
+msgid "Scanned for widgets"
+msgstr ""
+
+#: ../src/Pages.vala:1103
+msgid "Default · imported widgets go here"
+msgstr ""
+
+#: ../src/Pages.vala:1105
+msgid "Open folder"
+msgstr ""
+
+#: ../src/Pages.vala:1109
+msgid "Stop scanning this folder"
+msgstr ""
+
+#: ../src/Pages.vala:1122
+msgid "Add Widget Folder"
+msgstr ""
+
+#: ../src/Pages.vala:1123
+msgid "_Add"
+msgstr ""
+
+#: ../src/Updater.vala:91
+msgid "Command failed"
+msgstr ""
+
+#: ../src/Updater.vala:98
+msgid "curl is not installed"
+msgstr ""
+
+#: ../src/Updater.vala:111
+msgid "No release found"
+msgstr ""
+
+#: ../src/Updater.vala:194
+#, c-format
+msgid "Unexpected download location: %s"
+msgstr ""
+
+#: ../src/Updater.vala:197
+#, c-format
+msgid "GitHub did not publish a checksum for %s"
+msgstr ""
+
+#: ../src/Updater.vala:222
+#, c-format
+msgid "Checksum mismatch for %s; the download was discarded"
+msgstr ""
+
+#: ../src/Updater.vala:235
+#, c-format
+msgid "Unsafe entry in archive: %s"
+msgstr ""
+
+#: ../src/Updater.vala:244
+msgid "install.sh not found in the release archive"
+msgstr ""
+
+#: ../src/Updater.vala:254
+msgid "This release has no package for how Conky Manager 3 is installed here"
+msgstr ""
+
+#: ../src/Updater.vala:257
+msgid "pkexec is not installed, so the update can't ask for your password"
+msgstr ""
+
+#: ../src/Updater.vala:275
+msgid "Authentication was cancelled"
+msgstr ""
+
+#: ../src/Updater.vala:279
+msgid "The installer failed"
+msgstr ""
+
+#: ../src/Updater.vala:347
+msgid "Software Update"
+msgstr ""
+
+#: ../src/Updater.vala:433
+msgid "Checking for updates…"
+msgstr ""
+
+#: ../src/Updater.vala:438
+msgid "Couldn't check for updates"
+msgstr ""
+
+#: ../src/Updater.vala:438
+msgid "Check your internet connection."
+msgstr ""
+
+#: ../src/Updater.vala:439 ../src/Updater.vala:481 ../src/Updater.vala:490
+msgid "Try Again"
+msgstr ""
+
+#: ../src/Updater.vala:447
+msgid "You're up to date"
+msgstr ""
+
+#: ../src/Updater.vala:447
+#, c-format
+msgid "Version %s is the latest version of %s."
+msgstr ""
+
+#: ../src/Updater.vala:452
+#, c-format
+msgid "You have version %s."
+msgstr ""
+
+#: ../src/Updater.vala:454
+msgid ""
+"You are running Conky Manager 3 from source. Update it with git pull, or "
+"install a package from the release page."
+msgstr ""
+
+#: ../src/Updater.vala:457
+msgid "Conky Manager 3 was installed by your package manager. Update it there."
+msgstr ""
+
+#: ../src/Updater.vala:460
+msgid "Download it from the release page."
+msgstr ""
+
+#: ../src/Updater.vala:462
+#, c-format
+msgid "Version %s is available"
+msgstr ""
+
+#: ../src/Updater.vala:463
+#, c-format
+msgid "Install %s"
+msgstr ""
+
+#: ../src/Updater.vala:463 ../src/Updater.vala:493
+msgid "Open Download Page"
+msgstr ""
+
+#: ../src/Updater.vala:467
+msgid "You'll be asked for your password."
+msgstr ""
+
+#: ../src/Updater.vala:468
+#, c-format
+msgid "Installing version %s…"
+msgstr ""
+
+#: ../src/Updater.vala:468
+msgid "Downloading…"
+msgstr ""
+
+#: ../src/Updater.vala:474
+#, c-format
+msgid "Downloading… %d%%"
+msgstr ""
+
+#: ../src/Updater.vala:475
+msgid "Verifying and installing…"
+msgstr ""
+
+#: ../src/Updater.vala:477
+#, c-format
+msgid "Updated to %s"
+msgstr ""
+
+#: ../src/Updater.vala:478
+msgid ""
+"Restart Conky Manager 3 to start using the new version. Your widgets keep "
+"running."
+msgstr ""
+
+#: ../src/Updater.vala:478 ../src/Updater.vala:496
+msgid "Restart Now"
+msgstr ""
+
+#: ../src/Updater.vala:481
+msgid "Update failed"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:70
+msgid "Edit Widget"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:94
+msgid "Location"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:110
+msgid "Alignment"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:125
+msgid "Top Left"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:127
+msgid "Top Right"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:129
+msgid "Top Middle"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:131
+msgid "Bottom Left"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:133
+msgid "Bottom Right"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:135
+msgid "Bottom Middle"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:137
+msgid "Middle Left"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:139
+msgid "Middle Right"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:141
+msgid "Middle Middle"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:145
+msgid "Horizontal Gap"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:146
+msgid "[GAP_X] Horizontal distance from window border (in pixels)"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:157
+msgid "Vertical Gap"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:158
+msgid "[GAP_Y] Vertical distance from window border (in pixels)"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:170
+msgid "Size"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:185
+msgid ""
+"Width should be larger than the size of window contents,\n"
+"otherwise this setting will not have any effect"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:188
+msgid "Minimum Width"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:201
+msgid ""
+"Height should be larger than the size of window contents,\n"
+"otherwise this setting will not have any effect"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:204
+msgid "Minimum Height"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:216
+msgid ""
+"Increases the window height by adding empty lines at the end of the Conky "
+"config file"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:219
+msgid "Height Padding"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:236
+msgid ""
+"The minimum width & height must be more than the size of the window "
+"contents, otherwise the setting will not have any effect."
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:246
+msgid ""
+"Setting Type to \"Opaque\" (from the transparency tab) will make it easier "
+"to see the changes"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:257
+msgid "Transparency"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:274
+msgid "Transparency Type"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:292
+msgid "Opaque"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:294
+msgid "Transparent"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:296
+msgid "Pseudo-Transparent"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:298
+msgid "Semi-Transparent"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:301
+msgid ""
+"Window Opacity\n"
+"\n"
+"0 = Fully Transparent, 100 = Fully Opaque"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:304
+msgid "Opacity (%)"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:318
+msgid "Background Color"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:331
+msgid ""
+"Setting Type to \"Transparent\" will make the whole window transparent "
+"(including any images). Use \"Pseudo-Transparent\" if you want the images to "
+"be opaque."
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:341
+msgid ""
+"Setting Type to \"Pseudo-Transparent\" will make the window transparent but "
+"the window will have a shadow. The shadow can be disabled by configuring "
+"your window manager."
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:352
+msgid "Time"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:368
+msgid "Time Format"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:390
+msgid "12 Hour"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:392
+msgid "24 Hour"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:396
+msgid "Network"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:412
+msgid "Interface"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:422
+msgid "WiFi"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:427
+msgid "WiFi Network"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:431
+msgid "LAN"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:436
+msgid "Wired LAN Network"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:452
+msgid "Reset"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:455
+msgid "Undo every change made since this window opened"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:459
+msgid "Done"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:462
+msgid "Close; your changes are already applied"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:481
+msgid "Loading"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:529
+msgid "Time format cannot be changed for selected widget"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:545
+msgid "Network interface cannot be changed for selected widget"
+msgstr ""
+
+#: ../src/EditWidgetWindow.vala:632
+msgid "Updating theme"
+msgstr ""

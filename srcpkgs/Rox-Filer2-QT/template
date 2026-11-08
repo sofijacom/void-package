@@ -30,6 +30,7 @@ short_desc="Rox-Filer2 modern Qt6 file manager"
 maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-2.0-or-later"
 homepage="https://github.com/josejp2424/Rox-Filer2-QT"
+changelog="https://github.com/josejp2424/Rox-Filer2-QT/releases"
 distfiles="https://github.com/josejp2424/Rox-Filer2-QT/archive/refs/tags/v${version}-QT.tar.gz"
 checksum="53937525dc086a33a8b1c98eaed69f411eb4645fe463374d26ef37f550eb53e3"
 

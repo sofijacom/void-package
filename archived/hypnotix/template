@@ -1,0 +1,56 @@
+# Template file for 'hypnotix'
+
+pkgname=hypnotix
+version=5.7
+revision=1
+build_style=gnu-makefile
+hostmakedepends="
+ pkg-config
+ gettext
+ python3
+"
+
+depends="
+ bash
+ dconf
+ gdk-pixbuf
+ gtk+3
+ hicolor-icon-theme
+ mpv
+ pango
+ python3
+ python3-gobject
+ python3-Pillow
+ python3-requests
+ python3-setproctitle
+ python3-Unidecode
+ xapp
+ yt-dlp
+"
+
+short_desc="IPTV streaming application with support for live TV, movies and series"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/linuxmint/hypnotix"
+changelog="https://github.com/linuxmint/hypnotix/releases"
+distfiles="https://github.com/linuxmint/hypnotix/archive/refs/tags/${version}.tar.gz"
+checksum=87e454c6e3b2ee899df9f1947d07ee93b030fef5ddb7781b2cbcf57e4e7c33cc
+
+post_extract() {
+	# GitHub archive extracts to hypnotix-${version}
+	mv "${wrksrc}" "${wrksrc}.tmp"
+	mkdir -p "${wrksrc}"
+	cp -a "${wrksrc}.tmp"/. "${wrksrc}/"
+	rm -rf "${wrksrc}.tmp"
+}
+
+post_patch() {
+	# Set version number
+	sed -i "s/__DEB_VERSION__/${version}/" \
+		usr/lib/hypnotix/hypnotix.py
+}
+
+do_install() {
+	vmkdir usr
+	cp -a usr/. "${DESTDIR}/usr/"
+}

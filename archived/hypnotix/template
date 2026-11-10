@@ -53,4 +53,11 @@ post_patch() {
 do_install() {
 	vmkdir usr
 	cp -a usr/. "${DESTDIR}/usr/"
+
+	# Generate Python bytecode in the package tree
+	python3 -m compileall -d /usr/lib \
+		"${DESTDIR}/usr/lib"
+
+	python3 -O -m compileall -d /usr/lib \
+		"${DESTDIR}/usr/lib"
 }

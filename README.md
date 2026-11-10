@@ -57,6 +57,7 @@ sudo xbps-install -S
 | Brave-origin ( stable )             | https://www.brave.com/                            | ✔️ |
 | Brave-origin ( beta )               | https://www.brave.com/                            | ✔️ |
 | Calamares ( Graphical installer )   | https://calamares.io                              | ✔️ |
+| circle-flags                        | https://github.com/linuxmint/circle-flags         | 🔐 |
 | Conky-manager2                      | https://github.com/zcot/conky-manager2            | 🔐 |
 | Conky-manager3                      | https://github.com/thuutien/Conky-Manager-3       | ✔️ |
 | GitHub-desktop                      | https://github.com/shiftkey/desktop               | ✔️ |

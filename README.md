@@ -64,6 +64,7 @@ sudo xbps-install -S
 | Gtk3dialog ( GTK+ 3, VTE )          | https://github.com/puppylinux-woof-CE/gtkdialog   | ✔️ |
 | Hardinfo2                           | https://github.com/hardinfo2/hardinfo2            | ✔️ |
 | Helium-browser                      | https://helium.computer/                          | ✔️ |
+| hypnotix                            | https://github.com/linuxmint/hypnotix             | 🔐 |
 | iruka-xbps                          | https://github.com/javiercplus/iruka-xbps         | ✔️ |
 | LibreWolf ( Web browser )           | https://librewolf.net/                            | ✔️ |
 | ly                                  | https://codeberg.org/fairyglade/ly                | ✔️ |

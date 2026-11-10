@@ -1,0 +1,16 @@
+# Template file for 'circle-flags'
+
+pkgname=circle-flags
+version=2.7.0
+revision=1
+short_desc="A collection of circular flags in SVG format"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
+license="GPL-3.0-or-later"
+homepage="https://github.com/linuxmint/circle-flags"
+changelog="https://github.com/HatScripts/circle-flags/releases"
+distfiles="http://packages.linuxmint.com/pool/main/c/${pkgname}/${pkgname}_${version}+mint1.tar.xz"
+checksum=2e7d286ee1ea58c84217348eca2d0e03ffdee74ab1deb9880f640ab3a604d84d
+
+do_install() {
+	cp -a usr "${DESTDIR}"
+}

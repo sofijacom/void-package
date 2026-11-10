@@ -26,6 +26,7 @@ depends="
  python3-Unidecode
  xapp
  yt-dlp
+ circle-flags
 "
 
 short_desc="IPTV streaming application with support for live TV, movies and series"

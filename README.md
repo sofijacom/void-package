@@ -47,7 +47,7 @@ printf '%s\n' \
 
 > [!IMPORTANT]
 > 
-> _Then type in the terminal `sudo xbps-install -S` and accept the fingerprint (Y)_
+> _Synchronize the repository and accept the fingerprint (Y):_
 
 ```shell
 sudo xbps-install -S

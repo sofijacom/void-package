@@ -220,19 +220,7 @@ jobs:
             xbps-rindex -s --signedby "sofiya <sofija.p2018@gmail.com>" --privkey private.pem "$PWD"
             xbps-rindex -S --privkey private.pem "$PWD"/*.xbps
             xbps-rindex -c "$PWD"
-
-          # We copy the public key .plist outside.
-           plist_files=( *.plist )
-
-           if [ "${#plist_files[@]}" -eq 0 ]; then
-             echo "❌ .plist file was not generated"
-             rm -f private.pem
-             exit 1
-           fi
-
-           echo "🔐 Generated public key:"
-           printf '%s\n' "${plist_files[@]}"
-          
+            
             rm -f private.pem
           else
             echo "⚠️ No PRIV_KEY — skipping signing."

@@ -37,7 +37,7 @@
 sudo mkdir -p /etc/xbps.d
 ```
 
-```shell
+```bash
 printf '%s\n' \
   'repository=https://github.com/sofijacom/void-package/releases/latest/download' \
   | sudo tee /etc/xbps.d/sofijacom-void-repository.conf

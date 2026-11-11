@@ -37,6 +37,8 @@
 sudo mkdir -p /etc/xbps.d
 ```
 
+### Create config file and add repository:
+
 ```bash
 printf '%s\n' \
   'repository=https://github.com/sofijacom/void-package/releases/latest/download' \

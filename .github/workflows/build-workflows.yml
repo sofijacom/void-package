@@ -304,7 +304,7 @@ jobs:
           echo "✅ Release created: ID $RELEASE_ID"
 
           # Загружаем все файлы
-          for file in *.xbps *.sig2 *.plist ${ARCH}-repodata ${ARCH}-repodata; do
+          for file in *.xbps *.sig2 *.plist ${ARCH}-repodata; do
             if [ -f "$file" ]; then
               echo "📤 Uploading $file..."
               curl -s -L \

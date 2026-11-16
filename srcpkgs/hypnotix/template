@@ -1,7 +1,7 @@
 # Template file for 'hypnotix'
 
 pkgname=hypnotix
-version=5.8
+version=5.9
 revision=1
 build_style=gnu-makefile
 hostmakedepends="
@@ -9,7 +9,6 @@ hostmakedepends="
  gettext
  python3
 "
-
 depends="
  bash
  dconf
@@ -28,14 +27,13 @@ depends="
  yt-dlp
  circle-flags
 "
-
 short_desc="IPTV streaming application with support for live TV, movies and series"
 maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="GPL-3.0-or-later"
 homepage="https://github.com/linuxmint/hypnotix"
 changelog="https://github.com/linuxmint/hypnotix/releases"
 distfiles="https://github.com/linuxmint/hypnotix/archive/refs/tags/${version}.tar.gz"
-checksum=8b43884ca73dbfc38afc3f954af5d5f7d6ce54c04a5a2b4024dc2f3234779b05
+checksum=37399e3497c7494b07f82e7858b029124f308e23fb8cbf333c6adbc903ecc14d
 
 post_extract() {
 	# GitHub archive extracts to hypnotix-${version}

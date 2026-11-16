@@ -1,7 +1,7 @@
 # Template file for 'hypnotix'
 
 pkgname=hypnotix
-version=5.7
+version=5.8
 revision=1
 build_style=gnu-makefile
 hostmakedepends="
@@ -35,7 +35,7 @@ license="GPL-3.0-or-later"
 homepage="https://github.com/linuxmint/hypnotix"
 changelog="https://github.com/linuxmint/hypnotix/releases"
 distfiles="https://github.com/linuxmint/hypnotix/archive/refs/tags/${version}.tar.gz"
-checksum=87e454c6e3b2ee899df9f1947d07ee93b030fef5ddb7781b2cbcf57e4e7c33cc
+checksum=8b43884ca73dbfc38afc3f954af5d5f7d6ce54c04a5a2b4024dc2f3234779b05
 
 post_extract() {
 	# GitHub archive extracts to hypnotix-${version}

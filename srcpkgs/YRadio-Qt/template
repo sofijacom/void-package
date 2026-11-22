@@ -1,0 +1,33 @@
+# Template file for 'YRadio-Qt'
+pkgname=YRadio-Qt
+version=1.0.3
+revision=1
+wrksrc="YRadio-Qt-${version}"
+depends="mpv alsa-utils pulseaudio-utils python3 python3-pyside6"
+short_desc="Internet radio player with Qt (PySide6) interface"
+maintainer="Sofiya <sofija.p2018@gmail.com>"
+license="MIT"
+homepage="https://github.com/sofijacom/YRadio-Qt"
+distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
+checksum="4867c24f32eb3395ff6ce391a475d0fabe15961647772f62add31aeddb916d2c"
+
+do_install() {
+	# Program: .py, .lua, playlists, icons
+	vmkdir usr/share/yradio-qt
+	cp -a usr/local/YRadio-Qt/. "${DESTDIR}/usr/share/yradio-qt/"
+	chmod 755 "${DESTDIR}/usr/share/yradio-qt/yradio_qt.py"
+
+	# launcher, with corrected path
+	vbin usr/local/bin/yradio_qt
+	sed -i 's|/usr/local/YRadio-Qt|/usr/share/yradio-qt|' \
+		"${DESTDIR}/usr/bin/yradio_qt"
+
+	# .desktop and icons
+	vinstall usr/share/applications/YRadio-QT.desktop 644 usr/share/applications
+	for f in usr/share/pixmaps/*.png; do
+		vinstall "$f" 644 usr/share/pixmaps
+	done
+
+	vlicense LICENSE
+	vdoc README.md
+}

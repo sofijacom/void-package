@@ -9,7 +9,7 @@ maintainer="Sofiya <sofija.p2018@gmail.com>"
 license="MIT"
 homepage="https://github.com/sofijacom/YRadio-Qt"
 distfiles="${homepage}/archive/refs/tags/v${version}.tar.gz"
-checksum="b66b2767ca134e64a495ee7248bc3dcef245da019beeefffa75007660728f558"
+checksum="2ea3871da738297b15e7a7bb6977ca8611c5e4d21def58985909aee8d58b45f7"
 
 do_install() {
 	# Program: .py, .lua, playlists, icons

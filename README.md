@@ -95,7 +95,7 @@ sudo xbps-install -S
 | SmartGit                            | https://www.smartgit.dev/                         | ✔️ |
 | Waterfox-browser                    | https://www.waterfox.net/                         | ✔️ |
 | Yandex-browser ( stable )           | https://repo.yandex.ru/                           | ✔️ |
-| YRadio-Qt                           | https://github.com/sofijacom/YRadio-Qt            | 🔐 |
+| YRadio-Qt ( Radio player )          | https://github.com/sofijacom/YRadio-Qt            | 🔐 |
 | Zen-browser ( stable )              | https://www.zen-browser.app/                      | ✔️ |
 | Zoneminder                          | https://github.com/ZoneMinder/zoneminder/         | ✔️ |
 

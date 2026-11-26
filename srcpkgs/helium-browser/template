@@ -1,6 +1,6 @@
 # Template file for 'helium-browser'
 pkgname=helium-browser
-version=0.22.4.1
+version=0.22.5.1
 revision=1
 archs="x86_64"
 depends="desktop-file-utils hicolor-icon-theme libnotify xdg-utils"
@@ -10,7 +10,7 @@ license="GPL-3.0"
 homepage="https://helium.computer/"
 changelog="https://github.com/imputnet/helium-linux/releases"
 distfiles="https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64_linux.tar.xz"
-checksum="00d0fd239315549e91253cf2495b021a403ccf98977a7925742b020c0577bd2c"
+checksum="2d5ba1e03c4da061de9adf2b714b967ab55b7b017b37cd93080fdb97c0038886"
 nostrip=yes
 
 do_install() {

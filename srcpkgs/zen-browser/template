@@ -39,7 +39,7 @@ do_install() {
   ln -sf /usr/lib/libnssckbi.so "${DESTDIR}/opt/${pkgname}/libnssckbi.so"
 }
 
-post_install() {
-  curl --fail -sOL https://raw.githubusercontent.com/zen-browser/desktop/refs/heads/stable/LICENSE
-  vlicense LICENSE
-}
+#post_install() {
+#  curl --fail -sOL https://raw.githubusercontent.com/zen-browser/desktop/refs/heads/stable/LICENSE
+#  vlicense LICENSE
+#}

@@ -6,7 +6,7 @@ timestamp=1
 revision=1
 _channel=stable
 archs="x86_64"
-hostmakedepends="curl tar xz python3 python3-html2text python3-setuptools"
+hostmakedepends="curl tar xz python3-html2text"
 depends="gtk4 binutils liberation-fonts-ttf jq at-spi2-atk curl dbus expat libcups mesa nss squashfs-tools wget xdg-utils vulkan-loader libXcomposite"
 optdepends="speech-dispatcher gstreamer1"
 short_desc="Attempt at creating a safer, faster, and more stable browser"
@@ -15,7 +15,7 @@ license="custom:yandex"
 homepage="https://browser.yandex.ru/"
 nostrip=yes
 restricted=yes
-# lib32disabled=yes
+lib32disabled=yes
 
 _baseUrl="https://repo.yandex.ru/yandex-browser/deb/pool/main/y/yandex-browser-stable"
 _filename="yandex-browser-${_channel}_${version}-1_amd64.deb"
